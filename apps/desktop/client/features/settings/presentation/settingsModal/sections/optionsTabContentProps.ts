@@ -1,0 +1,77 @@
+import type { ComponentProps } from 'react';
+import OptionsTab from '@client/features/settings/presentation/settingsModal/tabs/OptionsTab';
+import type { SettingsTabContentBuildContext } from '@client/features/settings/presentation/settingsModal/tabs/tabContentBuilderTypes';
+
+type OptionsTabProps = ComponentProps<typeof OptionsTab>;
+
+export const buildOptionsTabProps = ({
+  controller,
+  accentPreference,
+  appVersion,
+  updaterStatus,
+  updateStatusText,
+  interactionLockReason,
+  clearCacheNotice,
+  clearCacheStatus,
+  onCheckForUpdates,
+  onOpenUpdateDownload,
+  onOpenClearCache,
+}: SettingsTabContentBuildContext): OptionsTabProps => {
+  const { state, validation, appearanceActions, optionsActions, versionActions } = controller;
+  const { app, ui } = state;
+
+  return {
+    languagePreference: app.languagePreference,
+    themePreference: app.themePreference,
+    accentPreference,
+    uiFontFamily: app.uiFontFamily,
+    uiFontSize: app.uiFontSize,
+    interfaceLayoutConfigText: ui.interfaceLayoutConfigText,
+    sendShortcut: app.sendShortcut,
+    showMessageTimestamps: app.showMessageTimestamps,
+    wrapCodeBlocks: app.wrapCodeBlocks,
+    reduceMotion: app.reduceMotion,
+    sidebarCollapsed: app.sidebarCollapsed,
+    closeToTray: app.closeToTray,
+    minimizeToTray: app.minimizeToTray,
+    launchAtStartup: app.launchAtStartup,
+    startMinimizedToTray: app.startMinimizedToTray,
+    rememberWindowBounds: app.rememberWindowBounds,
+    appVersion,
+    httpProtocol: app.httpProtocol,
+    localProxyHost: app.localProxyHost,
+    localProxyPort: app.localProxyPort,
+    aiGateway: app.aiGateway,
+    updateStatusText,
+    updaterStatus: updaterStatus.status,
+    mutationsLockedReason: interactionLockReason,
+    validationIssuesByField: validation.issuesByField,
+    clearCacheNotice,
+    clearCacheStatus,
+    onLanguagePreferenceChange: appearanceActions.onLanguagePreferenceChange,
+    onThemePreferenceChange: appearanceActions.onThemePreferenceChange,
+    onAccentPreferenceChange: appearanceActions.onAccentPreferenceChange,
+    onUiFontFamilyChange: optionsActions.onUiFontFamilyChange,
+    onUiFontSizeChange: optionsActions.onUiFontSizeChange,
+    onInterfaceLayoutConfigTextChange: optionsActions.onInterfaceLayoutConfigTextChange,
+    onSendShortcutChange: optionsActions.onSendShortcutChange,
+    onToggleShowMessageTimestamps: optionsActions.onToggleShowMessageTimestamps,
+    onToggleWrapCodeBlocks: optionsActions.onToggleWrapCodeBlocks,
+    onToggleReduceMotion: optionsActions.onToggleReduceMotion,
+    onToggleSidebarCollapsed: optionsActions.onToggleSidebarCollapsed,
+    onToggleCloseToTray: optionsActions.onToggleCloseToTray,
+    onToggleMinimizeToTray: optionsActions.onToggleMinimizeToTray,
+    onToggleLaunchAtStartup: optionsActions.onToggleLaunchAtStartup,
+    onToggleStartMinimizedToTray: optionsActions.onToggleStartMinimizedToTray,
+    onToggleRememberWindowBounds: optionsActions.onToggleRememberWindowBounds,
+    onResetOptions: optionsActions.onResetOptions,
+    onImportOptions: optionsActions.onImportOptions,
+    onCheckForUpdates,
+    onOpenUpdateDownload,
+    onOpenClearCache,
+    onHttpProtocolChange: versionActions.onHttpProtocolChange,
+    onLocalProxyHostChange: versionActions.onLocalProxyHostChange,
+    onLocalProxyPortChange: versionActions.onLocalProxyPortChange,
+  };
+};
+

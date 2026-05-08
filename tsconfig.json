@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
+    "module": "ESNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+    "types": ["node"],
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "paths": {
+      "@/*": ["./apps/desktop/renderer/*"],
+      "@client/*": ["./apps/desktop/client/*"],
+      "@contracts/*": ["./packages/contracts/src/*"],
+      "@chat-core/*": ["./packages/core/chat/src/*"],
+      "@provider-core/*": ["./packages/core/provider/src/*"],
+      "@settings-core/*": ["./packages/core/settings/src/*"]
+    },
+    "allowImportingTsExtensions": true,
+    "noEmit": true
+  },
+  "include": [
+    "apps/**/*.ts",
+    "apps/**/*.tsx",
+    "packages/**/*.ts",
+    "packages/**/*.tsx",
+    "vite.config.ts"
+  ],
+  "exclude": ["dist", "release", "node_modules"]
+}

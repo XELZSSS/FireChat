@@ -1,0 +1,65 @@
+import type { AppFontSize, HttpProtocolPreference, SendShortcut } from '@/shared/utils/appOptions';
+import type { LanguagePreference } from '@/shared/utils/i18n';
+import type { AccentPreference, ThemePreference } from '@/shared/utils/theme';
+import type { AiGatewaySettings } from '@/infrastructure/providers/aiGatewaySettings';
+import type { SettingsValidationIssue } from '@client/features/settings/presentation/settingsModal/validation/validation';
+
+export type OptionsTabProps = {
+  languagePreference: LanguagePreference;
+  themePreference: ThemePreference;
+  accentPreference: AccentPreference;
+  uiFontFamily: string;
+  uiFontSize: AppFontSize;
+  interfaceLayoutConfigText: string;
+  sendShortcut: SendShortcut;
+  showMessageTimestamps: boolean;
+  wrapCodeBlocks: boolean;
+  reduceMotion: boolean;
+  sidebarCollapsed: boolean;
+  closeToTray: boolean;
+  minimizeToTray: boolean;
+  launchAtStartup: boolean;
+  startMinimizedToTray: boolean;
+  rememberWindowBounds: boolean;
+  appVersion: string;
+  httpProtocol: HttpProtocolPreference;
+  localProxyHost: string;
+  localProxyPort: string;
+  aiGateway: AiGatewaySettings;
+  updateStatusText: string;
+  updaterStatus: 'idle' | 'checking' | 'available' | 'not-available' | 'error' | 'disabled';
+  mutationsLockedReason?: string | null;
+  validationIssuesByField: Record<string, SettingsValidationIssue[]>;
+  clearCacheNotice?: string | null;
+  clearCacheStatus?: 'pending' | 'success' | 'error' | null;
+  onLanguagePreferenceChange: (value: LanguagePreference) => void;
+  onThemePreferenceChange: (value: ThemePreference) => void;
+  onAccentPreferenceChange: (value: AccentPreference) => void;
+  onUiFontFamilyChange: (value: string) => void;
+  onUiFontSizeChange: (value: AppFontSize) => void;
+  onInterfaceLayoutConfigTextChange: (value: string) => void;
+  onSendShortcutChange: (value: SendShortcut) => void;
+  onToggleShowMessageTimestamps: (value: boolean) => void;
+  onToggleWrapCodeBlocks: (value: boolean) => void;
+  onToggleReduceMotion: (value: boolean) => void;
+  onToggleSidebarCollapsed: (value: boolean) => void;
+  onToggleCloseToTray: (value: boolean) => void;
+  onToggleMinimizeToTray: (value: boolean) => void;
+  onToggleLaunchAtStartup: (value: boolean) => void;
+  onToggleStartMinimizedToTray: (value: boolean) => void;
+  onToggleRememberWindowBounds: (value: boolean) => void;
+  onResetOptions: () => void;
+  onImportOptions: (value: unknown) => void;
+  onCheckForUpdates: () => Promise<void>;
+  onOpenUpdateDownload: () => Promise<void>;
+  onOpenClearCache: () => void;
+  onHttpProtocolChange: (value: HttpProtocolPreference) => void;
+  onLocalProxyHostChange: (value: string) => void;
+  onLocalProxyPortChange: (value: string) => void;
+};
+
+export type OptionsInteractionLock = {
+  isInteractionLocked: boolean;
+  interactionLockTitle?: string;
+};
+

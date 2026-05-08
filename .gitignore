@@ -1,0 +1,75 @@
+# Dependencies
+/node_modules/
+
+# Build outputs
+/dist/
+/release/
+/out/
+
+# Build resources: keep the custom NSIS script only
+/build/*
+!/build/installer.nsh
+
+# Tool caches
+/.cache/
+/.vite/
+/.rollup.cache/
+.turbo/
+.parcel-cache/
+.eslintcache
+*.tsbuildinfo
+
+# Test and coverage outputs
+/coverage/
+/.nyc_output/
+/test-results/
+/playwright-report/
+
+# Logs and runtime files
+/logs/
+/tmp/
+/temp/
+*.log
+*.pid
+*.pid.lock
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Local environment overrides
+.env
+.env.*
+!.env.example
+!.env.*.example
+firechat.local.json
+firechat.auth.json
+firechat.interface.json
+
+# Package artifacts
+*.tgz
+*.orig
+*.rej
+*.exe
+*.msi
+*.dmg
+*.pkg
+*.AppImage
+*.blockmap
+latest*.yml
+builder-debug.yml
+builder-effective-config.yaml
+
+# Editor directories and OS files
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

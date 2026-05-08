@@ -1,0 +1,144 @@
+html,
+body,
+#root {
+  height: 100%;
+  background-color: var(--bg-0);
+  background: var(--bg-0);
+  color: var(--ink-1);
+}
+
+body {
+  font-family: var(--font-family-ui), var(--font-family-emoji);
+  font-feature-settings: var(--font-family-ui--font-feature-settings, normal);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-large);
+  letter-spacing: var(--letter-spacing-normal);
+  font-kerning: normal;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+pre,
+code,
+kbd,
+samp {
+  font-family: var(--font-family-code);
+  font-feature-settings: var(--font-family-code--font-feature-settings, normal);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  letter-spacing: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 600;
+}
+
+h4,
+h5,
+h6 {
+  font-weight: 500;
+}
+
+body,
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
+  font-feature-settings: inherit;
+  font-size: inherit;
+  font-synthesis: weight style;
+}
+
+button {
+  letter-spacing: 0.01em;
+}
+
+input,
+textarea,
+select {
+  letter-spacing: 0.005em;
+  background-image: none;
+  box-shadow: none;
+  filter: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  letter-spacing: 0.012em;
+}
+
+body *,
+body *::before,
+body *::after,
+body *::file-selector-button {
+  border-radius: 0 !important;
+}
+
+::selection {
+  background: var(--selection-bg);
+  color: var(--selection-fg);
+}
+
+:root[data-runtime='electron'] body {
+  padding-top: 0;
+}
+
+:root[data-runtime='electron'] body .chat-main {
+  padding-top: 40px;
+}
+
+:root[data-runtime='electron'] body *,
+:root[data-runtime='electron'] body *::before,
+:root[data-runtime='electron'] body *::after {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+input:not([type='checkbox']),
+textarea,
+select {
+  appearance: none;
+}
+
+input[type='password']::-ms-reveal,
+input[type='password']::-ms-clear {
+  display: none;
+}
+
+select option {
+  background-color: var(--bg-2);
+  color: var(--ink-1);
+}
+
+.prose pre {
+  padding: 0;
+  border-radius: 0;
+  overflow-x: auto;
+}
+
+.prose code {
+  background-color: var(--code-inline-bg);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0;
+  font-size: 0.875em;
+  font-family: var(--font-family-code);
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.prose pre code {
+  background-color: transparent;
+  padding: 0;
+}

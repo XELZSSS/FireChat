@@ -1,0 +1,25 @@
+@import 'tailwindcss';
+
+@import './styles/tokens.css';
+@import './styles/base.css';
+@import './styles/layout.css';
+@import './styles/animations.css';
+
+@theme {
+  --font-sans: var(--font-family-ui);
+  --font-sans--font-feature-settings: var(--font-family-ui--font-feature-settings);
+  --font-mono: var(--font-family-code);
+  --font-mono--font-feature-settings: var(--font-family-code--font-feature-settings);
+
+  --text-xs: 0.75rem;
+  --text-sm: var(--font-size-small);
+  --text-base: var(--font-size-base);
+  --text-lg: var(--font-size-large);
+  --text-xl: var(--font-size-x-large);
+  --leading-normal: var(--line-height-normal);
+  --leading-relaxed: var(--line-height-large);
+  --leading-loose: var(--line-height-x-large);
+  --tracking-normal: var(--letter-spacing-normal);
+  --tracking-tight: var(--letter-spacing-tight);
+  --tracking-tighter: var(--letter-spacing-tightest);
+}
