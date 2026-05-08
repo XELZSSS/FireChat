@@ -15,8 +15,14 @@ import type { ChatMainProps } from '@client/features/chat/presentation/shell/cha
 
 const MAIN_INPUT_DOCK_CLASS = 'relative mx-auto w-full max-w-[min(50rem,100%)] px-4 pb-3';
 const MAIN_INPUT_LAYER_CLASS = 'pointer-events-none absolute inset-x-0 bottom-0 z-20';
-const MAIN_PET_DOCK_CLASS = 'pet-inline-dock flex w-full px-3 pb-[0.12rem]';
+const PET_DOCK_BASE_CLASS = 'pet-inline-dock flex w-full pb-[0.12rem]';
+const WELCOME_PET_DOCK_CLASS = `${PET_DOCK_BASE_CLASS} px-3`;
+const MAIN_PET_DOCK_CLASS = PET_DOCK_BASE_CLASS;
+const MAIN_PET_DOCK_LEFT_CLASS = `${PET_DOCK_BASE_CLASS} -translate-x-1`;
 const WELCOME_INPUT_CLASS = 'w-full max-w-[min(50rem,100%)] px-4';
+
+const getMainPetDockClass = (position: string) =>
+  position === 'input-left' ? MAIN_PET_DOCK_LEFT_CLASS : MAIN_PET_DOCK_CLASS;
 
 const ChatMainComponent = ({
   language,
@@ -78,8 +84,16 @@ const ChatMainComponent = ({
     },
     [sessionId]
   );
+  const welcomePet = pet.visible ? (
+    <div className={WELCOME_PET_DOCK_CLASS} data-position={pet.settings.position}>
+      <ChatPet status={pet.status} settings={pet.settings} />
+    </div>
+  ) : null;
   const chatPet = pet.visible ? (
-    <div className={MAIN_PET_DOCK_CLASS} data-position={pet.settings.position}>
+    <div
+      className={getMainPetDockClass(pet.settings.position)}
+      data-position={pet.settings.position}
+    >
       <ChatPet status={pet.status} settings={pet.settings} />
     </div>
   ) : null;
@@ -126,7 +140,7 @@ const ChatMainComponent = ({
       >
         {!isSessionStateReady ? null : !hasMessages ? (
           <div ref={messagesContentRef} className={MESSAGES_CONTENT_CLASS}>
-            <WelcomeScreen input={welcomeInput} pet={chatPet} />
+            <WelcomeScreen input={welcomeInput} pet={welcomePet} />
           </div>
         ) : (
           <ChatMessageList
@@ -167,4 +181,3 @@ const ChatMainComponent = ({
 
 const ChatMain = memo(ChatMainComponent);
 export default ChatMain;
-
