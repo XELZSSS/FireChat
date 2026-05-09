@@ -6,9 +6,7 @@ import type {
 import type { OpenAIRequestMode, ProviderModelItem } from '@/infrastructure/providers/types';
 import type { ImageGenerationSettings } from '@/infrastructure/providers/imageGenerationSettings';
 import type { CustomProviderDraft } from '@/infrastructure/providers/runtime/providerFileMutations';
-import type { AiGatewaySettings } from '@/infrastructure/providers/aiGatewaySettings';
 import type { DropdownOption } from '@/shared/ui';
-import type { CliSettings } from '@contracts/desktop';
 import type { SettingsValidationIssue } from '@client/features/settings/presentation/settingsModal/validation/validation';
 import type { ReactNode } from 'react';
 
@@ -133,12 +131,7 @@ export type ProviderTabProps = {
 };
 
 export type CustomProviderTabProps = ProviderTabProps & {
-  aiGateway: AiGatewaySettings;
-  cli: CliSettings;
   providerSource?: 'builtin' | 'custom';
-  onAiGatewayChange: (value: AiGatewaySettings) => void;
-  onCliSettingsChange: (value: CliSettings) => void;
   onCreateCustomProvider: (draft: CustomProviderDraft) => Promise<void>;
   onDeleteProvider: () => Promise<void>;
 };
-

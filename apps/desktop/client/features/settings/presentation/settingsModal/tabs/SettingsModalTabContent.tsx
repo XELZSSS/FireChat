@@ -1,5 +1,7 @@
 import ProviderTab from '@client/features/settings/presentation/settingsModal/tabs/ProviderTab';
 import CustomProviderTab from '@client/features/settings/presentation/settingsModal/tabs/CustomProviderTab';
+import AiGatewayTab from '@client/features/settings/presentation/settingsModal/tabs/AiGatewayTab';
+import CliTab from '@client/features/settings/presentation/settingsModal/tabs/CliTab';
 import McpTab from '@client/features/settings/presentation/settingsModal/tabs/McpTab';
 import ImageGenerationTab from '@client/features/settings/presentation/settingsModal/tabs/ImageGenerationTab';
 import SearchTab from '@client/features/settings/presentation/settingsModal/tabs/SearchTab';
@@ -29,6 +31,23 @@ export const SettingsModalTabContent = ({
       return <ProviderTab {...buildProviderTabProps(tabContext)} />;
     case 'customProvider':
       return <CustomProviderTab {...buildCustomProviderTabProps(tabContext)} />;
+    case 'aiGateway':
+      return (
+        <AiGatewayTab
+          aiGateway={state.app.aiGateway}
+          mutationsLockedReason={context.interactionLockReason}
+          validationIssuesByField={controller.validation.issuesByField}
+          onAiGatewayChange={controller.aiGatewayActions.onAiGatewayChange}
+        />
+      );
+    case 'cli':
+      return (
+        <CliTab
+          cli={state.app.cli}
+          mutationsLockedReason={context.interactionLockReason}
+          onCliSettingsChange={controller.cliActions.onCliSettingsChange}
+        />
+      );
     case 'mcp':
       return <McpTab />;
     case 'imageGeneration':
@@ -53,4 +72,3 @@ export const SettingsModalTabContent = ({
       return null;
   }
 };
-

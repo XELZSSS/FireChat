@@ -14,6 +14,8 @@ import type { PetSettings } from '@client/features/pet/domain/petTypes';
 export type ActiveSettingsTab =
   | 'provider'
   | 'customProvider'
+  | 'aiGateway'
+  | 'cli'
   | 'mcp'
   | 'imageGeneration'
   | 'search'

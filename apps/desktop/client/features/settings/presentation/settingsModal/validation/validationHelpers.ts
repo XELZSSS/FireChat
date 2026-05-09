@@ -4,6 +4,8 @@ import type { SettingsValidationIssue } from '@client/features/settings/presenta
 export const createEmptyIssuesByTab = (): Record<ActiveSettingsTab, SettingsValidationIssue[]> => ({
   provider: [],
   customProvider: [],
+  aiGateway: [],
+  cli: [],
   mcp: [],
   imageGeneration: [],
   search: [],
@@ -42,4 +44,3 @@ export const pushIssue = (
     issuesByField[issue.field] = [...(issuesByField[issue.field] ?? []), issue];
   }
 };
-

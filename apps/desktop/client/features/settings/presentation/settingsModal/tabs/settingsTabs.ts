@@ -14,6 +14,8 @@ export const buildSettingsTabs = ({
   const tabs: SettingsTabItem[] = [
     { id: 'provider', label: t('settings.modal.tab.providerRegular') },
     { id: 'customProvider', label: t('settings.modal.tab.providerCustom') },
+    { id: 'aiGateway', label: t('settings.modal.tab.aiGateway') },
+    { id: 'cli', label: t('settings.modal.tab.cli') },
     { id: 'mcp', label: t('settings.modal.tab.mcp') },
     { id: 'imageGeneration', label: t('settings.modal.tab.imageGeneration') },
     { id: 'search', label: t('settings.modal.tab.search') },
@@ -29,4 +31,3 @@ export const resolveVisibleSettingsTab = (
   activeTab: ActiveSettingsTab,
   tabs: Array<{ id: ActiveSettingsTab }>
 ): ActiveSettingsTab => (tabs.some((tab) => tab.id === activeTab) ? activeTab : 'provider');
-

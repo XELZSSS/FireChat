@@ -19,10 +19,9 @@ export const validateAiGatewayTab = (
   if (!isValidAiGatewayBaseUrl(state.app.aiGateway.baseUrl)) {
     pushIssue(issuesByTab, issuesByField, {
       severity: 'error',
-      tab: 'customProvider',
+      tab: 'aiGateway',
       field: 'aiGateway.baseUrl',
       message: t('settings.validation.aiGateway.baseUrl.invalid'),
     });
   }
 };
-

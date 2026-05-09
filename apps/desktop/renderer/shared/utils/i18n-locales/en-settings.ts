@@ -206,6 +206,8 @@ export const EN_SETTINGS_TRANSLATIONS = {
   'settings.modal.tab.model': 'Provider',
   'settings.modal.tab.providerRegular': 'Provider',
   'settings.modal.tab.providerCustom': 'Custom',
+  'settings.modal.tab.aiGateway': 'Gateway',
+  'settings.modal.tab.cli': 'CLI',
   'settings.modal.tab.imageGeneration': 'Image',
   'settings.modal.tab.search': 'Search',
   'settings.modal.tab.version': 'Updates',

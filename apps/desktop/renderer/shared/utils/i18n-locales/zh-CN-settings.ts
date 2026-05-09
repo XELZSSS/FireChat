@@ -201,6 +201,8 @@ export const ZH_CN_SETTINGS_TRANSLATIONS = {
   'settings.modal.tab.model': '供应商',
   'settings.modal.tab.providerRegular': '供应商',
   'settings.modal.tab.providerCustom': '自定义',
+  'settings.modal.tab.aiGateway': '网关',
+  'settings.modal.tab.cli': 'CLI',
   'settings.modal.tab.imageGeneration': '生图',
   'settings.modal.tab.search': '搜索',
   'settings.modal.tab.version': '更新',

@@ -1,8 +1,6 @@
 import { t } from '@/shared/utils/i18n';
 import { Button, Field } from '@/shared/ui';
 import { CustomProviderCreateForm } from '@client/features/settings/presentation/settingsModal/sections/CustomProviderCreateForm';
-import AiGatewayTab from '@client/features/settings/presentation/settingsModal/tabs/AiGatewayTab';
-import CliTab from '@client/features/settings/presentation/settingsModal/tabs/CliTab';
 import { ProviderJsonButton } from '@client/features/settings/presentation/settingsModal/sections/ProviderJsonButton';
 import { ProviderSettingsFields } from '@client/features/settings/presentation/settingsModal/sections/ProviderSettingsFields';
 import type { CustomProviderTabProps } from '@client/features/settings/presentation/settingsModal/sections/providerTab.types';
@@ -51,10 +49,6 @@ const CustomProviderTab = ({
   onRemoveCustomHeader,
   onCreateCustomProvider,
   onDeleteProvider,
-  aiGateway,
-  cli,
-  onAiGatewayChange,
-  onCliSettingsChange,
 }: CustomProviderTabProps) => {
   const hasCustomProviders = providerOptions.length > 0;
   const {
@@ -204,22 +198,8 @@ const CustomProviderTab = ({
           onRemoveCustomHeader={onRemoveCustomHeader}
         />
       ) : null}
-
-      <AiGatewayTab
-        aiGateway={aiGateway}
-        mutationsLockedReason={mutationsLockedReason}
-        validationIssuesByField={validationIssuesByField}
-        onAiGatewayChange={onAiGatewayChange}
-      />
-
-      <CliTab
-        cli={cli}
-        mutationsLockedReason={mutationsLockedReason}
-        onCliSettingsChange={onCliSettingsChange}
-      />
     </div>
   );
 };
 
 export default CustomProviderTab;
-

@@ -93,13 +93,8 @@ export const buildCustomProviderTabProps = (
   >
 ): CustomProviderTabProps => ({
   ...buildSharedProviderTabProps(context),
-  aiGateway: context.controller.state.app.aiGateway,
-  cli: context.controller.state.app.cli,
   providerOptions: context.controller.customProviderOptions,
   providerSource: context.controller.providerSource,
-  onAiGatewayChange: context.controller.aiGatewayActions.onAiGatewayChange,
-  onCliSettingsChange: context.controller.cliActions.onCliSettingsChange,
   onCreateCustomProvider: context.controller.handleCreateProvider,
   onDeleteProvider: context.controller.handleDeleteProvider,
 });
-
