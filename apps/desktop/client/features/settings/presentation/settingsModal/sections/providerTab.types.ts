@@ -80,34 +80,37 @@ export type CustomHeaderRowProps = {
   onRemoveCustomHeader: (index: number) => void;
 };
 
-export type ProviderTabProps = {
+export type ProviderIdentityProps = {
   providerId: ProviderId;
   currentChatProviderId: ProviderId;
   defaultProviderId: ProviderId;
   providerOptions: DropdownOption[];
+};
+
+export type ProviderModelProps = {
   modelName: string;
   systemPrompt: string;
   imageModelName: string;
-  apiKey: string;
-  requestMode?: OpenAIRequestMode;
-  baseUrl?: string;
-  customHeaders: Array<{ key: string; value: string }>;
-  openAdapterTools: OpenAdapterToolSettings;
-  providerConfigJsonText: string;
-  showApiKey: boolean;
-  supportsRequestMode?: boolean;
-  supportsBaseUrl?: boolean;
-  supportsCustomHeaders?: boolean;
-  supportsRegion?: boolean;
   availableModels: ProviderModelItem[];
   availableImageModels: ProviderModelItem[];
   isFetchingModels: boolean;
   isFetchingImageModels: boolean;
   modelFetchError?: string | null;
   imageModelFetchError?: string | null;
-  isOfficialProvider?: boolean;
-  mutationsLockedReason?: string | null;
-  validationIssuesByField: Record<string, SettingsValidationIssue[]>;
+};
+
+export type ProviderConnectionProps = {
+  apiKey: string;
+  requestMode?: OpenAIRequestMode;
+  baseUrl?: string;
+  customHeaders: Array<{ key: string; value: string }>;
+  showApiKey: boolean;
+  supportsRequestMode?: boolean;
+  supportsBaseUrl?: boolean;
+  supportsCustomHeaders?: boolean;
+};
+
+export type ProviderTabCallbacks = {
   onProviderChange: (providerId: ProviderId) => void;
   onSetDefaultProvider: () => void;
   onModelNameChange: (value: string) => void;
@@ -129,6 +132,18 @@ export type ProviderTabProps = {
   onSetRegionBaseUrl: (region: 'intl' | 'cn') => void;
   onSetOpenAdapterToolEnabled: (key: OpenAdapterToolKey, value: boolean) => void;
 };
+
+export type ProviderTabProps = ProviderIdentityProps &
+  ProviderModelProps &
+  ProviderConnectionProps &
+  ProviderTabCallbacks & {
+    openAdapterTools: OpenAdapterToolSettings;
+    providerConfigJsonText: string;
+    supportsRegion?: boolean;
+    isOfficialProvider?: boolean;
+    mutationsLockedReason?: string | null;
+    validationIssuesByField: Record<string, SettingsValidationIssue[]>;
+  };
 
 export type CustomProviderTabProps = ProviderTabProps & {
   providerSource?: 'builtin' | 'custom';

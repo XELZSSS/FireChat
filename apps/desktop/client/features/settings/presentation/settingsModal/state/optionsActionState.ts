@@ -7,32 +7,12 @@ import {
   stringifyInterfaceLayoutConfig,
 } from '@client/features/settings/infrastructure/interfaceLayoutConfig';
 import type { SettingsModalState } from '@client/features/settings/presentation/settingsModal/state/reducer';
+import { pickAppSettingsFields } from '@client/features/settings/domain/appSettingsFields';
 
 export const createDefaultOptionsPatch = () => {
   const defaults = getDefaultAppSettings();
 
-  return {
-    languagePreference: defaults.languagePreference,
-    themePreference: defaults.themePreference,
-    accentPreference: defaults.accentPreference,
-    sidebarCollapsed: defaults.sidebarCollapsed,
-    uiFontFamily: defaults.uiFontFamily,
-    uiFontSize: defaults.uiFontSize,
-    sendShortcut: defaults.sendShortcut,
-    showMessageTimestamps: defaults.showMessageTimestamps,
-    wrapCodeBlocks: defaults.wrapCodeBlocks,
-    petSettings: defaults.petSettings,
-    reduceMotion: defaults.reduceMotion,
-    closeToTray: defaults.closeToTray,
-    minimizeToTray: defaults.minimizeToTray,
-    launchAtStartup: defaults.launchAtStartup,
-    startMinimizedToTray: defaults.startMinimizedToTray,
-    rememberWindowBounds: defaults.rememberWindowBounds,
-    httpProtocol: defaults.httpProtocol,
-    localProxyHost: defaults.localProxyHost,
-    localProxyPort: defaults.localProxyPort,
-    aiGateway: defaults.aiGateway,
-  };
+  return pickAppSettingsFields(defaults);
 };
 
 export const createDefaultInterfaceLayoutConfigText = (): string =>
@@ -47,28 +27,7 @@ export const createImportedOptionsState = (
   const interfaceLayout = (record as { interfaceLayout?: unknown }).interfaceLayout;
 
   return {
-    appPatch: {
-      languagePreference: app.languagePreference,
-      themePreference: app.themePreference,
-      accentPreference: app.accentPreference,
-      sidebarCollapsed: app.sidebarCollapsed,
-      uiFontFamily: app.uiFontFamily,
-      uiFontSize: app.uiFontSize,
-      sendShortcut: app.sendShortcut,
-      showMessageTimestamps: app.showMessageTimestamps,
-      wrapCodeBlocks: app.wrapCodeBlocks,
-      petSettings: app.petSettings,
-      reduceMotion: app.reduceMotion,
-      closeToTray: app.closeToTray,
-      minimizeToTray: app.minimizeToTray,
-      launchAtStartup: app.launchAtStartup,
-      startMinimizedToTray: app.startMinimizedToTray,
-      rememberWindowBounds: app.rememberWindowBounds,
-      httpProtocol: app.httpProtocol,
-      localProxyHost: app.localProxyHost,
-      localProxyPort: app.localProxyPort,
-      aiGateway: app.aiGateway,
-    },
+    appPatch: pickAppSettingsFields(app),
     interfaceLayoutConfigText: interfaceLayout
       ? stringifyInterfaceLayoutConfig(interfaceLayout)
       : undefined,

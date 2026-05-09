@@ -61,10 +61,10 @@ export const useSettingsControllerActions = ({
   const setTavilyField = useCallback(
     (key: keyof TavilyConfig, value: TavilyConfig[keyof TavilyConfig]) =>
       dispatch({
-        type: 'set_tavily',
-        payload: { key, value },
+        type: 'patch_provider',
+        payload: { tavily: { ...state.provider.tavily, [key]: value } },
       }),
-    [dispatch]
+    [dispatch, state.provider.tavily]
   );
 
   const addCustomHeader = useCallback(() => dispatch({ type: 'add_custom_header' }), [dispatch]);
@@ -112,10 +112,12 @@ export const useSettingsControllerActions = ({
   const handleSetOpenAdapterToolEnabled = useCallback(
     (key: OpenAdapterToolKey, value: boolean) =>
       dispatch({
-        type: 'set_openadapter_tool',
-        payload: { key, value },
+        type: 'patch_provider',
+        payload: {
+          openAdapterTools: { ...state.provider.openAdapterTools, [key]: value },
+        },
       }),
-    [dispatch]
+    [dispatch, state.provider.openAdapterTools]
   );
 
   const providerActions = useMemo(

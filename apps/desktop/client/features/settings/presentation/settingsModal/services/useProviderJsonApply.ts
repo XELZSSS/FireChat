@@ -1,33 +1,17 @@
 import { useCallback } from 'react';
 import type { ProviderId } from '@/shared/types/chat';
-import type { ImageGenerationSettings } from '@/infrastructure/providers/imageGenerationSettings';
-import type { OpenAIRequestMode } from '@/infrastructure/providers/types';
 import {
   createCustomProviderDraftFromJson,
   parseProviderJsonText,
 } from '@client/features/settings/infrastructure/providerJsonConfig';
 import { applyProviderJsonToFormState } from '@client/features/settings/presentation/settingsModal/state/providerJsonState';
 import type { CustomProviderDraft } from '@/infrastructure/providers/runtime/providerFileMutations';
-
-type ProviderJsonApplyActions = {
-  onModelNameChange: (value: string) => void;
-  onSystemPromptChange: (value: string) => void;
-  onImageModelNameChange: (value: string) => void;
-  onImageGenerationChange: (value: ImageGenerationSettings) => void;
-  onApiKeyChange: (value: string) => void;
-  onRequestModeChange: (value: OpenAIRequestMode) => void;
-  onBaseUrlChange: (value: string) => void;
-  onAddCustomHeader: () => void;
-  onSetCustomHeaderKey: (index: number, value: string) => void;
-  onSetCustomHeaderValue: (index: number, value: string) => void;
-  onRemoveCustomHeader: (index: number) => void;
-  onProviderConfigJsonTextChange: (value: string) => void;
-};
+import type { ProviderJsonStateActions } from '@client/features/settings/presentation/settingsModal/types/providerJsonTypes';
 
 type UseProviderJsonApplyOptions = {
   providerId: ProviderId;
   currentHeaders: Array<{ key: string; value: string }>;
-  actions: ProviderJsonApplyActions;
+  actions: ProviderJsonStateActions;
   allowCreateProvider?: boolean;
   onCreateCustomProvider?: (draft: CustomProviderDraft) => Promise<void>;
   onProviderChange?: (providerId: ProviderId) => void;

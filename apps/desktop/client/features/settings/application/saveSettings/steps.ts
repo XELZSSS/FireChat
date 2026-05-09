@@ -26,19 +26,35 @@ type ProviderSettingsMutation = {
   rollbackLabel: string;
 };
 
+const runIfChanged = async (
+  changed: boolean,
+  execute: () => Promise<unknown> | void,
+  rollbacks: RollbackStack,
+  rollbackLabel: string,
+  rollbackFn: () => Promise<void> | void
+): Promise<boolean> => {
+  if (!changed) {
+    return false;
+  }
+
+  await execute();
+  rollbacks.push(rollbackLabel, rollbackFn);
+  return true;
+};
+
 export const saveProviderRuntimeStep = async (
   context: SaveSettingsTransactionContext,
   rollbacks: RollbackStack
 ): Promise<boolean> => {
-  if (!context.providerFileSnapshotChanged) {
-    return false;
-  }
-
-  await persistProviderRuntimeState(context.nextProviderFileSnapshot);
-  rollbacks.push('Failed to rollback provider runtime state after save error:', async () => {
-    await persistProviderRuntimeState(context.previousProviderFileSnapshot);
-  });
-  return true;
+  return runIfChanged(
+    context.providerFileSnapshotChanged,
+    () => persistProviderRuntimeState(context.nextProviderFileSnapshot),
+    rollbacks,
+    'Failed to rollback provider runtime state after save error:',
+    async () => {
+      await persistProviderRuntimeState(context.previousProviderFileSnapshot);
+    }
+  );
 };
 
 export const saveProviderSettingsStep = ({
@@ -81,16 +97,19 @@ export const saveInterfaceLayoutStep = async (
   context: SaveSettingsTransactionContext,
   rollbacks: RollbackStack
 ): Promise<void> => {
-  if (!context.interfaceLayoutChanged) {
-    return;
-  }
-
-  await saveDesktopInterfaceLayoutConfig(context.nextInterfaceLayoutConfig);
-  applyInterfaceLayoutConfigToDocument(context.nextInterfaceLayoutConfig);
-  rollbacks.push('Failed to rollback interface layout config after save error:', async () => {
-    await saveDesktopInterfaceLayoutConfig(context.previousInterfaceLayoutConfig);
-    applyInterfaceLayoutConfigToDocument(context.previousInterfaceLayoutConfig);
-  });
+  await runIfChanged(
+    context.interfaceLayoutChanged,
+    async () => {
+      await saveDesktopInterfaceLayoutConfig(context.nextInterfaceLayoutConfig);
+      applyInterfaceLayoutConfigToDocument(context.nextInterfaceLayoutConfig);
+    },
+    rollbacks,
+    'Failed to rollback interface layout config after save error:',
+    async () => {
+      await saveDesktopInterfaceLayoutConfig(context.previousInterfaceLayoutConfig);
+      applyInterfaceLayoutConfigToDocument(context.previousInterfaceLayoutConfig);
+    }
+  );
 };
 
 export const saveLocalProxyStep = async (
@@ -98,20 +117,22 @@ export const saveLocalProxyStep = async (
   context: SaveSettingsTransactionContext,
   rollbacks: RollbackStack
 ): Promise<void> => {
-  if (!context.proxyChanged) {
-    return;
-  }
-
-  await updateDesktopLocalProxyConfig({
-    host: value.app.localProxyHost,
-    port: value.app.localProxyPort,
-  });
-  rollbacks.push('Failed to rollback local proxy config after save error:', async () => {
-    await updateDesktopLocalProxyConfig({
-      host: context.previousAppSettings.localProxyHost,
-      port: context.previousAppSettings.localProxyPort,
-    });
-  });
+  await runIfChanged(
+    context.proxyChanged,
+    () =>
+      updateDesktopLocalProxyConfig({
+        host: value.app.localProxyHost,
+        port: value.app.localProxyPort,
+      }),
+    rollbacks,
+    'Failed to rollback local proxy config after save error:',
+    async () => {
+      await updateDesktopLocalProxyConfig({
+        host: context.previousAppSettings.localProxyHost,
+        port: context.previousAppSettings.localProxyPort,
+      });
+    }
+  );
 };
 
 export const saveWindowBehaviorStep = async (
@@ -119,26 +140,28 @@ export const saveWindowBehaviorStep = async (
   context: SaveSettingsTransactionContext,
   rollbacks: RollbackStack
 ): Promise<void> => {
-  if (!context.windowBehaviorChanged) {
-    return;
-  }
-
-  await updateDesktopWindowBehavior({
-    closeToTray: value.app.closeToTray,
-    minimizeToTray: value.app.minimizeToTray,
-    launchAtStartup: value.app.launchAtStartup,
-    startMinimizedToTray: value.app.startMinimizedToTray,
-    rememberWindowBounds: value.app.rememberWindowBounds,
-  });
-  rollbacks.push('Failed to rollback window behavior after save error:', async () => {
-    await updateDesktopWindowBehavior({
-      closeToTray: context.previousAppSettings.closeToTray,
-      minimizeToTray: context.previousAppSettings.minimizeToTray,
-      launchAtStartup: context.previousAppSettings.launchAtStartup,
-      startMinimizedToTray: context.previousAppSettings.startMinimizedToTray,
-      rememberWindowBounds: context.previousAppSettings.rememberWindowBounds,
-    });
-  });
+  await runIfChanged(
+    context.windowBehaviorChanged,
+    () =>
+      updateDesktopWindowBehavior({
+        closeToTray: value.app.closeToTray,
+        minimizeToTray: value.app.minimizeToTray,
+        launchAtStartup: value.app.launchAtStartup,
+        startMinimizedToTray: value.app.startMinimizedToTray,
+        rememberWindowBounds: value.app.rememberWindowBounds,
+      }),
+    rollbacks,
+    'Failed to rollback window behavior after save error:',
+    async () => {
+      await updateDesktopWindowBehavior({
+        closeToTray: context.previousAppSettings.closeToTray,
+        minimizeToTray: context.previousAppSettings.minimizeToTray,
+        launchAtStartup: context.previousAppSettings.launchAtStartup,
+        startMinimizedToTray: context.previousAppSettings.startMinimizedToTray,
+        rememberWindowBounds: context.previousAppSettings.rememberWindowBounds,
+      });
+    }
+  );
 };
 
 export const syncCliProviderStep = async (

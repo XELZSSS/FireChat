@@ -12,6 +12,7 @@ import {
   stringifyInterfaceLayoutConfig,
 } from '@client/features/settings/infrastructure/interfaceLayoutConfig';
 import { buildProviderJsonText } from '@client/features/settings/infrastructure/providerJsonConfig';
+import { pickAppSettingsFields } from '@client/features/settings/domain/appSettingsFields';
 
 export type ProviderStateInput = {
   providerId: ProviderId;
@@ -70,27 +71,7 @@ export const buildSettingsModalState = (
   provider: buildProviderState(buildProviderStateInput(input.providerId, input.providerSettings)),
   app: {
     defaultProviderId: appSettings.defaultProviderId,
-    languagePreference: appSettings.languagePreference,
-    themePreference: appSettings.themePreference,
-    accentPreference: appSettings.accentPreference,
-    sidebarCollapsed: appSettings.sidebarCollapsed,
-    uiFontFamily: appSettings.uiFontFamily,
-    uiFontSize: appSettings.uiFontSize,
-    sendShortcut: appSettings.sendShortcut,
-    showMessageTimestamps: appSettings.showMessageTimestamps,
-    wrapCodeBlocks: appSettings.wrapCodeBlocks,
-    petSettings: appSettings.petSettings,
-    reduceMotion: appSettings.reduceMotion,
-    closeToTray: appSettings.closeToTray,
-    minimizeToTray: appSettings.minimizeToTray,
-    launchAtStartup: appSettings.launchAtStartup,
-    startMinimizedToTray: appSettings.startMinimizedToTray,
-    rememberWindowBounds: appSettings.rememberWindowBounds,
-    toolCallMaxRounds: appSettings.toolCallMaxRounds,
-    httpProtocol: appSettings.httpProtocol,
-    localProxyHost: appSettings.localProxyHost,
-    localProxyPort: appSettings.localProxyPort,
-    aiGateway: appSettings.aiGateway,
+    ...pickAppSettingsFields(appSettings),
     cli: appSettings.cli,
   },
   ui: {

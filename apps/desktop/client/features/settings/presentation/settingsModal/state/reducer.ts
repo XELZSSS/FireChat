@@ -3,7 +3,6 @@ import type { HttpProtocolPreference, SendShortcut } from '@/shared/utils/appOpt
 import type { LanguagePreference } from '@/shared/utils/i18n';
 import type { AccentPreference, ThemePreference } from '@/shared/utils/theme';
 import type {
-  OpenAdapterToolKey,
   OpenAdapterToolSettings,
 } from '@/infrastructure/providers/openadapterToolConfig';
 import type { OpenAIRequestMode } from '@/infrastructure/providers/types';
@@ -78,20 +77,6 @@ export type SettingsModalAction =
   | { type: 'patch_provider'; payload: Partial<SettingsModalState['provider']> }
   | { type: 'patch_app'; payload: Partial<SettingsModalState['app']> }
   | { type: 'patch_ui'; payload: Partial<SettingsModalState['ui']> }
-  | {
-      type: 'set_tavily';
-      payload: {
-        key: keyof TavilyConfig;
-        value: TavilyConfig[keyof TavilyConfig];
-      };
-    }
-  | {
-      type: 'set_openadapter_tool';
-      payload: {
-        key: OpenAdapterToolKey;
-        value: boolean;
-      };
-    }
   | { type: 'add_custom_header' }
   | { type: 'remove_custom_header'; payload: { index: number } }
   | { type: 'set_custom_header_key'; payload: { index: number; value: string } }
@@ -124,25 +109,6 @@ export const settingsModalReducer = (
       return { ...state, app: { ...state.app, ...action.payload } };
     case 'patch_ui':
       return { ...state, ui: { ...state.ui, ...action.payload } };
-    case 'set_tavily':
-      return {
-        ...state,
-        provider: {
-          ...state.provider,
-          tavily: { ...state.provider.tavily, [action.payload.key]: action.payload.value },
-        },
-      };
-    case 'set_openadapter_tool':
-      return {
-        ...state,
-        provider: {
-          ...state.provider,
-          openAdapterTools: {
-            ...state.provider.openAdapterTools,
-            [action.payload.key]: action.payload.value,
-          },
-        },
-      };
     case 'add_custom_header':
       return {
         ...state,

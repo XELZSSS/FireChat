@@ -1,22 +1,6 @@
 import type { ProviderJsonConfig } from '@client/features/settings/infrastructure/providerJsonConfig';
 import { applyProviderJsonToSettings } from '@client/features/settings/infrastructure/providerJsonConfig';
-import type { OpenAIRequestMode } from '@/infrastructure/providers/types';
-import type { ImageGenerationSettings } from '@/infrastructure/providers/imageGenerationSettings';
-
-type ProviderJsonStateActions = {
-  onModelNameChange: (value: string) => void;
-  onSystemPromptChange: (value: string) => void;
-  onImageModelNameChange: (value: string) => void;
-  onImageGenerationChange: (value: ImageGenerationSettings) => void;
-  onApiKeyChange: (value: string) => void;
-  onRequestModeChange: (value: OpenAIRequestMode) => void;
-  onBaseUrlChange: (value: string) => void;
-  onAddCustomHeader: () => void;
-  onSetCustomHeaderKey: (index: number, value: string) => void;
-  onSetCustomHeaderValue: (index: number, value: string) => void;
-  onRemoveCustomHeader: (index: number) => void;
-  onProviderConfigJsonTextChange: (value: string) => void;
-};
+import type { ProviderJsonStateActions } from '@client/features/settings/presentation/settingsModal/types/providerJsonTypes';
 
 const replaceCustomHeaders = (
   currentHeaders: Array<{ key: string; value: string }>,

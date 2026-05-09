@@ -5,55 +5,9 @@ import type { ProviderId } from '@/shared/types/chat';
 import type { DropdownOption } from '@/shared/ui';
 import { preloadDropdownIcons } from '@/shared/ui/composed/dropdownIconCache';
 import type { ActiveSettingsTab } from '@client/features/settings/presentation/settingsModal/state/reducer';
+import { PROVIDER_ICON_SRC } from '@client/features/settings/presentation/settingsModal/sections/providerIcons';
 
-export const PROVIDER_ICON_SRC: Record<string, string> = {
-  openai: './provider-icons/openai.svg',
-  openrouter: './provider-icons/openrouter.ico',
-  poe: './provider-icons/poe.svg',
-  google: './provider-icons/google.png',
-  'google-vertex': './provider-icons/google.png',
-  groq: './provider-icons/groq.ico',
-  together: './provider-icons/together.ico',
-  fireworks: './provider-icons/fireworks.svg',
-  cerebras: './provider-icons/cerebras.ico',
-  perplexity: './provider-icons/perplexity.ico',
-  cohere: './provider-icons/cohere.png',
-  sambanova: './provider-icons/sambanova.ico',
-  mistral: './provider-icons/mistral.ico',
-  longcat: './provider-icons/longcat.svg',
-  anthropic: './provider-icons/anthropic.ico',
-  vercel: './provider-icons/vercel.ico',
-  'open-responses': './provider-icons/open-responses.svg',
-  deepinfra: './provider-icons/deepinfra.ico',
-  huggingface: './provider-icons/huggingface.ico',
-  alibaba: './provider-icons/alibaba-cloud.png',
-  'amazon-bedrock': './provider-icons/amazon-bedrock.ico',
-  'azure-openai': './provider-icons/azure-openai.ico',
-  baseten: './provider-icons/baseten.ico',
-  'nvidia-nim': './provider-icons/nvidia-nim.ico',
-  clarifai: './provider-icons/clarifai.svg',
-  heroku: './provider-icons/heroku.svg',
-  'lm-studio': './provider-icons/lm-studio.ico',
-  fal: './provider-icons/fal.ico',
-  replicate: './provider-icons/replicate.png',
-  'black-forest-labs': './provider-icons/black-forest-labs.ico',
-  prodia: './provider-icons/prodia.png',
-  'luma-ai': './provider-icons/luma-ai.ico',
-  modelscope: './provider-icons/modelscope.ico',
-  openadapter: './provider-icons/openadapter.png',
-  opencode: './provider-icons/opencode.svg',
-  'openai-compatible': './provider-icons/openai-compatible.svg',
-  xai: './provider-icons/xai.ico',
-  deepseek: './provider-icons/deepseek.ico',
-  glm: './provider-icons/glm.png',
-  minimax: './provider-icons/minimax.ico',
-  modal: './provider-icons/modal.ico',
-  moonshot: './provider-icons/moonshot.ico',
-  volcengine: './provider-icons/volcengine.png',
-  'xiaomi-mimo': './provider-icons/xiaomi-mimo.ico',
-  stepfun: './provider-icons/stepfun.png',
-  mulerouter: './provider-icons/mulerouter.svg',
-};
+export { PROVIDER_ICON_SRC };
 
 let providerIconsPreloaded = false;
 
