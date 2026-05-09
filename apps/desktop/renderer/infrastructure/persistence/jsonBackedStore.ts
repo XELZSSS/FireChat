@@ -1,6 +1,5 @@
 import { readAppStorage, writeAppStorage } from '@/infrastructure/persistence/storageKeys';
 import type { AppStorageKey } from '@/infrastructure/persistence/storageKeys';
-import { isPlainObject } from '@/shared/utils/plainObject';
 
 export const canUseAppStorage = (): boolean => typeof window !== 'undefined';
 export { isPlainObject } from '@/shared/utils/plainObject';

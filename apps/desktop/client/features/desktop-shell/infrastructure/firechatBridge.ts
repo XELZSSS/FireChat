@@ -1,5 +1,4 @@
 import type { FireChatDesktopBridge } from '@contracts/desktop';
-import type { AppStorageKey } from '@/infrastructure/persistence/storageKeys';
 
 export const noopUnsubscribe = (): void => {};
 

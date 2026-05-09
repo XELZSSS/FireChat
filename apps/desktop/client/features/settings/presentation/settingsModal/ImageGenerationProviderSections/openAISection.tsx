@@ -9,23 +9,15 @@ import {
   SettingsControlGroup,
 } from '@client/features/settings/presentation/settingsModal/sections/formParts';
 import {
-  BLACK_FOREST_LABS_OUTPUT_FORMAT_OPTIONS,
   buildBackgroundOptions,
   getDropdownValue,
-  GOOGLE_PERSON_OPTIONS,
-  LUMA_REFERENCE_TYPE_OPTIONS,
   type ImageGenerationOption,
   OPENAI_MODERATION_OPTIONS,
   OPENAI_STYLE_OPTIONS,
   OUTPUT_FORMAT_OPTIONS,
-  PRODIA_STYLE_PRESET_OPTIONS,
-  XAI_RESOLUTION_OPTIONS,
 } from '@client/features/settings/presentation/settingsModal/sections/imageGenerationOptions';
 import {
-  NumberSetting,
-  TextAreaSetting,
   TextSetting,
-  ToggleSetting,
 } from './sectionControls';
 
 export type ImageGenerationProviderSectionProps = {

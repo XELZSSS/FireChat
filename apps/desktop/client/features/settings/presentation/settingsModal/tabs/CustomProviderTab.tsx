@@ -191,7 +191,6 @@ const CustomProviderTab = ({
           onToggleApiKeyVisibility={onToggleApiKeyVisibility}
           onClearApiKey={onClearApiKey}
           onBaseUrlChange={onBaseUrlChange}
-          onProviderConfigJsonTextChange={onProviderConfigJsonTextChange}
           onAddCustomHeader={onAddCustomHeader}
           onSetCustomHeaderKey={onSetCustomHeaderKey}
           onSetCustomHeaderValue={onSetCustomHeaderValue}

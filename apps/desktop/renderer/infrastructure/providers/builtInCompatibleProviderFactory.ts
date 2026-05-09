@@ -80,7 +80,7 @@ class BuiltInCompatibleProvider extends AISdkOpenAICompatibleProviderBase implem
   private readonly descriptor: CompatibleProviderDescriptor;
   private readonly resolvedDefaultBaseUrl?: string;
 
-  constructor(private readonly providerId: CompatibleBuiltInProviderId) {
+  constructor(providerId: CompatibleBuiltInProviderId) {
     const defaults = getProviderDefaults(providerId);
     const config = getProviderResolvedConfig(providerId);
     const descriptor = compatibleProviderDescriptors[providerId];

@@ -5,7 +5,6 @@ import { loadAppSettings, updateAppSettings } from '@/infrastructure/persistence
 export type Language = 'en' | 'zh-CN';
 export type LanguagePreference = Language;
 
-const DEFAULT_LANGUAGE: Language = 'zh-CN';
 const DEFAULT_LANGUAGE_PREFERENCE: LanguagePreference = 'zh-CN';
 
 const isLanguage = (value: unknown): value is Language => value === 'en' || value === 'zh-CN';

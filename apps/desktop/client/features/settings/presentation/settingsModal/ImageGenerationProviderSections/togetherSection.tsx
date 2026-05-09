@@ -1,4 +1,4 @@
-import { Dropdown, Field, Input } from '@/shared/ui';
+import { Field } from '@/shared/ui';
 import { t } from '@/shared/utils/i18n';
 import type {
   ImageGenerationCapabilities,
@@ -6,24 +6,10 @@ import type {
 } from '@/infrastructure/providers/imageGenerationSettings';
 import {
   SettingsCard,
-  SettingsControlGroup,
 } from '@client/features/settings/presentation/settingsModal/sections/formParts';
-import {
-  BLACK_FOREST_LABS_OUTPUT_FORMAT_OPTIONS,
-  buildBackgroundOptions,
-  getDropdownValue,
-  GOOGLE_PERSON_OPTIONS,
-  LUMA_REFERENCE_TYPE_OPTIONS,
-  type ImageGenerationOption,
-  OPENAI_MODERATION_OPTIONS,
-  OPENAI_STYLE_OPTIONS,
-  OUTPUT_FORMAT_OPTIONS,
-  PRODIA_STYLE_PRESET_OPTIONS,
-  XAI_RESOLUTION_OPTIONS,
-} from '@client/features/settings/presentation/settingsModal/sections/imageGenerationOptions';
+import type { ImageGenerationOption } from '@client/features/settings/presentation/settingsModal/sections/imageGenerationOptions';
 import {
   NumberSetting,
-  TextAreaSetting,
   TextSetting,
   ToggleSetting,
 } from './sectionControls';

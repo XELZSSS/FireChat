@@ -4,7 +4,6 @@ import {
   saveDesktopProviderConfigSnapshot,
 } from '@client/features/desktop-shell/infrastructure/nativeDesktop';
 import {
-  EMPTY_PROVIDER_FILE_SNAPSHOT,
   normalizeProviderFileSnapshot,
 } from '@/infrastructure/providers/runtime/providerFileNormalization';
 

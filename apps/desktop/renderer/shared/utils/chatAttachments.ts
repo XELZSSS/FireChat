@@ -6,7 +6,6 @@ import {
 import { decodeTextFile, hasBinaryLikeContent } from '@/shared/utils/chatAttachmentTextDecoding';
 import {
   getChatAttachmentUploadRejectionCode,
-  CHAT_ATTACHMENT_FILE_ACCEPT,
   isImageFileLike,
   isStructuredDocumentFileLike,
   isTextLikeFile,

@@ -45,7 +45,6 @@ const OpenSettingsModal = ({
   providerId,
   language,
   languagePreference,
-  theme,
   themePreference,
   accentPreference,
   onSave,

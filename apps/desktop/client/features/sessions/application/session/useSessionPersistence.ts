@@ -7,7 +7,6 @@ import { writePersistedSessionViewState } from '@/infrastructure/persistence/act
 import { t } from '@/shared/utils/i18n';
 import {
   SAVE_SESSION_DEBOUNCE_MS,
-  consumePendingSessionSave,
   discardPendingSessionSave,
   hasSessionSummaryChanged,
   upsertSessionList,

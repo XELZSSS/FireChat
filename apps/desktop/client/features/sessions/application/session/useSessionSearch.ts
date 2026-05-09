@@ -32,7 +32,6 @@ export const useSessionSearch = ({ sessionSummaries }: UseSessionSearchOptions) 
   useEffect(() => {
     let cancelled = false;
     const query = debouncedQuery.trim();
-    const queryLower = query.toLowerCase();
 
     if (!query) {
       return () => {

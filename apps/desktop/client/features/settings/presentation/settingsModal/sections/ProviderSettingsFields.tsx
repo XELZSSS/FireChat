@@ -46,7 +46,6 @@ type ProviderSettingsFieldsProps = Pick<
   | 'onToggleApiKeyVisibility'
   | 'onClearApiKey'
   | 'onBaseUrlChange'
-  | 'onProviderConfigJsonTextChange'
   | 'onAddCustomHeader'
   | 'onSetCustomHeaderKey'
   | 'onSetCustomHeaderValue'
@@ -89,7 +88,6 @@ export const ProviderSettingsFields = ({
   onToggleApiKeyVisibility,
   onClearApiKey,
   onBaseUrlChange,
-  onProviderConfigJsonTextChange,
   onAddCustomHeader,
   onSetCustomHeaderKey,
   onSetCustomHeaderValue,
