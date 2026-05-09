@@ -1,4 +1,4 @@
-import { jsonSchema, tool } from 'ai';
+import { jsonSchema, tool, type Tool } from 'ai';
 import type { McpToolInfo } from '@contracts/desktop';
 import type { ChatAttachment, ChatMessage, TavilyConfig } from '@/shared/types/chat';
 import { t } from '@/shared/utils/i18n';
@@ -8,16 +8,37 @@ import type { RequestPolicy } from '@/infrastructure/providers/requestPolicy';
 import { callTavilySearch, hasSearchConfig } from '@/infrastructure/providers/tavily';
 import { TAVILY_SEARCH_PARAMETERS_JSON_SCHEMA } from '@/infrastructure/providers/toolSchemas';
 
-type ToolSchedulerTask<T> = {
+type JsonSchemaDefinition = Parameters<typeof jsonSchema>[0];
+
+type ToolSchedulerTask = {
   args: Record<string, unknown>;
-  run: () => Promise<T>;
-  resolve: (value: T) => void;
+  run: () => Promise<unknown>;
+  resolve: (value: unknown) => void;
   reject: (error: unknown) => void;
 };
 
+type TavilySearchInput = {
+  query?: string;
+  search_depth?: TavilyConfig['searchDepth'];
+  max_results?: number;
+  topic?: TavilyConfig['topic'];
+};
+
+type UploadedImageToolInput = {
+  attachment_id?: string;
+  image_name?: string;
+  prompt?: string;
+};
+
+const buildJsonSchema = <Input>(schema: JsonSchemaDefinition) => jsonSchema<Input>(schema);
+
+const defineRuntimeTool = <Input extends Record<string, unknown>, Output>(
+  definition: Tool<Input, Output>
+): Tool<Input, Output> => tool(definition);
+
 const createToolScheduler = (requestPolicy?: RequestPolicy) => {
   const maxParallelism = Math.max(1, requestPolicy?.toolParallelism ?? 1);
-  const queue: Array<ToolSchedulerTask<any>> = [];
+  const queue: ToolSchedulerTask[] = [];
   let activeCount = 0;
   let drainQueued = false;
 
@@ -74,7 +95,9 @@ const createToolScheduler = (requestPolicy?: RequestPolicy) => {
         queue.push({
           args,
           run: worker,
-          resolve: resolve as (value: any) => void,
+          resolve: (value) => {
+            resolve(value as T);
+          },
           reject,
         });
 
@@ -120,10 +143,12 @@ const buildMcpToolSet = async (): Promise<Record<string, unknown>> => {
   const tools: Record<string, unknown> = {};
 
   result.tools.forEach((mcpTool: McpToolInfo) => {
-    tools[mcpTool.key] = tool({
+    tools[mcpTool.key] = defineRuntimeTool<Record<string, unknown>, unknown>({
       description:
         mcpTool.description || `Call MCP tool ${mcpTool.name} from server ${mcpTool.serverName}.`,
-      inputSchema: jsonSchema(mcpTool.inputSchema as any),
+      inputSchema: buildJsonSchema<Record<string, unknown>>(
+        mcpTool.inputSchema as JsonSchemaDefinition
+      ),
       execute: async (input: Record<string, unknown> = {}) => {
         try {
           return await bridge.callTool({
@@ -145,7 +170,7 @@ const buildMcpToolSet = async (): Promise<Record<string, unknown>> => {
           };
         }
       },
-    } as any);
+    });
   });
 
   return tools;
@@ -182,10 +207,10 @@ const buildUploadedImageToolSet = (messages?: ChatMessage[]): Record<string, unk
   }
 
   return {
-    analyze_uploaded_image: tool({
+    analyze_uploaded_image: defineRuntimeTool<UploadedImageToolInput, unknown>({
       description:
         'Analyze an uploaded image attachment through the built-in Luma Vision MCP server before answering visual questions. Use attachment_id from the attached-image block when available.',
-      inputSchema: jsonSchema({
+      inputSchema: buildJsonSchema<UploadedImageToolInput>({
         type: 'object',
         properties: {
           attachment_id: {
@@ -201,14 +226,8 @@ const buildUploadedImageToolSet = (messages?: ChatMessage[]): Record<string, unk
             description: 'Question or instruction for image understanding.',
           },
         },
-      } as any),
-      execute: async (
-        input: {
-          attachment_id?: string;
-          image_name?: string;
-          prompt?: string;
-        } = {}
-      ) => {
+      }),
+      execute: async (input: UploadedImageToolInput = {}) => {
         const bridge = window.firechat?.mcp;
         if (!bridge) {
           return { error: 'MCP bridge is unavailable.' };
@@ -228,7 +247,7 @@ const buildUploadedImageToolSet = (messages?: ChatMessage[]): Record<string, unk
           },
         });
       },
-    } as any),
+    }),
   };
 };
 
@@ -263,20 +282,14 @@ export const buildToolSet = async ({
   if (hostedSearchTool) {
     tools.web_search = hostedSearchTool;
   } else if (searchEnabled && hasSearchConfig(tavilyConfig)) {
-    tools.tavily_search = tool({
+    tools.tavily_search = defineRuntimeTool<TavilySearchInput, unknown>({
       description:
         'Search the web for up-to-date information and return relevant results with sources.',
-      inputSchema: jsonSchema(TAVILY_SEARCH_PARAMETERS_JSON_SCHEMA as any),
-      providerOptions: deferredProviderOptions as any,
-      execute: async (
-        input: {
-          query?: string;
-          search_depth?: TavilyConfig['searchDepth'];
-          max_results?: number;
-          topic?: TavilyConfig['topic'];
-        } = {},
-        options?: { abortSignal?: AbortSignal }
-      ) =>
+      inputSchema: buildJsonSchema<TavilySearchInput>(
+        TAVILY_SEARCH_PARAMETERS_JSON_SCHEMA as unknown as JsonSchemaDefinition
+      ),
+      providerOptions: deferredProviderOptions,
+      execute: async (input: TavilySearchInput = {}, options?: { abortSignal?: AbortSignal }) =>
         scheduler.run(input, async () => {
           if (!input.query) {
             return { error: t('settings.provider.error.tool.missingQuery') };
@@ -300,7 +313,7 @@ export const buildToolSet = async ({
             };
           }
         }),
-    } as any);
+    });
   }
 
   if (hostedToolSearchTool && Object.keys(tools).length > 0) {

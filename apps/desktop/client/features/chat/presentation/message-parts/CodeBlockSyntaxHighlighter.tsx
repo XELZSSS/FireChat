@@ -1,4 +1,11 @@
-import { memo, useEffect, useState, useSyncExternalStore, type ComponentType } from 'react';
+import {
+  memo,
+  useEffect,
+  useState,
+  useSyncExternalStore,
+  type ComponentType,
+  type CSSProperties,
+} from 'react';
 import { getTheme, type Theme } from '@/shared/utils/theme';
 
 const RICH_CODE_STYLE = {
@@ -117,21 +124,39 @@ const LANGUAGE_ALIASES: Record<string, string> = {
 };
 
 const normalizeHighlighterLanguage = (language: string): string =>
-  language.trim().toLowerCase().replace(/^language-/, '');
+  language
+    .trim()
+    .toLowerCase()
+    .replace(/^language-/, '');
 
 const resolveHighlighterLanguage = (language: string): string => {
   const normalizedLanguage = normalizeHighlighterLanguage(language);
   return LANGUAGE_ALIASES[normalizedLanguage] ?? normalizedLanguage;
 };
 
+type SyntaxStyleRule = Record<string, unknown>;
+
+type SyntaxHighlighterProps = {
+  children: string;
+  language: string;
+  style: Record<string, unknown>;
+  PreTag: string;
+  customStyle: CSSProperties;
+  codeTagProps: {
+    style: {
+      fontFamily: string;
+    };
+  };
+  wrapLongLines: boolean;
+  showLineNumbers: boolean;
+};
+
 type SyntaxHighlighterModule = {
-  SyntaxHighlighter: ComponentType<any> & {
+  SyntaxHighlighter: ComponentType<SyntaxHighlighterProps> & {
     loadLanguage?: (language: string) => Promise<void>;
   };
   styles: Record<Theme, Record<string, unknown>>;
 };
-
-type SyntaxStyleRule = Record<string, unknown>;
 
 type CodeBlockSyntaxHighlighterProps = {
   code: string;

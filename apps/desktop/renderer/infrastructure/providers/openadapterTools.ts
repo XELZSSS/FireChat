@@ -1,10 +1,17 @@
-import { jsonSchema, tool } from 'ai';
+import { jsonSchema, tool, type Tool } from 'ai';
 import type { OpenAdapterToolSettings } from '@/infrastructure/providers/openadapterToolConfig';
 import { openadapterFetch } from '@/infrastructure/network/openadapterRuntimeFetch';
 import { OPENADAPTER_TOOL_DEFINITIONS } from '@/infrastructure/providers/openadapterToolRegistry';
 import { t } from '@/shared/utils/i18n';
 
 const OPENADAPTER_API_ORIGIN = 'https://api.openadapter.in';
+type JsonSchemaDefinition = Parameters<typeof jsonSchema>[0];
+
+const buildJsonSchema = <Input>(schema: JsonSchemaDefinition) => jsonSchema<Input>(schema);
+
+const defineRuntimeTool = <Input extends Record<string, unknown>, Output>(
+  definition: Tool<Input, Output>
+): Tool<Input, Output> => tool(definition);
 
 const extractErrorMessage = (value: unknown): string => {
   if (typeof value === 'string') {
@@ -81,9 +88,11 @@ export const buildOpenAdapterToolSet = ({
     OPENADAPTER_TOOL_DEFINITIONS.filter((definition) => toolSettings[definition.key]).map(
       (definition) => [
         definition.runtimeName,
-        tool({
+        defineRuntimeTool<Record<string, unknown>, unknown>({
           description: definition.runtimeDescription,
-          inputSchema: jsonSchema(definition.parameters as any),
+          inputSchema: buildJsonSchema<Record<string, unknown>>(
+            definition.parameters as JsonSchemaDefinition
+          ),
           execute: async (
             input: Record<string, unknown> = {},
             options?: { abortSignal?: AbortSignal }
@@ -100,7 +109,7 @@ export const buildOpenAdapterToolSet = ({
               options?.abortSignal
             );
           },
-        } as any),
+        }),
       ]
     )
   );
