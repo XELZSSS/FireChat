@@ -2,9 +2,8 @@ export type AppFontSize = 'small' | 'medium' | 'large' | 'xlarge';
 export type SendShortcut = 'enter' | 'ctrl_enter' | 'alt_enter' | 'meta_enter';
 export type HttpProtocolPreference = 'http1' | 'http2';
 
-export const DEFAULT_LATIN_FONT_FAMILY =
+export const DEFAULT_UI_FONT_FAMILY =
   "'FireChat UI', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC', 'Noto Sans CJK SC', 'Noto Sans SC', 'Source Han Sans SC', 'Segoe UI Variable Text', 'Segoe UI Variable', 'Segoe UI', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif";
-export const DEFAULT_UI_FONT_FAMILY = DEFAULT_LATIN_FONT_FAMILY;
 export const DEFAULT_APP_FONT_SIZE: AppFontSize = 'medium';
 export const DEFAULT_SEND_SHORTCUT: SendShortcut = 'enter';
 export const DEFAULT_HTTP_PROTOCOL: HttpProtocolPreference = 'http1';
