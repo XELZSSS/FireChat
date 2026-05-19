@@ -1,23 +1,13 @@
 const { normalizeExtractedText, rowsToMarkdown } = require('./shared.cjs');
 
-let cachedExcelParser = null;
-let cachedOpenOfficeParser = null;
+let cachedParseOffice = null;
 
-const getParseExcel = () => {
-  if (!cachedExcelParser) {
-    cachedExcelParser = require('officeparser/dist/parsers/ExcelParser.js').parseExcel;
+const getParseOffice = () => {
+  if (!cachedParseOffice) {
+    cachedParseOffice = require('officeparser').parseOffice;
   }
 
-  return cachedExcelParser;
-};
-
-const getParseOpenOffice = () => {
-  if (!cachedOpenOfficeParser) {
-    cachedOpenOfficeParser =
-      require('officeparser/dist/parsers/OpenOfficeParser.js').parseOpenOffice;
-  }
-
-  return cachedOpenOfficeParser;
+  return cachedParseOffice;
 };
 
 const extractSheetRows = (sheetNode) => {
@@ -62,9 +52,10 @@ const toSheetMarkdownSections = (documentAst) => {
 };
 
 const parseSpreadsheetBuffer = async (buffer, kind) => {
-  const parser = kind === 'ods' ? getParseOpenOffice() : getParseExcel();
-  const documentAst = await parser(buffer, {
+  const parseOffice = getParseOffice();
+  const documentAst = await parseOffice(buffer, {
     outputErrorToConsole: false,
+    fileType: kind,
   });
   const sections = toSheetMarkdownSections(documentAst);
 

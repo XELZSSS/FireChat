@@ -32,8 +32,8 @@ export type AccentPreference =
 const DEFAULT_THEME_PREFERENCE: ThemePreference = 'dark';
 const DEFAULT_ACCENT_PREFERENCE: AccentPreference = 'neutral';
 const BACKGROUND_BY_THEME: Record<Theme, string> = {
-  dark: '#101010',
-  light: '#fbfbfc',
+  dark: '#1f1f1f',
+  light: '#f7f7f7',
 };
 
 const isTheme = (value: unknown): value is Theme => value === 'dark' || value === 'light';

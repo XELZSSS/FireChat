@@ -8,8 +8,8 @@ const DEFAULT_THEME = 'dark';
 const STARTUP_APPEARANCE_FILE = path.join(app.getPath('userData'), 'startup-appearance.json');
 
 const BACKGROUND_BY_THEME = {
-  dark: '#101010',
-  light: '#fbfbfc',
+  dark: '#1f1f1f',
+  light: '#f7f7f7',
 };
 
 const VALID_THEMES = new Set(['dark', 'light']);

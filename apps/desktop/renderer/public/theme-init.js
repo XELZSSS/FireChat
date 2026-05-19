@@ -4,8 +4,8 @@
   var DEFAULT_ACCENT_PREFERENCE = 'neutral';
   var DEFAULT_THEME = 'dark';
   var BACKGROUND_BY_THEME = {
-    dark: '#101010',
-    light: '#fbfbfc',
+    dark: '#1f1f1f',
+    light: '#f7f7f7',
   };
 
   var VALID_THEMES = {
