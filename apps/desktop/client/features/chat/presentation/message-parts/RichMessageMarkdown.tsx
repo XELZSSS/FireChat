@@ -147,4 +147,3 @@ const RichMessageMarkdownComponent = ({
 
 const RichMessageMarkdown = memo(RichMessageMarkdownComponent);
 export default RichMessageMarkdown;
-

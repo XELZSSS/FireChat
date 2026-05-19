@@ -198,29 +198,6 @@ export const upsertProviderSnapshot = (
   };
 };
 
-export const upsertProviderImageModelsSnapshot = (
-  snapshot: ProviderFileSnapshot,
-  providerId: ProviderId,
-  imageModels: ProviderModelItem[]
-): ProviderFileSnapshot => {
-  const existingConfigEntry = snapshot.config.providers?.[providerId] ?? {};
-
-  return {
-    ...snapshot,
-    config: {
-      ...snapshot.config,
-      providers: {
-        ...(snapshot.config.providers ?? {}),
-        [providerId]: {
-          ...existingConfigEntry,
-          source: existingConfigEntry.source ?? 'builtin',
-          imageModels: toModelRecord(imageModels),
-        },
-      },
-    },
-  };
-};
-
 export const removeProviderSnapshotEntry = (
   snapshot: ProviderFileSnapshot,
   providerId: ProviderId

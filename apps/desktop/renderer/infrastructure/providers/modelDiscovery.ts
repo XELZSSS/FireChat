@@ -209,53 +209,6 @@ export const fetchGoogleGenerativeAIModels = async ({
   });
 };
 
-const isGoogleImageModel = (item: GoogleGenerativeAIModelRecord): boolean => {
-  const resourceName = normalizeModelString(item.name) ?? '';
-  const displayName = normalizeModelString(item.displayName) ?? '';
-  const methods = Array.isArray(item.supportedGenerationMethods)
-    ? item.supportedGenerationMethods.map((method) => normalizeModelString(method)?.toLowerCase())
-    : [];
-  const searchable = `${resourceName} ${displayName}`.toLowerCase();
-
-  return (
-    searchable.includes('imagen') ||
-    searchable.includes('image') ||
-    methods.includes('generateimages')
-  );
-};
-
-export const fetchGoogleGenerativeAIImageModels = async ({
-  baseUrl,
-  apiKey,
-  fetcher = fetch,
-}: Omit<FetchOpenAIStyleModelsOptions, 'customHeaders'>): Promise<ProviderModelItem[]> => {
-  const payload = await fetchJsonPayload<{ models?: GoogleGenerativeAIModelRecord[] }>({
-    url: joinUrl(baseUrl, '/models'),
-    headers: buildGoogleHeaders({ apiKey }),
-    fetcher,
-    errorLabel: 'Failed to fetch image models',
-  });
-
-  const models = Array.isArray(payload?.models) ? payload.models : [];
-  const seen = new Set<string>();
-
-  return models.flatMap((item) => {
-    const id = getResourceModelId(item.name);
-    if (!id || seen.has(id) || !isGoogleImageModel(item)) {
-      return [];
-    }
-
-    seen.add(id);
-    return [
-      {
-        id,
-        name: normalizeModelString(item.displayName) ?? id,
-        description: normalizeModelString(item.description),
-      },
-    ];
-  });
-};
-
 export const fetchGoogleVertexModels = async ({
   baseUrl,
   apiKey,

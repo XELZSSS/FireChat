@@ -5,7 +5,6 @@ export {
   type ChatMessagePart,
   type ChatPromptInput,
   type ChatSession,
-  type ChatState,
   type ChatToolCall,
   type ChatToolResult,
   type Citation,

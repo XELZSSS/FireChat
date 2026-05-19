@@ -94,4 +94,3 @@ export const ChatInputEmojiPicker = memo(function ChatInputEmojiPicker({
     </div>
   );
 });
-

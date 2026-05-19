@@ -38,7 +38,10 @@ export const normalizePetSettings = (
     enabled: typeof record.enabled === 'boolean' ? record.enabled : current.enabled,
     style: readStringOption(record.style, PET_STYLES, current.style),
     size: readStringOption(record.size, PET_SIZES, current.size),
-    position: normalizePetPosition(record.position, normalizePetPosition(current.position, DEFAULT_PET_SETTINGS.position)),
+    position: normalizePetPosition(
+      record.position,
+      normalizePetPosition(current.position, DEFAULT_PET_SETTINGS.position)
+    ),
     motion: readStringOption(record.motion, PET_MOTIONS, current.motion),
     reactions: typeof record.reactions === 'boolean' ? record.reactions : current.reactions,
   };

@@ -1,6 +1,6 @@
 import type { ProviderId } from '@contracts/chat';
 
-export type RequestLogSourceKind = 'llm' | 'proxy';
+type RequestLogSourceKind = 'llm' | 'proxy';
 
 export type RequestLogStatus = 'success' | 'error' | 'aborted';
 

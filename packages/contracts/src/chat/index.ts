@@ -94,12 +94,6 @@ export interface ChatMessage {
   isError?: boolean;
 }
 
-export interface ChatState {
-  messages: ChatMessage[];
-  isStreaming: boolean;
-  isLoading: boolean;
-}
-
 export interface ChatSession {
   id: string;
   title: string;
@@ -108,27 +102,6 @@ export interface ChatSession {
   model: string;
   createdAt: number;
   updatedAt: number;
-}
-
-export type TavilySearchDepth = 'basic' | 'advanced' | 'fast' | 'ultra-fast';
-export type TavilyTopic = 'general' | 'news';
-export type SearchEngine = 'tavily' | 'exa' | 'searxng' | 'firecrawl';
-export type SearXNGTimeRange = 'day' | 'month' | 'year';
-export type SearXNGSafeSearch = 0 | 1 | 2;
-
-export interface TavilyConfig {
-  engine?: SearchEngine;
-  apiKey?: string;
-  searchDepth?: TavilySearchDepth;
-  maxResults?: number;
-  topic?: TavilyTopic;
-  searxngBaseUrl?: string;
-  searxngLanguage?: string;
-  searxngTimeRange?: SearXNGTimeRange;
-  searxngSafeSearch?: SearXNGSafeSearch;
-  firecrawlLocation?: string;
-  firecrawlCountry?: string;
-  firecrawlScrapeContent?: boolean;
 }
 
 export interface ProviderError {

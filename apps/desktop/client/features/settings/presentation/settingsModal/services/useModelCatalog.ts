@@ -3,10 +3,7 @@ import { loadProviderSettings } from '@/infrastructure/persistence/providerSetti
 import type { OpenAIRequestMode, ProviderModelItem } from '@/infrastructure/providers/types';
 
 type ModelCatalogConfig = {
-  fetchFn: (
-    providerId: string,
-    settings: Record<string, unknown>
-  ) => Promise<ProviderModelItem[]>;
+  fetchFn: (providerId: string, settings: Record<string, unknown>) => Promise<ProviderModelItem[]>;
   cacheFn: (providerId: string) => ProviderModelItem[];
   emptyMessage: string;
   errorMessage: string;
@@ -31,14 +28,7 @@ const getErrorMessage = (error: unknown, fallback: string): string => {
 
 export const useModelCatalog = (
   config: ModelCatalogConfig,
-  {
-    providerId,
-    modelName,
-    apiKey,
-    baseUrl,
-    customHeaders,
-    requestMode,
-  }: UseModelCatalogOptions
+  { providerId, modelName, apiKey, baseUrl, customHeaders, requestMode }: UseModelCatalogOptions
 ) => {
   const [fetchedModelsByProvider, setFetchedModelsByProvider] = useState<
     Partial<Record<string, ProviderModelItem[]>>
@@ -95,16 +85,7 @@ export const useModelCatalog = (
     } finally {
       setFetchingProviderId((current) => (current === targetProviderId ? null : current));
     }
-  }, [
-    apiKey,
-    baseUrl,
-    clearFetchError,
-    config,
-    customHeaders,
-    modelName,
-    providerId,
-    requestMode,
-  ]);
+  }, [apiKey, baseUrl, clearFetchError, config, customHeaders, modelName, providerId, requestMode]);
 
   return {
     availableModels,

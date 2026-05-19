@@ -58,11 +58,6 @@ const COMPATIBLE_PROVIDER_CAPABILITIES = createProviderCapabilities({
   supportsCustomHeaders: true,
 });
 
-const MEDIA_ONLY_PROVIDER_CAPABILITIES = createProviderCapabilities({
-  supportsBaseUrl: true,
-  supportsCustomHeaders: true,
-});
-
 const PERPLEXITY_PROVIDER_CAPABILITIES = {
   supportsBaseUrl: true,
   supportsCustomHeaders: true,
@@ -318,46 +313,6 @@ export const PROVIDER_MANIFEST = {
     envModel: getRuntimeEnvValue('LM_STUDIO_MODEL'),
     defaultModelId: 'local-model',
     envApiKey: getRuntimeEnvValue('LM_STUDIO_API_KEY'),
-  }),
-  fal: createProviderManifestEntry({
-    label: 'fal.ai',
-    isOfficialProvider: false,
-    capabilities: MEDIA_ONLY_PROVIDER_CAPABILITIES,
-    envModel: getRuntimeEnvValue('FAL_MODEL'),
-    defaultModelId: 'fal-ai/flux/dev',
-    envApiKey: getRuntimeEnvValue('FAL_API_KEY'),
-  }),
-  replicate: createProviderManifestEntry({
-    label: 'Replicate',
-    isOfficialProvider: false,
-    capabilities: MEDIA_ONLY_PROVIDER_CAPABILITIES,
-    envModel: getRuntimeEnvValue('REPLICATE_MODEL'),
-    defaultModelId: 'black-forest-labs/flux-schnell',
-    envApiKey: getRuntimeEnvValue('REPLICATE_API_TOKEN'),
-  }),
-  'black-forest-labs': createProviderManifestEntry({
-    label: 'Black Forest Labs',
-    isOfficialProvider: true,
-    capabilities: MEDIA_ONLY_PROVIDER_CAPABILITIES,
-    envModel: getRuntimeEnvValue('BFL_MODEL'),
-    defaultModelId: 'flux-pro-1.1',
-    envApiKey: getRuntimeEnvValue('BFL_API_KEY'),
-  }),
-  prodia: createProviderManifestEntry({
-    label: 'Prodia',
-    isOfficialProvider: false,
-    capabilities: MEDIA_ONLY_PROVIDER_CAPABILITIES,
-    envModel: getRuntimeEnvValue('PRODIA_MODEL'),
-    defaultModelId: 'inference.flux-fast.schnell.txt2img.v2',
-    envApiKey: getRuntimeEnvValue('PRODIA_API_KEY'),
-  }),
-  'luma-ai': createProviderManifestEntry({
-    label: 'Luma AI',
-    isOfficialProvider: true,
-    capabilities: MEDIA_ONLY_PROVIDER_CAPABILITIES,
-    envModel: getRuntimeEnvValue('LUMA_MODEL'),
-    defaultModelId: 'photon-flash-1',
-    envApiKey: getRuntimeEnvValue('LUMA_API_KEY'),
   }),
   modelscope: createProviderManifestEntry({
     label: 'ModelScope',

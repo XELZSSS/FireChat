@@ -16,4 +16,3 @@ export type SettingsTabContentBuildContext = {
   onOpenUpdateDownload: () => Promise<void>;
   onOpenClearCache: () => void;
 };
-

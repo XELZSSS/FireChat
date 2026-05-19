@@ -232,4 +232,3 @@ const ChatInputComponent = ({
 
 const ChatInput = memo(ChatInputComponent);
 export default ChatInput;
-

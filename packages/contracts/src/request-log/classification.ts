@@ -1,7 +1,5 @@
 import type { RequestLogErrorType } from './index';
 
-export type FriendlyErrorType = 'auth' | 'quota' | 'safety' | 'network' | 'overloaded' | 'generic';
-
 const REQUEST_LOG_MESSAGE_PATTERNS = {
   rateLimit: ['429', 'rate limit', 'too many requests', 'quota', 'insufficient_quota'],
   auth: ['401', '403', 'api key', 'unauthorized', 'forbidden', 'authentication'],
@@ -72,7 +70,7 @@ export const classifyFriendlyError = ({
 }: {
   message?: string;
   statusCode?: number;
-} = {}): FriendlyErrorType => {
+} = {}): 'auth' | 'quota' | 'safety' | 'network' | 'overloaded' | 'generic' => {
   const normalizedStatusCode = normalizeStatusCode(statusCode);
   const normalizedMessage = String(message).toLowerCase();
 

@@ -60,4 +60,3 @@ export type OptionsInteractionLock = {
   isInteractionLocked: boolean;
   interactionLockTitle?: string;
 };
-

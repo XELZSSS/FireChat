@@ -230,13 +230,6 @@ export const buildProviderSnapshotFromJsonText = ({
             ...(fieldConfig.models ?? {}),
           }
         : undefined,
-    imageModels:
-      parsedConfig.imageModels || fieldConfig.imageModels
-        ? {
-            ...(parsedConfig.imageModels ?? {}),
-            ...(fieldConfig.imageModels ?? {}),
-          }
-        : undefined,
   };
 
   const nextAuth: ProviderAuthEntry = {

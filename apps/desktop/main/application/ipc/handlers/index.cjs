@@ -20,4 +20,3 @@ const buildSystemHandlers = (dependencies) => ({
 module.exports = {
   buildSystemHandlers,
 };
-

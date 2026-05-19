@@ -7,7 +7,7 @@
 
   <h1>FireChat</h1>
 
-  <p><strong>Open AI client</strong></p>
+  <p><strong>Desktop AI chat client</strong></p>
 
   <p>
     <a href="./README.zh-CN.md"><strong>中文</strong></a>
@@ -16,10 +16,12 @@
   </p>
 
   <p>
-    <img alt="Electron" src="https://img.shields.io/badge/Electron-41-47848F?style=flat-square" />
+    <img alt="Electron" src="https://img.shields.io/badge/Electron-42-47848F?style=flat-square" />
     <img alt="React" src="https://img.shields.io/badge/React-19-149ECA?style=flat-square" />
     <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-6-3178C6?style=flat-square" />
     <img alt="Vite" src="https://img.shields.io/badge/Vite-8-8B5CF6?style=flat-square" />
+    <img alt="SQLite" src="https://img.shields.io/badge/SQLite-3-003B57?style=flat-square" />
+    <img alt="License" src="https://img.shields.io/badge/License-GPL%203.0-blue?style=flat-square" />
   </p>
 </div>
 
@@ -27,6 +29,8 @@
   <a href="#features">Features</a>
   <span> · </span>
   <a href="#quick-start">Quick Start</a>
+  <span> · </span>
+  <a href="#provider-support">Provider Support</a>
   <span> · </span>
   <a href="#configuration">Configuration</a>
   <span> · </span>
@@ -40,38 +44,62 @@
 <table>
   <tr>
     <td width="50%">
-      <strong>Multi-provider access</strong>
+      <strong>20+ AI providers</strong>
       <br />
-      Connect many mainstream AI providers in one client.
+      Built-in support for OpenAI, Anthropic, Google, Groq, Mistral, DeepInfra, and more.
     </td>
     <td width="50%">
       <strong>OpenAdapter tools</strong>
       <br />
-      Extend chat with web search, page fetch, and crawl tools.
+      Extend chat with web search, page fetch, crawl, and custom MCP tools.
     </td>
   </tr>
   <tr>
     <td width="50%">
-      <strong>Document attachment parsing</strong>
+      <strong>Document parsing</strong>
       <br />
-      Parse common documents into chat context.
+      Parse PDF, Word, Excel, PowerPoint, and other document formats into chat context.
     </td>
     <td width="50%">
       <strong>Custom providers</strong>
       <br />
-      Add custom OpenAI-compatible providers.
+      Add any OpenAI-compatible provider with custom endpoints, headers, and models.
     </td>
   </tr>
   <tr>
     <td width="50%">
-      <strong>Sessions and logs</strong>
+      <strong>Local persistence</strong>
       <br />
-      Manage local conversations and inspect recent requests.
+      Conversations, settings, and request logs stored in local SQLite database.
     </td>
     <td width="50%">
       <strong>Local API proxy</strong>
       <br />
-      Route provider requests through a local proxy.
+      Route provider requests through a configurable local HTTP/2 proxy.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <strong>Companion pet</strong>
+      <br />
+      An animated desktop pet with expressive idle, thinking, and talking animations.
+    </td>
+    <td width="50%">
+      <strong>Request logging</strong>
+      <br />
+      Inspect request history with status, duration, error classification, and filtering.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <strong>Theme & accent system</strong>
+      <br />
+      Light/dark/system theme with 24 accent colors and reduced-motion support.
+    </td>
+    <td width="50%">
+      <strong>Auto update</strong>
+      <br />
+      Checks GitHub releases and prompts with one-click download.
     </td>
   </tr>
 </table>
@@ -96,16 +124,43 @@ npm run electron:dev
 
 | Command | Description |
 | --- | --- |
-| `npm run electron:dev` | Start the desktop development environment |
-| `npm run build` | Build the renderer |
-| `npm run electron:build:win` | Build the Windows installer |
+| `npm run dev` | Start Vite dev server |
+| `npm run electron:dev` | Start full desktop development environment |
+| `npm run proxy:dev` | Start local API proxy standalone |
+| `npm run build` | Build the renderer for production |
+| `npm run electron:build:win` | Build the Windows NSIS installer |
 | `npm run check` | Run lint and typecheck |
+| `npm run lint` | Run ESLint |
+| `npm run typecheck` | Run TypeScript type checking |
+| `npm run format` | Format code with Prettier |
+
+### Windows Build
+
+```bash
+npm run build
+npm run electron:build:win
+# Installer output: release/FireChat Setup {version}.exe
+```
+
+## 🤖 Provider Support
+
+Built-in providers (each configurable with API key, model, and base URL at runtime):
+
+| Category | Providers |
+| --- | --- |
+| **General** | OpenAI, Anthropic, Google Generative AI, Google Vertex AI, Groq, Mistral, Cohere, Perplexity, xAI |
+| **Open-source / inference** | DeepInfra, Together AI, Fireworks AI, Cerebras, Sambanova, HuggingFace |
+| **Chinese** | Alibaba (Qwen), DeepSeek, GLM (Zhipu), MiniMax, Moonshot (Kimi), StepFun, VolcEngine, Xiaomi |
+| **API aggregators** | OpenRouter, LongCat, Vercel |
+| **Compatibility** | OpenAI-compatible, OpenAdapter, OpenCode |
+
+Custom providers can be added via JSON config or the settings UI.
 
 ## ⚙️ Configuration
 
 | File or entry | Description |
 | --- | --- |
-| `.env` / `.env.local` | Startup defaults, see `.env.example` |
+| `.env` / `.env.local` | Startup defaults for API keys, models, base URLs |
 | `firechat.local.json` | Non-sensitive local config for providers, URLs, default models, and model lists |
 | `firechat.auth.json` | Sensitive auth config for API keys and custom headers |
 | Settings window | Main configuration entry, saved to local config files |
@@ -122,22 +177,55 @@ Notes:
 ```text
 apps/
   desktop/
-    client/         app shell, feature UI, app controller, and desktop-facing services
-    main/           Electron startup, windowing, IPC, proxy, and updater
-    renderer/       Vite renderer entry, provider runtime, persistence clients, shared UI, styles
-  shared/           cross-process shared constants and helpers
+    client/          App shell, feature UI, app controller, desktop-facing services
+    main/            Electron startup, windowing, IPC, proxy, updater, document parsing
+    renderer/        Vite renderer entry, provider runtime, persistence clients, shared UI, styles
+  shared/            Cross-process shared constants, provider IDs, runtime env keys
 packages/
-  contracts/        shared contracts and types
-  core/             chat, provider, and settings core modules
-  data/             SQLite persistence and storage repositories
-  desktop-bridge/   desktop IPC channels and preload bridge
+  contracts/         Shared TypeScript contracts, types, and runtime config definitions
+  core/              Chat streaming pipeline, provider execution, settings transaction engine
+  data/              SQLite schema, database, and storage repositories
+  desktop-bridge/    Desktop IPC channels and preload bridge for renderer-main communication
 assets/
-  icons/            app icon assets
+  icons/             App icon assets (PNG, ICO, SVG, light/dark variants)
 build/
-  installer.nsh     Windows installer script
+  installer.nsh      Windows NSIS installer script
+```
+
+## 🔧 Architecture
+
+```
+┌─────────────────────────────────────────────────────┐
+│                    Electron Main                     │
+│  main.cjs ── createMainAppRuntime ── IPC handlers   │
+│  ┌──────────────────────────────────────────────┐   │
+│  │  Proxy │ Updater │ Tray │ Window │ Config    │   │
+│  └──────────────────────────────────────────────┘   │
+├─────────────────────────────────────────────────────┤
+│                   Electron Renderer                  │
+│  ┌──────────────────────────────────────────────┐   │
+│  │  React App (client/)                         │   │
+│  │  ┌─────┐ ┌──────────┐ ┌────────────────┐    │   │
+│  │  │Chat │ │ Sessions │ │ Settings       │    │   │
+│  │  ├─────┤ ├──────────┤ ├────────────────┤    │   │
+│  │  │ Pet │ │ Desktop  │ │ Request Logs   │    │   │
+│  │  └─────┘ └──────────┘ └────────────────┘    │   │
+│  ├──────────────────────────────────────────────┤   │
+│  │  Provider Runtime (infrastructure/)          │   │
+│  │  SDK adapters │ Model catalog │ Registry     │   │
+│  └──────────────────────────────────────────────┘   │
+├─────────────────────────────────────────────────────┤
+│                   Shared Packages                    │
+│  contracts ── core ── data ── desktop-bridge         │
+└─────────────────────────────────────────────────────┘
 ```
 
 ## 💾 Local Data
 
-- Conversations and part of the app state are stored locally.
-- Auto update is disabled in development.
+- Conversations, app settings, and request logs are stored in a local SQLite database (`firechat.sqlite` in user data directory).
+- Auto update checks GitHub releases; disabled in development mode.
+- Provider config is persisted as JSON files (`firechat.local.json`, `firechat.auth.json`).
+
+## 📄 License
+
+GNU General Public License v3.0

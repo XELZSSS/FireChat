@@ -61,4 +61,3 @@ const MessageSettingsCard = ({
 );
 
 export default MessageSettingsCard;
-

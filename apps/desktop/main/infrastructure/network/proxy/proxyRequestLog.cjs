@@ -1,4 +1,6 @@
-const { appendRequestLog } = require('../../../../../../packages/data/persistence/repositories/requestLogStore.cjs');
+const {
+  appendRequestLog,
+} = require('../../../../../../packages/data/persistence/repositories/requestLogStore.cjs');
 const {
   classifyRequestLogError,
 } = require('../../../../../../packages/contracts/src/request-log/classification.cjs');
@@ -57,4 +59,3 @@ const appendProxyRequestLog = ({ targetKey, model, durationMs, statusCode, error
 module.exports = {
   appendProxyRequestLog,
 };
-

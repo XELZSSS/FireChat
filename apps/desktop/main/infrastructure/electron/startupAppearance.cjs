@@ -103,10 +103,7 @@ const writeStartupAppearance = (appearance) => {
 
 module.exports = {
   BACKGROUND_BY_THEME,
-  DEFAULT_ACCENT_PREFERENCE,
-  DEFAULT_THEME_PREFERENCE,
   normalizeStartupAppearance,
-  parseStoredAppearance,
   readStartupAppearance,
   writeStartupAppearance,
 };

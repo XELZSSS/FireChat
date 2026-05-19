@@ -12,7 +12,7 @@ export type SessionContextActions = {
 
 export const SAVE_SESSION_DEBOUNCE_MS = 400;
 
-export const toSessionSummary = (session: ChatSession): ChatSession => ({
+const toSessionSummary = (session: ChatSession): ChatSession => ({
   ...session,
   messages: [],
 });
@@ -153,19 +153,6 @@ export const activateSession = (
     if (latestActivationTokenRef.current !== activationToken) return;
     console.error('Failed to sync session history:', error);
   });
-};
-
-export const consumePendingSessionSave = (
-  saveSessionTimerRef: RefObject<number | null>,
-  pendingSessionSaveRef: RefObject<ChatSession | null>
-): ChatSession | null => {
-  if (saveSessionTimerRef.current !== null) {
-    window.clearTimeout(saveSessionTimerRef.current);
-    saveSessionTimerRef.current = null;
-  }
-  const pendingSession = pendingSessionSaveRef.current;
-  pendingSessionSaveRef.current = null;
-  return pendingSession;
 };
 
 export const discardPendingSessionSave = (

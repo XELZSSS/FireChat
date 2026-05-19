@@ -28,4 +28,3 @@ export type SettingsValidationResult = {
   issuesByTab: Record<ActiveSettingsTab, SettingsValidationIssue[]>;
   issuesByField: Record<string, SettingsValidationIssue[]>;
 };
-

@@ -41,5 +41,3 @@ export const validateSettingsState = (state: SettingsModalState): SettingsValida
     issuesByField,
   };
 };
-
-

@@ -74,8 +74,7 @@ export const PET_EXPRESSIONS: Record<PetStatus, PetExpression> = {
   error: {
     eyes: {
       left: 'M18 25L20 23L23 26L26 23L28 25L25 28L28 31L26 33L23 30L20 33L18 31L21 28Z',
-      right:
-        'M30 25L32 23L35 26L38 23L40 25L37 28L40 31L38 33L35 30L32 33L30 31L33 28Z',
+      right: 'M30 25L32 23L35 26L38 23L40 25L37 28L40 31L38 33L35 30L32 33L30 31L33 28Z',
     },
     brows: {
       left: 'M19 20L25 23',

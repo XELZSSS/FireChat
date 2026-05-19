@@ -60,8 +60,12 @@ const createProxyLifecycleController = ({ createServer }) => {
     nextConfig.host !== localApiProxyConfig.host || nextConfig.port !== localApiProxyConfig.port;
 
   const runProxyLifecycleOperation = (operation) => {
-    const nextOperation = proxyLifecyclePromise.catch(() => {}).then(operation);
-    proxyLifecyclePromise = nextOperation.catch(() => {});
+    const nextOperation = proxyLifecyclePromise.catch((error) => {
+      console.error('Proxy lifecycle operation failed:', error);
+    }).then(operation);
+    proxyLifecyclePromise = nextOperation.catch((error) => {
+      console.error('Proxy lifecycle chained operation failed:', error);
+    });
     return nextOperation;
   };
 
@@ -96,8 +100,8 @@ const createProxyLifecycleController = ({ createServer }) => {
       } catch (error) {
         try {
           server.close();
-        } catch {
-          // ignore close failure after listen error
+        } catch (closeError) {
+          console.error('Failed to close proxy server after listen error:', closeError);
         }
         proxyServer = null;
         proxyBaseUrl = null;

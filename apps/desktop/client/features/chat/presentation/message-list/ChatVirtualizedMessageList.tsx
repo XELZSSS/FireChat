@@ -225,4 +225,3 @@ const ChatVirtualizedMessageList = memo(function ChatVirtualizedMessageList({
 });
 
 export default ChatVirtualizedMessageList;
-

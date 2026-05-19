@@ -31,4 +31,3 @@ export const buildSettingsSavePayload = (state: SettingsModalState): SaveSetting
   interfaceLayoutConfigText: state.ui.interfaceLayoutConfigText,
   providerConfigJsonText: state.ui.providerConfigJsonText,
 });
-

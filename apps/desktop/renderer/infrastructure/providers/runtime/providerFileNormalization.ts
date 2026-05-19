@@ -39,7 +39,6 @@ const normalizeProviderConfigEntry = (value: unknown): ProviderConfigEntry => {
 
   const entry = value as Record<string, unknown>;
   const models = normalizeProviderRecord<ProviderConfigModelEntry>(entry.models);
-  const imageModels = normalizeProviderRecord<ProviderConfigModelEntry>(entry.imageModels);
 
   return {
     source: entry.source === 'builtin' || entry.source === 'custom' ? entry.source : undefined,
@@ -64,7 +63,6 @@ const normalizeProviderConfigEntry = (value: unknown): ProviderConfigEntry => {
         }
       : undefined,
     models,
-    imageModels,
   };
 };
 

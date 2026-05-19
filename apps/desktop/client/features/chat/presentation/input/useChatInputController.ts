@@ -164,4 +164,3 @@ export const useChatInputController = ({
 };
 
 export type ChatInputController = ReturnType<typeof useChatInputController>;
-

@@ -24,9 +24,10 @@ const forwardProxyRequest = ({ request, response, target, payload, corsHeaders }
     }));
   }
 
-  const forwarder = target.type === 'http-proxy'
-    ? forwardViaHttpProxy({ request, response, target, payload, corsHeaders })
-    : forwardViaUndici({ request, response, target, payload, corsHeaders });
+  const forwarder =
+    target.type === 'http-proxy'
+      ? forwardViaHttpProxy({ request, response, target, payload, corsHeaders })
+      : forwardViaUndici({ request, response, target, payload, corsHeaders });
 
   return forwarder.then((result) => ({
     ...result,

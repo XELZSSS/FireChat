@@ -1,7 +1,10 @@
 const { app, shell } = require('electron');
 const path = require('path');
 const { fileURLToPath } = require('url');
-const { parseExternalHttpUrl, shouldOpenExternalUrl } = require('../../../../shared/external-url.cjs');
+const {
+  parseExternalHttpUrl,
+  shouldOpenExternalUrl,
+} = require('../../../../shared/external-url.cjs');
 
 const DEV_SERVER_URL = 'http://localhost:3000';
 

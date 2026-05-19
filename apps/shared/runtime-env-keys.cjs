@@ -80,21 +80,6 @@ const FIRECHAT_RUNTIME_ENV_KEYS = [
   'LM_STUDIO_API_KEY',
   'LM_STUDIO_MODEL',
   'LM_STUDIO_BASE_URL',
-  'FAL_API_KEY',
-  'FAL_MODEL',
-  'FAL_BASE_URL',
-  'REPLICATE_API_TOKEN',
-  'REPLICATE_MODEL',
-  'REPLICATE_BASE_URL',
-  'BFL_API_KEY',
-  'BFL_MODEL',
-  'BFL_BASE_URL',
-  'PRODIA_API_KEY',
-  'PRODIA_MODEL',
-  'PRODIA_BASE_URL',
-  'LUMA_API_KEY',
-  'LUMA_MODEL',
-  'LUMA_BASE_URL',
   'MODELSCOPE_API_KEY',
   'MODELSCOPE_MODEL',
   'MODELSCOPE_BASE_URL',
@@ -153,10 +138,6 @@ const FIRECHAT_RUNTIME_ENV_KEYS = [
   'SEARXNG_SAFE_SEARCH',
   'TOOL_CALL_MAX_ROUNDS',
   'MAX_TOOL_CALL_ROUNDS',
-] as const;
+];
 
-export { FIRECHAT_RUNTIME_ENV_KEYS };
-
-export type FireChatRuntimeEnvKey = (typeof FIRECHAT_RUNTIME_ENV_KEYS)[number];
-
-export type FireChatRuntimeEnv = Partial<Record<FireChatRuntimeEnvKey, string>>;
+module.exports = { FIRECHAT_RUNTIME_ENV_KEYS };

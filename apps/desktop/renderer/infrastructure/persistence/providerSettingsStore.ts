@@ -19,9 +19,7 @@ import {
 } from '@/infrastructure/persistence/appSettingsStore';
 import { areComparableValuesEqual } from '@/shared/utils/comparable';
 
-type StoredProviderLocalSettings = Partial<
-  Pick<ProviderSettings, 'openAdapterTools'>
->;
+type StoredProviderLocalSettings = Partial<Pick<ProviderSettings, 'openAdapterTools'>>;
 
 const normalizeStoredProviderLocalSettingsRecord = (
   value: unknown

@@ -50,4 +50,3 @@ export const getAccentButtonClassName = (active: boolean) =>
   `flex h-12 w-full items-center justify-center transition-colors duration-120 ease-out focus-visible:outline-none ${
     active ? 'bg-[var(--accent-choice-active-bg)]' : 'hover:bg-[var(--accent-choice-hover-bg)]'
   }`;
-

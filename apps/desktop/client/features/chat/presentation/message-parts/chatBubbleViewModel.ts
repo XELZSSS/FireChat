@@ -58,9 +58,7 @@ export const getChatBubbleViewModel = ({ message, isStreaming }: ChatBubbleViewM
     showCopyButton: !isUser && Boolean(copyText),
     hasCodeBlock: hasRenderableCodeBlock(text),
     containerAlignment: isUser ? 'justify-end flex-row pl-10' : 'justify-start flex-row',
-    messageAlignment: isUser
-      ? 'items-end max-w-[min(40rem,82%)]'
-      : 'items-start max-w-full',
+    messageAlignment: isUser ? 'items-end max-w-[min(40rem,82%)]' : 'items-start max-w-full',
     messageContentClass: isUser
       ? 'border border-[var(--line-1)] bg-[var(--bg-1)] px-3 py-2 text-[var(--ink-1)]'
       : isError
@@ -68,4 +66,3 @@ export const getChatBubbleViewModel = ({ message, isStreaming }: ChatBubbleViewM
         : 'px-1 py-1 text-[var(--ink-2)]',
   };
 };
-

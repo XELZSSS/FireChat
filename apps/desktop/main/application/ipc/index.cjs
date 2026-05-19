@@ -8,9 +8,7 @@ const SYNC_BOOTSTRAP_CHANNELS = [
   IPC_BOOTSTRAP_CHANNELS.interfaceLayoutConfigSnapshot,
 ];
 
-const getSyncStorageChannels = (ipcChannels) => [
-  ipcChannels.storage.readAppStorage,
-];
+const getSyncStorageChannels = (ipcChannels) => [ipcChannels.storage.readAppStorage];
 
 const registerSyncIpcHandlers = (handlers) => {
   for (const [channel, handler] of Object.entries(handlers)) {

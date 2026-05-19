@@ -7,7 +7,8 @@ const FIRECHAT_DATABASE_FILE_NAME = 'firechat.sqlite';
 
 let database = null;
 
-const getFireChatDatabasePath = () => path.join(app.getPath('userData'), FIRECHAT_DATABASE_FILE_NAME);
+const getFireChatDatabasePath = () =>
+  path.join(app.getPath('userData'), FIRECHAT_DATABASE_FILE_NAME);
 
 const getFireChatDatabasePaths = () => {
   const databasePath = getFireChatDatabasePath();
@@ -94,6 +95,5 @@ const closeFireChatDatabase = () => {
 module.exports = {
   closeFireChatDatabase,
   getDatabase,
-  getFireChatDatabasePath,
   getFireChatDatabasePaths,
 };

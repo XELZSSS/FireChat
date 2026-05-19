@@ -101,7 +101,6 @@ export abstract class AISdkOpenAIResponsesProviderBase
   protected override onProviderStateChanged(kind: string): void {
     if (
       kind === 'modelName' ||
-      kind === 'imageModelName' ||
       kind === 'systemPrompt' ||
       kind === 'apiKey' ||
       kind === 'baseUrl' ||

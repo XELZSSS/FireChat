@@ -119,4 +119,3 @@ export const ChatInputAttachmentChip = memo(function ChatInputAttachmentChip({
     </div>
   );
 });
-

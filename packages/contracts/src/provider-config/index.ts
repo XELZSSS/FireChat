@@ -1,8 +1,12 @@
-export const PROVIDER_TRANSPORTS = ['openai', 'openai-compatible'] as const;
+export type ProviderTransport = 'openai' | 'openai-compatible';
 
-export type ProviderTransport = (typeof PROVIDER_TRANSPORTS)[number];
+type ProviderConfigSource = 'builtin' | 'custom';
 
-export type ProviderConfigSource = 'builtin' | 'custom';
+type ProviderConfigOptions = {
+  baseURL?: string;
+  requestMode?: 'chat_completions' | 'responses';
+  systemPrompt?: string;
+};
 
 export type ProviderConfigModelEntry = {
   label?: string;
@@ -14,12 +18,6 @@ export type ProviderConfigModelEntry = {
   };
 };
 
-export type ProviderConfigOptions = {
-  baseURL?: string;
-  requestMode?: 'chat_completions' | 'responses';
-  systemPrompt?: string;
-};
-
 export type ProviderConfigEntry = {
   source?: ProviderConfigSource;
   transport?: ProviderTransport;
@@ -29,7 +27,6 @@ export type ProviderConfigEntry = {
   defaultModel?: string;
   options?: ProviderConfigOptions;
   models?: Record<string, ProviderConfigModelEntry>;
-  imageModels?: Record<string, ProviderConfigModelEntry>;
 };
 
 export type ProviderConfigFile = {

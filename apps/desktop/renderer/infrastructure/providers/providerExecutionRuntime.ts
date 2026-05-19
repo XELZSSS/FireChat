@@ -77,7 +77,7 @@ export const resolveProviderExecutionTools = async ({
 }: ProviderExecutionToolsOptions): Promise<Record<string, unknown> | undefined> => {
   const tools = await buildToolSet();
 
-    return Object.keys(tools ?? {}).length > 0 ? tools : undefined;
+  return Object.keys(tools ?? {}).length > 0 ? tools : undefined;
 };
 
 export const streamProviderExecutionResult = async function* ({

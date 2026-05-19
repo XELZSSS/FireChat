@@ -132,4 +132,3 @@ export const SettingsToggleRow = ({
     ) : null}
   </label>
 );
-

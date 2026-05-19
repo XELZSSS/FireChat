@@ -40,11 +40,6 @@ const NVIDIA_NIM_BASE_URL = 'https://integrate.api.nvidia.com/v1';
 const CLARIFAI_BASE_URL = 'https://api.clarifai.com/v2/ext/openai/v1';
 const HEROKU_BASE_URL = 'https://us.inference.heroku.com/v1';
 const LM_STUDIO_BASE_URL = 'http://localhost:1234/v1';
-const FAL_BASE_URL = 'https://fal.run';
-const REPLICATE_BASE_URL = 'https://api.replicate.com/v1';
-const BLACK_FOREST_LABS_BASE_URL = 'https://api.bfl.ai/v1';
-const PRODIA_BASE_URL = 'https://inference.prodia.com/v2';
-const LUMA_BASE_URL = 'https://api.lumalabs.ai';
 const MODELSCOPE_BASE_URL = 'https://api-inference.modelscope.cn/v1';
 const MODAL_BASE_URL = undefined;
 const OPENADAPTER_BASE_URL = 'https://api.openadapter.in/v1';
@@ -396,31 +391,6 @@ export const getDefaultLmStudioBaseUrl = createDefaultBaseUrlResolver(
   'LM_STUDIO_BASE_URL',
   LM_STUDIO_BASE_URL
 );
-export const getDefaultFalBaseUrl = createDefaultBaseUrlResolver(
-  'fal',
-  'FAL_BASE_URL',
-  FAL_BASE_URL
-);
-export const getDefaultReplicateBaseUrl = createDefaultBaseUrlResolver(
-  'replicate',
-  'REPLICATE_BASE_URL',
-  REPLICATE_BASE_URL
-);
-export const getDefaultBlackForestLabsBaseUrl = createDefaultBaseUrlResolver(
-  'black-forest-labs',
-  'BFL_BASE_URL',
-  BLACK_FOREST_LABS_BASE_URL
-);
-export const getDefaultProdiaBaseUrl = createDefaultBaseUrlResolver(
-  'prodia',
-  'PRODIA_BASE_URL',
-  PRODIA_BASE_URL
-);
-export const getDefaultLumaBaseUrl = createDefaultBaseUrlResolver(
-  'luma-ai',
-  'LUMA_BASE_URL',
-  LUMA_BASE_URL
-);
 export const getDefaultModelScopeBaseUrl = createDefaultBaseUrlResolver(
   'modelscope',
   'MODELSCOPE_BASE_URL',
@@ -503,11 +473,6 @@ const providerDefaultBaseUrlResolvers: Partial<Record<ProviderId, () => string |
   clarifai: getDefaultClarifaiBaseUrl,
   heroku: getDefaultHerokuBaseUrl,
   'lm-studio': getDefaultLmStudioBaseUrl,
-  fal: getDefaultFalBaseUrl,
-  replicate: getDefaultReplicateBaseUrl,
-  'black-forest-labs': getDefaultBlackForestLabsBaseUrl,
-  prodia: getDefaultProdiaBaseUrl,
-  'luma-ai': getDefaultLumaBaseUrl,
   modelscope: getDefaultModelScopeBaseUrl,
   modal: getDefaultModalBaseUrl,
   openadapter: getDefaultOpenAdapterBaseUrl,

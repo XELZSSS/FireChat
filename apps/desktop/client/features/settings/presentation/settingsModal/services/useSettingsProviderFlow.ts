@@ -31,8 +31,7 @@ export const useSettingsProviderFlow = ({
   onCreateCustomProvider,
   onDeleteProvider,
 }: UseSettingsProviderFlowOptions) => {
-  const { providerId, modelName, apiKey, baseUrl, customHeaders, requestMode } =
-    provider;
+  const { providerId, modelName, apiKey, baseUrl, customHeaders, requestMode } = provider;
   const { builtIn: builtInProviderOptions, custom: customProviderOptions } =
     partitionProviderOptionsBySource(providerOptions);
   const {
@@ -102,4 +101,3 @@ export const useSettingsProviderFlow = ({
     providerSource: getProviderSource(providerId),
   };
 };
-

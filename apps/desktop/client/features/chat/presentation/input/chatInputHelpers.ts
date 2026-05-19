@@ -97,4 +97,3 @@ export const pushRecentEmoji = (emoji: string): string[] => {
 export const clearRecentEmojis = (): void => {
   removeAppStorage('recentEmojis');
 };
-

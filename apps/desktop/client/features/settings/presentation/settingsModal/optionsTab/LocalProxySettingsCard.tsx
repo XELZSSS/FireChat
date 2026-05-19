@@ -175,4 +175,3 @@ const LocalProxySettingsCard = ({
 };
 
 export default LocalProxySettingsCard;
-

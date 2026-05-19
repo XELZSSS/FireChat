@@ -17,4 +17,3 @@ const ChatMessageList = memo(function ChatMessageList(props: ChatMessageListProp
 });
 
 export default ChatMessageList;
-

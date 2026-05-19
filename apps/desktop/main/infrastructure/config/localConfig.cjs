@@ -22,8 +22,6 @@ const getPreferredConfigPath = (configName = FIRECHAT_LOCAL_CONFIG_NAME) => {
   return path.resolve(process.cwd(), configName);
 };
 
-const getPreferredLocalConfigPath = () => getPreferredConfigPath(FIRECHAT_LOCAL_CONFIG_NAME);
-
 const getConfigCandidates = (configName = FIRECHAT_LOCAL_CONFIG_NAME) => {
   const candidates = [getPreferredConfigPath(configName)];
   const userDataPath = getUserDataConfigPath(configName);
@@ -39,8 +37,6 @@ const getConfigCandidates = (configName = FIRECHAT_LOCAL_CONFIG_NAME) => {
 
   return Array.from(new Set(candidates.filter(Boolean)));
 };
-
-const getLocalConfigCandidates = () => getConfigCandidates(FIRECHAT_LOCAL_CONFIG_NAME);
 
 const readConfigFile = (configName = FIRECHAT_LOCAL_CONFIG_NAME) => {
   for (const candidate of getConfigCandidates(configName)) {
@@ -62,15 +58,6 @@ const writeConfigFile = (configName = FIRECHAT_LOCAL_CONFIG_NAME, value = {}) =>
   return configPath;
 };
 
-const updateConfigFile = (configName = FIRECHAT_LOCAL_CONFIG_NAME, recipe) => {
-  const current = readConfigFile(configName) ?? {};
-  const next = typeof recipe === 'function' ? recipe({ ...current }) : current;
-  writeConfigFile(configName, next);
-  return next;
-};
-
-const readFireChatLocalConfig = () => readConfigFile(FIRECHAT_LOCAL_CONFIG_NAME);
-
 const ensureConfigFile = (
   configName = FIRECHAT_LOCAL_CONFIG_NAME,
   initialContents = DEFAULT_CONFIG_CONTENTS
@@ -87,16 +74,8 @@ const ensureConfigFile = (
 const ensureFireChatLocalConfigFile = () => ensureConfigFile(FIRECHAT_LOCAL_CONFIG_NAME);
 
 module.exports = {
-  FIRECHAT_LOCAL_CONFIG_NAME,
-  ensureConfigFile,
-  normalizeText,
-  getConfigCandidates,
-  getPreferredConfigPath,
-  getPreferredLocalConfigPath,
-  getLocalConfigCandidates,
-  readConfigFile,
-  readFireChatLocalConfig,
-  updateConfigFile,
   ensureFireChatLocalConfigFile,
+  getPreferredConfigPath,
+  readConfigFile,
   writeConfigFile,
 };

@@ -61,9 +61,7 @@ export const buildMessagePromptContent = (message: ChatPromptInput | ChatMessage
   const partState = 'parts' in message ? readMessagePartState(message) : null;
   const messageText = partState ? partState.text : (message as ChatPromptInput).text;
   const normalizedText = messageText.trim().length > 0 ? messageText : '';
-  const attachments = partState
-    ? partState.attachments
-    : (message as ChatPromptInput).attachments;
+  const attachments = partState ? partState.attachments : (message as ChatPromptInput).attachments;
   const attachmentSection = buildAttachmentPromptSection(attachments);
 
   if (normalizedText && attachmentSection) {

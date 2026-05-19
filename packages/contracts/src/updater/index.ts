@@ -1,11 +1,5 @@
 export type UpdaterStatus = {
-  status:
-    | 'idle'
-    | 'disabled'
-    | 'checking'
-    | 'available'
-    | 'not-available'
-    | 'error';
+  status: 'idle' | 'disabled' | 'checking' | 'available' | 'not-available' | 'error';
   distribution: 'development' | 'installer';
   message: string;
   version: string;

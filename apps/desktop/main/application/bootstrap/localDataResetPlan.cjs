@@ -40,4 +40,3 @@ const createLocalDataResetPlan = ({ isDev }) => {
 module.exports = {
   createLocalDataResetPlan,
 };
-

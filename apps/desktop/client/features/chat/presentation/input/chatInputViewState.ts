@@ -25,4 +25,3 @@ export const getChatInputViewState = ({
     emojiButtonToneClass: resolveChatInputActionToneClass(isEmojiPickerVisible),
   };
 };
-

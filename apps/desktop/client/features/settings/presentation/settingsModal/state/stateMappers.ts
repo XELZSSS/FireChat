@@ -79,6 +79,3 @@ export const buildSettingsModalState = (
     providerConfigJsonText: buildProviderJsonText(input.providerId, input.providerSettings),
   },
 });
-
-
-

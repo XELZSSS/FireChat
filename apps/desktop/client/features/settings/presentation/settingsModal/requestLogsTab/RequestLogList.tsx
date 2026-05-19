@@ -79,4 +79,3 @@ const RequestLogList = ({ items, selectedLogId, isLoading, onSelectLog }: Reques
 );
 
 export default RequestLogList;
-

@@ -83,4 +83,3 @@ const RequestLogDetails = ({ selectedLog }: RequestLogDetailsProps) => {
 };
 
 export default RequestLogDetails;
-

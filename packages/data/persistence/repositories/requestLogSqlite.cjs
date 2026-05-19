@@ -1,6 +1,5 @@
 const { getDatabase } = require('../schema/sqliteDatabase.cjs');
-
-const MAX_REQUEST_LOG_ITEMS = 500;
+const { MAX_REQUEST_LOG_ITEMS } = require('./requestLogConstants.cjs');
 
 const trimRequestLogs = () => {
   getDatabase()

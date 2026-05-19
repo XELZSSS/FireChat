@@ -4,8 +4,7 @@ import { KeyboardArrowDownIcon } from '@/shared/ui/icons';
 import { t } from '@/shared/utils/i18n';
 import { CHAT_INPUT_BUTTON_OFFSET } from '@client/features/chat/presentation/shell/chatMainConstants';
 
-const SCROLL_BUTTON_WRAPPER_CLASS =
-  'mx-auto flex w-full max-w-[min(50rem,100%)] justify-end px-4';
+const SCROLL_BUTTON_WRAPPER_CLASS = 'mx-auto flex w-full max-w-[min(50rem,100%)] justify-end px-4';
 const SCROLL_BUTTON_CLASS =
   'pointer-events-auto border-[var(--line-1)] bg-[var(--bg-1)] text-[var(--ink-2)] shadow-none hover:bg-[var(--bg-1)] hover:text-[var(--ink-1)]';
 
@@ -37,4 +36,3 @@ const ChatScrollToBottomButton = memo(function ChatScrollToBottomButton({
 });
 
 export default ChatScrollToBottomButton;
-

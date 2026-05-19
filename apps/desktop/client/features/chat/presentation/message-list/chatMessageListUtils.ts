@@ -65,4 +65,3 @@ export const findVisibleMessageRange = ({
     end: Math.max(clampedStart, Math.min(end, lastIndex)),
   };
 };
-

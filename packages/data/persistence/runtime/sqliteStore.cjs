@@ -1,6 +1,5 @@
 const {
   closeFireChatDatabase,
-  getFireChatDatabasePath,
   getFireChatDatabasePaths,
 } = require('../schema/sqliteDatabase.cjs');
 const {
@@ -19,7 +18,6 @@ const {
 const {
   appendRequestLogRecord,
   clearRequestLogRecords,
-  listRequestLogRecords,
   queryRequestLogRecords,
 } = require('../repositories/requestLogSqlite.cjs');
 
@@ -30,9 +28,7 @@ module.exports = {
   deleteChatSession,
   getChatSession,
   getChatSessionSummaries,
-  getFireChatDatabasePath,
   getFireChatDatabasePaths,
-  listRequestLogRecords,
   queryRequestLogRecords,
   readAppStorage,
   removeAppStorage,

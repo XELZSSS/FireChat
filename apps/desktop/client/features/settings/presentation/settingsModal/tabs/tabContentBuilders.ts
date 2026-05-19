@@ -4,4 +4,3 @@ export {
   buildProviderTabProps,
 } from '@client/features/settings/presentation/settingsModal/sections/providerTabContentProps';
 export { buildOptionsTabProps } from '@client/features/settings/presentation/settingsModal/sections/optionsTabContentProps';
-

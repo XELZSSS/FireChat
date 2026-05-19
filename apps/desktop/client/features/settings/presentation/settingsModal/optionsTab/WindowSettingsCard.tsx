@@ -76,4 +76,3 @@ const WindowSettingsCard = ({
 );
 
 export default WindowSettingsCard;
-

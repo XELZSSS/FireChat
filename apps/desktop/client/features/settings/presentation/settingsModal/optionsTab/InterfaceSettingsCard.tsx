@@ -159,4 +159,3 @@ const InterfaceSettingsCard = ({
 };
 
 export default InterfaceSettingsCard;
-

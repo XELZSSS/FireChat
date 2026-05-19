@@ -31,8 +31,8 @@ const emitStatus = () => {
 
     try {
       win.webContents.send(IPC_CHANNELS.updater.status, cloneState());
-    } catch {
-      // The renderer can be disposed during app shutdown.
+    } catch (sendError) {
+      console.error('Failed to send updater status to renderer:', sendError);
     }
   }
 };
@@ -111,7 +111,9 @@ const readLatestGithubRelease = () =>
 
           if (response.statusCode !== 200) {
             reject(
-              new Error(`GitHub update check failed with status ${response.statusCode ?? 'unknown'}.`)
+              new Error(
+                `GitHub update check failed with status ${response.statusCode ?? 'unknown'}.`
+              )
             );
             return;
           }

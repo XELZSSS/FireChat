@@ -1,8 +1,4 @@
-import type {
-  ChatAttachment,
-  ChatMessage,
-  ChatSession,
-} from '@/shared/types/chat';
+import type { ChatAttachment, ChatMessage, ChatSession } from '@/shared/types/chat';
 import { buildMessageParts, readMessagePartState } from '@/shared/utils/chatMessageParts';
 import { formatMessageTime } from '@/shared/utils/time';
 import { getProviderDefinition } from '@/infrastructure/providers/registry';
@@ -92,12 +88,12 @@ export const cloneSessions = (sessions: ChatSession[]): ChatSession[] =>
         part.type === 'attachment'
           ? { ...part, attachment: { ...part.attachment } }
           : part.type === 'tool-call'
-              ? { ...part, call: { ...part.call } }
-              : part.type === 'tool-result'
-                ? { ...part, result: { ...part.result } }
-                : part.type === 'citation'
-                  ? { ...part, citation: { ...part.citation } }
-                  : { ...part }
+            ? { ...part, call: { ...part.call } }
+            : part.type === 'tool-result'
+              ? { ...part, result: { ...part.result } }
+              : part.type === 'citation'
+                ? { ...part, citation: { ...part.citation } }
+                : { ...part }
       ),
     })),
   }));

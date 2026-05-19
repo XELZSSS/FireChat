@@ -24,7 +24,7 @@ const createMainAppRuntime = ({
   showWindow,
   startBackgroundServices,
   stopLocalApiProxy,
-  stopMcpClients,
+  stopMcpClients = () => {},
 }) => {
   let isQuitting = false;
   const shouldPreventClose = () =>

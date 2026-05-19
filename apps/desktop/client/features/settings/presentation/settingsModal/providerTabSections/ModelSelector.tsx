@@ -37,8 +37,7 @@ export const ProviderSelector = ({
   onProviderChange,
 }: ProviderSelectorProps) => {
   const shouldSplitBuiltInProviders = !providerLabel;
-  const { official, thirdParty } =
-    partitionBuiltInProviderOptionsByProviderKind(providerOptions);
+  const { official, thirdParty } = partitionBuiltInProviderOptionsByProviderKind(providerOptions);
   const hasSplitProviderOptions = thirdParty.length > 0;
   const handleProviderChange = (value: string) => onProviderChange(value as ProviderId);
 
@@ -112,4 +111,3 @@ export const ModelField = ({
     </Field>
   );
 };
-

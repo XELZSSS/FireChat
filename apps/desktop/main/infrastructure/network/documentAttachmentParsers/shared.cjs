@@ -220,8 +220,6 @@ module.exports = {
   createDocumentAttachmentParserError,
   decodeXmlEntities,
   ensureTextWasExtracted,
-  formatDocumentAttachmentParserErrorMessage,
-  getDocumentAttachmentParserErrorCode,
   getFileExtension,
   isDocumentAttachmentParserError,
   normalizeExtractedText,

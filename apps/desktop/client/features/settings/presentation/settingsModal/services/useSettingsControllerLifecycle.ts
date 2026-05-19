@@ -31,10 +31,7 @@ export const useSettingsControllerLifecycle = ({
   setUiField,
 }: UseSettingsControllerLifecycleOptions) => {
   const validation = useMemo(() => validateSettingsState(state), [state]);
-  const isDirty = useMemo(
-    () => !areComparableValuesEqual(state, stateSeed),
-    [state, stateSeed]
-  );
+  const isDirty = useMemo(() => !areComparableValuesEqual(state, stateSeed), [state, stateSeed]);
 
   const [showDiscardChangesPrompt, setShowDiscardChangesPrompt] = useState(false);
   const [showValidationSummary, setShowValidationSummary] = useState(false);
@@ -93,4 +90,3 @@ export const useSettingsControllerLifecycle = ({
     showValidationSummary: showValidationSummary && validation.errors.length > 0,
   };
 };
-

@@ -1,7 +1,5 @@
-export const TOOL_CARD_BASE_CLASS =
-  'w-fit max-w-[min(40rem,100%)] border px-3.5 py-2.5 text-xs';
-export const CITATION_CARD_CLASS =
-  ' border border-[var(--line-1)] bg-[var(--bg-1)] px-3.5 py-2.5';
+export const TOOL_CARD_BASE_CLASS = 'w-fit max-w-[min(40rem,100%)] border px-3.5 py-2.5 text-xs';
+export const CITATION_CARD_CLASS = ' border border-[var(--line-1)] bg-[var(--bg-1)] px-3.5 py-2.5';
 export const ATTACHMENT_CARD_CLASS =
   'flex min-w-0 max-w-[min(24rem,100%)] items-start gap-2 border border-[var(--line-1)] bg-[var(--bg-1)] px-3.5 py-2.5';
 export const GENERATED_IMAGE_CARD_CLASS =

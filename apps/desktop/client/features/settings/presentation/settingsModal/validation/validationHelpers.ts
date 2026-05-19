@@ -4,7 +4,6 @@ import type { SettingsValidationIssue } from '@client/features/settings/presenta
 export const createEmptyIssuesByTab = (): Record<ActiveSettingsTab, SettingsValidationIssue[]> => ({
   provider: [],
   customProvider: [],
-  search: [],
   requestLogs: [],
   pet: [],
   options: [],

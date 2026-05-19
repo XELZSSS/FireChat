@@ -1,6 +1,6 @@
 /* global Buffer */
 const http2 = require('http2');
-const { PROXY_RESPONSE_HEADER_BLOCKLIST, toProxyRequestHeaders } = require('./proxyShared.cjs');
+const { toProxyRequestHeaders } = require('./proxyShared.cjs');
 
 const { HTTP2_HEADER_METHOD, HTTP2_HEADER_PATH, HTTP2_HEADER_STATUS } = http2.constants;
 
@@ -23,8 +23,7 @@ const toResponseHeaders = (headers, corsHeaders) => {
     const normalizedKey = key.toLowerCase();
     if (
       normalizedKey.startsWith(':') ||
-      RESPONSE_HEADER_BLOCKLIST.has(normalizedKey) ||
-      PROXY_RESPONSE_HEADER_BLOCKLIST.has(normalizedKey)
+      RESPONSE_HEADER_BLOCKLIST.has(normalizedKey)
     ) {
       continue;
     }

@@ -53,4 +53,3 @@ const MessageMarkdownComponent = ({
 
 const MessageMarkdown = memo(MessageMarkdownComponent);
 export default MessageMarkdown;
-

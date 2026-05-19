@@ -2,16 +2,13 @@ import { ProviderId } from '@/shared/types/chat';
 import type { HttpProtocolPreference, SendShortcut } from '@/shared/utils/appOptions';
 import type { LanguagePreference } from '@/shared/utils/i18n';
 import type { AccentPreference, ThemePreference } from '@/shared/utils/theme';
-import type {
-  OpenAdapterToolSettings,
-} from '@/infrastructure/providers/openadapterToolConfig';
+import type { OpenAdapterToolSettings } from '@/infrastructure/providers/openadapterToolConfig';
 import type { OpenAIRequestMode } from '@/infrastructure/providers/types';
 import type { PetSettings } from '@client/features/pet/domain/petTypes';
 
 export type ActiveSettingsTab =
   | 'provider'
   | 'customProvider'
-  | 'search'
   | 'requestLogs'
   | 'pet'
   | 'options';

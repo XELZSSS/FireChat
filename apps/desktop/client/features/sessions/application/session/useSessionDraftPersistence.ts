@@ -46,28 +46,31 @@ export const useSessionDraftPersistence = ({
   const conversationProviderId = conversationContext.providerId;
   const conversationModelName = conversationContext.modelName;
 
-  const buildActiveSessionSnapshot = useCallback((updatedAt: number) => {
-    if (messages.length === 0) return null;
+  const buildActiveSessionSnapshot = useCallback(
+    (updatedAt: number) => {
+      if (messages.length === 0) return null;
 
-    return buildSessionSnapshot({
+      return buildSessionSnapshot({
+        currentSessionId,
+        existingSessionTitle: currentSession?.title,
+        existingSessionCreatedAt: currentSession?.createdAt,
+        messages,
+        defaultSessionTitle,
+        providerId: conversationProviderId,
+        modelName: conversationModelName,
+        updatedAt,
+      });
+    },
+    [
+      conversationModelName,
+      conversationProviderId,
+      currentSession?.createdAt,
+      currentSession?.title,
       currentSessionId,
-      existingSessionTitle: currentSession?.title,
-      existingSessionCreatedAt: currentSession?.createdAt,
-      messages,
       defaultSessionTitle,
-      providerId: conversationProviderId,
-      modelName: conversationModelName,
-      updatedAt,
-    });
-  }, [
-    conversationModelName,
-    conversationProviderId,
-    currentSession?.createdAt,
-    currentSession?.title,
-    currentSessionId,
-    defaultSessionTitle,
-    messages,
-  ]);
+      messages,
+    ]
+  );
 
   const buildChangedSessionDraft = useCallback(() => {
     const referenceSession = lastPersistedSessionRef.current ?? currentSession;

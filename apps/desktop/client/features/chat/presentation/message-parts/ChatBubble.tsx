@@ -190,4 +190,3 @@ const areChatBubbleEqual = (prev: ChatBubbleProps, next: ChatBubbleProps): boole
 };
 
 export default memo(ChatBubble, areChatBubbleEqual);
-

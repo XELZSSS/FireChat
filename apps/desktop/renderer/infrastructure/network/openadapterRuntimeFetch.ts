@@ -58,13 +58,16 @@ export const openadapterFetch = async (
     return fetch(input, init);
   }
 
-  return proxyFetch({
-    kind: 'openadapter',
-    url,
-  }, {
-    method: init?.method ?? (isRequest(input) ? input.method : 'GET'),
-    headers: mergeRequestHeaders(input, init),
-    body: await resolveRequestBody(input, init),
-    signal: init?.signal ?? (isRequest(input) ? input.signal : undefined),
-  });
+  return proxyFetch(
+    {
+      kind: 'openadapter',
+      url,
+    },
+    {
+      method: init?.method ?? (isRequest(input) ? input.method : 'GET'),
+      headers: mergeRequestHeaders(input, init),
+      body: await resolveRequestBody(input, init),
+      signal: init?.signal ?? (isRequest(input) ? input.signal : undefined),
+    }
+  );
 };

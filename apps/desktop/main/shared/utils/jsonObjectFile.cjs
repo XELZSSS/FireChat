@@ -24,27 +24,7 @@ const writeJsonFile = (filePath, value, { trailingNewline = false } = {}) => {
   );
 };
 
-const updateJsonObjectFile = (filePath, recipe, options) => {
-  const current = readJsonObjectFile(filePath, {});
-  const next = typeof recipe === 'function' ? recipe({ ...current }) : current;
-  const normalizedNext = isPlainObject(next) ? next : {};
-  writeJsonFile(filePath, normalizedNext, options);
-  return normalizedNext;
-};
-
-const removeFileIfPresent = (filePath) => {
-  try {
-    fs.rmSync(filePath, { force: true });
-  } catch (error) {
-    if (error?.code !== 'ENOENT') {
-      throw error;
-    }
-  }
-};
-
 module.exports = {
   readJsonObjectFile,
-  removeFileIfPresent,
-  updateJsonObjectFile,
   writeJsonFile,
 };

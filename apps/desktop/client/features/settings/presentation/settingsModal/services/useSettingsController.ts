@@ -50,20 +50,15 @@ export const useSettingsController = ({
     stateSeed,
     setUiField,
   });
-  const {
-    onTabChange,
-    providerActions,
-    appearanceActions,
-    versionActions,
-    optionsActions,
-  } = useSettingsControllerActions({
-    dispatch,
-    state,
-    handleProviderChange,
-    setProviderField,
-    setAppField,
-    setUiField,
-  });
+  const { onTabChange, providerActions, appearanceActions, versionActions, optionsActions } =
+    useSettingsControllerActions({
+      dispatch,
+      state,
+      handleProviderChange,
+      setProviderField,
+      setAppField,
+      setUiField,
+    });
   const {
     availableModels,
     isFetchingModels,

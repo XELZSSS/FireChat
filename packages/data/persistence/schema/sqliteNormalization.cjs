@@ -11,15 +11,6 @@ const normalizeRequiredString = (value, label) => {
   return trimmed;
 };
 
-const normalizeOptionalString = (value) => {
-  if (typeof value !== 'string') {
-    return null;
-  }
-
-  const trimmed = value.trim();
-  return trimmed || null;
-};
-
 const normalizeNumber = (value, label) => {
   if (typeof value !== 'number' || !Number.isFinite(value)) {
     throw new Error(`${label} must be a finite number.`);
@@ -60,7 +51,6 @@ module.exports = {
   normalizeLimit,
   normalizeNumber,
   normalizeOptionalLimit,
-  normalizeOptionalString,
   normalizeRequiredString,
   parseJson,
 };

@@ -84,4 +84,3 @@ const InterfaceJsonModal = ({
 };
 
 export default InterfaceJsonModal;
-

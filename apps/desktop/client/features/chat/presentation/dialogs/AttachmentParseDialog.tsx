@@ -17,8 +17,7 @@ type AttachmentParseItemProps = {
   onChangePageRange: (attachmentId: string, pageRange: string) => void;
 };
 
-const ATTACHMENT_CARD_CLASS =
-  'space-y-3 border border-[var(--line-1)] bg-[var(--bg-2)] p-3';
+const ATTACHMENT_CARD_CLASS = 'space-y-3 border border-[var(--line-1)] bg-[var(--bg-2)] p-3';
 
 const AttachmentParseItem = memo(function AttachmentParseItem({
   attachment,
@@ -96,4 +95,3 @@ const AttachmentParseDialogBase = ({
 
 const AttachmentParseDialog = memo(AttachmentParseDialogBase);
 export default AttachmentParseDialog;
-

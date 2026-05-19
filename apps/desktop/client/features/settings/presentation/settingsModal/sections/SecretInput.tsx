@@ -121,4 +121,3 @@ const SecretInput = ({
 };
 
 export default SecretInput;
-

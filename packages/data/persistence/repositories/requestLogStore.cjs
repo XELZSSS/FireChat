@@ -5,7 +5,7 @@ const {
   queryRequestLogRecords,
 } = require('../runtime/sqliteStore.cjs');
 
-const MAX_REQUEST_LOG_ITEMS = 500;
+const { MAX_REQUEST_LOG_ITEMS } = require('./requestLogConstants.cjs');
 const DEFAULT_QUERY_LIMIT = 200;
 const MAX_ERROR_MESSAGE_LENGTH = 240;
 

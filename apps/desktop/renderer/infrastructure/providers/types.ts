@@ -1,9 +1,4 @@
-import {
-  ChatMessage,
-  ChatPromptInput,
-  Citation,
-  ProviderId,
-} from '@/shared/types/chat';
+import { ChatMessage, ChatPromptInput, Citation, ProviderId } from '@/shared/types/chat';
 import type { RequestPolicy } from '@/infrastructure/providers/requestPolicy';
 import type { OpenAdapterToolSettings } from '@/infrastructure/providers/openadapterToolConfig';
 

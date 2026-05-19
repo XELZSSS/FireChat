@@ -1,7 +1,10 @@
 /* global process */
 const { app, shell } = require('electron');
 const path = require('path');
-const { parseExternalHttpUrl, shouldOpenExternalUrl } = require('../../../../../shared/external-url.cjs');
+const {
+  parseExternalHttpUrl,
+  shouldOpenExternalUrl,
+} = require('../../../../../shared/external-url.cjs');
 const { IPC_CHANNELS } = require('../channels.cjs');
 const {
   exportOptionsConfig,
@@ -25,7 +28,9 @@ const {
   startLocalApiProxy,
   updateLocalApiProxyConfig,
 } = require('../../../infrastructure/network/localApiProxy.cjs');
-const { writeStartupAppearance } = require('../../../infrastructure/electron/startupAppearance.cjs');
+const {
+  writeStartupAppearance,
+} = require('../../../infrastructure/electron/startupAppearance.cjs');
 const { applyWindowAppearance } = require('../../../infrastructure/electron/appWindow.cjs');
 const { writeWindowBehavior } = require('../../../infrastructure/electron/windowBehavior.cjs');
 const openExternalUrl = async (url) => {

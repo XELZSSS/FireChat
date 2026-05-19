@@ -40,4 +40,3 @@ const ChatStandardMessageList = memo(function ChatStandardMessageList({
 });
 
 export default ChatStandardMessageList;
-

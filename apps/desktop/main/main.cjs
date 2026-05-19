@@ -36,7 +36,9 @@ const {
   getUpdaterState,
 } = require('./infrastructure/network/updater/index.cjs');
 const { stopLocalApiProxy } = require('./infrastructure/network/localApiProxy.cjs');
-const { closeFireChatDatabase } = require('../../../packages/data/persistence/runtime/sqliteStore.cjs');
+const {
+  closeFireChatDatabase,
+} = require('../../../packages/data/persistence/runtime/sqliteStore.cjs');
 const {
   installOpenAdapterProtocolHandler,
   registerOpenAdapterScheme,
@@ -87,4 +89,3 @@ mainAppRuntime.registerSingleInstanceLock();
 mainAppRuntime.registerLifecycle();
 
 void app.whenReady().then(() => mainAppRuntime.start());
-

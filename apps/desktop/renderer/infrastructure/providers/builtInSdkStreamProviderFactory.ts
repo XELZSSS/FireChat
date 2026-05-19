@@ -7,8 +7,6 @@ import { createZhipu } from 'zhipu-ai-provider';
 import type { ProviderId } from '@/shared/types/chat';
 import { t } from '@/shared/utils/i18n';
 import { buildProviderOptionsRecord } from '@/infrastructure/providers/aiSdkProviderBase';
-import { getProviderDefaults } from '@/infrastructure/providers/config/providerConfig';
-import { getProviderResolvedConfig } from '@/infrastructure/providers/runtime/providerRuntimeCatalog';
 import {
   getDefaultDeepSeekBaseUrl,
   getDefaultGoogleBaseUrl,
@@ -33,7 +31,6 @@ import {
   supportsMoonshotReasoningControl,
 } from '@/infrastructure/providers/reasoningControl';
 import type { ProviderChat } from '@/infrastructure/providers/types';
-import { AISdkStreamProvider } from '@/infrastructure/providers/sdkStreamProvider';
 import {
   SDK_STREAM_BUILTIN_PROVIDER_IDS,
   isSdkStreamBuiltInProviderId,
@@ -55,32 +52,6 @@ type MiniMaxSdk = ReturnType<typeof createMinimaxOpenAI>;
 type MoonshotSdk = ReturnType<typeof createMoonshotAI>;
 
 const standardOpenAIStyleProviderFactories = createStandardSdkStreamProviderFactories();
-
-const createImageOnlyProvider = (
-  providerId: SdkStreamBuiltInProviderId,
-  missingApiKeyError: string
-): ProviderChat => {
-  const defaults = getProviderDefaults(providerId);
-  const config = getProviderResolvedConfig(providerId);
-
-  return new AISdkStreamProvider<unknown>({
-    id: providerId,
-    defaultModel: defaults.defaultModel,
-    defaultApiKey: defaults.defaultApiKey,
-    getDefaultBaseUrl: () => defaults.defaultBaseUrl,
-    normalizeBaseUrl: (value) => normalizeBaseUrlForProvider(providerId, value),
-    missingApiKeyError,
-    logLabel: config.label,
-
-    supportsBaseUrl: config.capabilities.supportsBaseUrl,
-    supportsCustomHeaders: config.capabilities.supportsCustomHeaders,
-    createSdkProvider: () => ({}),
-    createModel: () => {
-      throw new Error(`${config.label} only supports image generation.`);
-    },
-    listModels: async () => [],
-  });
-};
 
 const createGoogleProvider = (): ProviderChat =>
   createOpenAIStyleSdkProviderFactory<GoogleSdk>({
@@ -310,12 +281,6 @@ const sdkStreamProviderFactories: Record<SdkStreamBuiltInProviderId, () => Provi
   clarifai: standardOpenAIStyleProviderFactories.clarifai!,
   heroku: standardOpenAIStyleProviderFactories.heroku!,
   'lm-studio': standardOpenAIStyleProviderFactories['lm-studio']!,
-  fal: () => createImageOnlyProvider('fal', 'Missing FAL_API_KEY'),
-  replicate: () => createImageOnlyProvider('replicate', 'Missing REPLICATE_API_TOKEN'),
-  'black-forest-labs': () =>
-    createImageOnlyProvider('black-forest-labs', 'Missing BFL_API_KEY'),
-  prodia: () => createImageOnlyProvider('prodia', 'Missing PRODIA_API_KEY'),
-  'luma-ai': () => createImageOnlyProvider('luma-ai', 'Missing LUMA_API_KEY'),
   deepseek: createDeepSeekProvider,
   glm: createGlmProvider,
   minimax: createMinimaxProvider,

@@ -3,9 +3,7 @@ import {
   getDesktopProviderConfigSnapshot,
   saveDesktopProviderConfigSnapshot,
 } from '@client/features/desktop-shell/infrastructure/nativeDesktop';
-import {
-  normalizeProviderFileSnapshot,
-} from '@/infrastructure/providers/runtime/providerFileNormalization';
+import { normalizeProviderFileSnapshot } from '@/infrastructure/providers/runtime/providerFileNormalization';
 
 let cachedProviderFileSnapshot = normalizeProviderFileSnapshot(
   typeof window !== 'undefined' ? window.firechat?.config?.providerFiles : undefined

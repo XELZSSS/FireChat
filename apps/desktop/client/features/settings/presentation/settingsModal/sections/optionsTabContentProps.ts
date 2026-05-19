@@ -73,4 +73,3 @@ export const buildOptionsTabProps = ({
     onLocalProxyPortChange: versionActions.onLocalProxyPortChange,
   };
 };
-

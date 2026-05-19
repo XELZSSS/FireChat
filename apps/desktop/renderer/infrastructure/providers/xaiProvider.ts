@@ -62,8 +62,6 @@ class XAIProvider extends AISdkProviderStateBase implements ProviderChat {
     if (
       kind === 'modelName' ||
       kind === 'systemPrompt' ||
-      kind === 'imageModelName' ||
-      kind === 'imageGenerationSettings' ||
       kind === 'apiKey' ||
       kind === 'baseUrl'
     ) {

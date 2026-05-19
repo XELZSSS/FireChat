@@ -20,7 +20,6 @@ import {
   type SessionContextActions,
 } from '@client/features/sessions/application/session/sessionHelpers';
 
-
 type UseSessionActionsOptions = {
   chatService: ChatService;
   currentSessionId: string;
@@ -201,7 +200,6 @@ export const useSessionActions = ({
     },
     [
       activateDraftSession,
-      chatService,
       clearSessionNotice,
       currentSessionId,
       deletedSessionIdsRef,

@@ -66,4 +66,3 @@ export const useChatInputDraft = ({ sessionId }: UseChatInputDraftProps) => {
     setCurrentInput,
   };
 };
-

@@ -9,11 +9,11 @@ const createWindowBridge = ({ ipcRenderer, channels, subscribeMaximizeChanged })
   getSystemLanguage: invoke(ipcRenderer, channels.window.getSystemLanguage),
   getSystemTheme: invoke(ipcRenderer, channels.window.getSystemTheme),
   onMaximizeChanged: subscribeMaximizeChanged,
-  onSystemThemeChanged: subscribe(ipcRenderer, channels.window.systemThemeChanged, () => undefined),
+  onSystemThemeChanged: subscribe(ipcRenderer, channels.window.systemThemeChanged, (theme) => theme),
   onSystemLanguageChanged: subscribe(
     ipcRenderer,
     channels.window.systemLanguageChanged,
-    () => undefined
+    (lang) => lang
   ),
 });
 

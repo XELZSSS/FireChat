@@ -95,4 +95,8 @@ runNodeScript(
   ['--win', 'nsis', '--x64'],
   env
 );
-runNodeScript(resolveNodeScript('apps/desktop/main/scripts/cleanup-release-artifacts.cjs'), [], env);
+runNodeScript(
+  resolveNodeScript('apps/desktop/main/scripts/cleanup-release-artifacts.cjs'),
+  [],
+  env
+);

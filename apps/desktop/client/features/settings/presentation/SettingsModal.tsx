@@ -200,4 +200,3 @@ export default function SettingsModal({ isOpen, ...props }: SettingsModalProps) 
 
   return <OpenSettingsModal {...props} />;
 }
-

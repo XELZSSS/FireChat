@@ -143,5 +143,4 @@ module.exports = {
   destroyTray,
   setTrayLanguage,
   setTrayLabels,
-  updateTrayMenu,
 };

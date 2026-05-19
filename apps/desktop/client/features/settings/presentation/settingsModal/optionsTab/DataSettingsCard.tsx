@@ -46,10 +46,10 @@ const DataSettingsCard = ({
     clearCacheStatus === 'pending'
       ? NOTICE_CLASS_BY_STATUS.default
       : clearCacheStatus === 'success'
-      ? NOTICE_CLASS_BY_STATUS.success
-      : clearCacheStatus === 'error'
-        ? NOTICE_CLASS_BY_STATUS.error
-        : NOTICE_CLASS_BY_STATUS.default;
+        ? NOTICE_CLASS_BY_STATUS.success
+        : clearCacheStatus === 'error'
+          ? NOTICE_CLASS_BY_STATUS.error
+          : NOTICE_CLASS_BY_STATUS.default;
   const optionsNoticeClass =
     optionsNoticeStatus === 'success'
       ? NOTICE_CLASS_BY_STATUS.success
@@ -124,4 +124,3 @@ const DataSettingsCard = ({
 };
 
 export default DataSettingsCard;
-

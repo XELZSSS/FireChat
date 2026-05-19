@@ -2,9 +2,7 @@ import { createThinkStreamParserState } from '@/shared/utils/streaming';
 import { t } from '@/shared/utils/i18n';
 import type { ChatMessage } from '@/shared/types/chat';
 import { classifyFriendlyError } from '@contracts/request-log/classification';
-import {
-  readMessagePartState,
-} from '@/shared/utils/chatMessageParts';
+import { readMessagePartState } from '@/shared/utils/chatMessageParts';
 import { isPlainObject } from '@/shared/utils/plainObject';
 
 type MessagePartState = ReturnType<typeof readMessagePartState>;
