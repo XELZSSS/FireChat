@@ -53,12 +53,11 @@ export abstract class AISdkOpenAICompatibleProviderBase
   }
 
   protected override resolveTransportBaseUrl(baseUrl?: string): string | undefined {
-    return this.resolveAiGatewayBaseUrl() ?? this.resolveBaseUrl(baseUrl);
+    return this.resolveBaseUrl(baseUrl);
   }
 
   protected async buildAdditionalTools(_context: {
     apiKey?: string;
-    searchEnabled: boolean;
     requestPolicy?: RequestPolicy;
   }): Promise<Record<string, unknown> | undefined> {
     return undefined;
@@ -105,16 +104,6 @@ export abstract class AISdkOpenAICompatibleProviderBase
     return [];
   }
 
-  protected createHostedSearchTool(_provider: ReturnType<typeof createOpenAICompatible>): unknown {
-    return undefined;
-  }
-
-  protected createHostedToolSearchTool(
-    _provider: ReturnType<typeof createOpenAICompatible>
-  ): unknown {
-    return undefined;
-  }
-
   private requireBaseUrl(): string | undefined {
     const resolved = this.resolveTransportBaseUrl(this.getBaseUrl());
     if (!resolved && this.supportsBaseUrl && this.missingBaseUrlError) {
@@ -132,11 +121,6 @@ export abstract class AISdkOpenAICompatibleProviderBase
     signal?: AbortSignal,
     requestPolicy?: RequestPolicy
   ): AsyncGenerator<string, void, unknown> {
-    if (message.imageGenerationEnabled) {
-      await this.generateImageResponse(message);
-      return;
-    }
-
     const execution = createProviderTextExecution({
       state: this.createTextExecutionState(this.providerName, this.reasoningPreference.enabled),
       message,
@@ -170,22 +154,11 @@ export abstract class AISdkOpenAICompatibleProviderBase
 
     const additionalTools = await this.buildAdditionalTools({
       apiKey,
-      searchEnabled: runtime.searchEnabled,
       requestPolicy,
     });
     const tools = await resolveProviderTextExecutionTools({
-      requestPolicy,
       runtime,
-      hostedSearchTool: runtime.hostedSearchEnabled
-        ? this.createHostedSearchTool(provider)
-        : undefined,
-      hostedToolSearchTool: runtime.toolSearchEnabled
-        ? this.createHostedToolSearchTool(provider)
-        : undefined,
-      additionalTools: {
-        ...(additionalTools ?? {}),
-      },
-      nextHistory,
+      additionalTools,
     });
 
     const completion = yield* streamProviderTextExecution({
@@ -198,9 +171,6 @@ export abstract class AISdkOpenAICompatibleProviderBase
       requestPolicy,
       commitHistory: this.setHistoryWithModelResponse.bind(this),
       rawReasoningExtractor: emitReasoning ? this.getRawReasoningTexts.bind(this) : undefined,
-      onResult: async ({ result }) => {
-        await this.patchGeneratedImagesFromResult(result);
-      },
       streamOptions: {
         model: provider(requestModelName),
         system: this.systemPrompt,

@@ -1,13 +1,9 @@
 import { useCallback, useMemo, type Dispatch } from 'react';
-import { TavilyConfig } from '@/shared/types/chat';
 import type { OpenAdapterToolKey } from '@/infrastructure/providers/openadapterToolConfig';
 import type { OpenAIRequestMode } from '@/infrastructure/providers/types';
-import type { ImageGenerationSettings } from '@/infrastructure/providers/imageGenerationSettings';
 import type { LanguagePreference } from '@/shared/utils/i18n';
 import type { AppFontSize, HttpProtocolPreference, SendShortcut } from '@/shared/utils/appOptions';
 import type { AccentPreference, ThemePreference } from '@/shared/utils/theme';
-import type { AiGatewaySettings } from '@/infrastructure/providers/aiGatewaySettings';
-import type { CliSettings } from '@contracts/desktop';
 import type { PetSettings } from '@client/features/pet/domain/petTypes';
 import { resolveBaseUrlForRegion } from '@/infrastructure/providers/config/baseUrl';
 import {
@@ -56,16 +52,7 @@ export const useSettingsControllerActions = ({
 }: UseSettingsControllerActionsOptions) => {
   const { providerId } = state.provider;
   const { toolCallMaxRounds } = state.app;
-  const { showApiKey, showTavilyKey } = state.ui;
-
-  const setTavilyField = useCallback(
-    (key: keyof TavilyConfig, value: TavilyConfig[keyof TavilyConfig]) =>
-      dispatch({
-        type: 'patch_provider',
-        payload: { tavily: { ...state.provider.tavily, [key]: value } },
-      }),
-    [dispatch, state.provider.tavily]
-  );
+  const { showApiKey } = state.ui;
 
   const addCustomHeader = useCallback(() => dispatch({ type: 'add_custom_header' }), [dispatch]);
   const setCustomHeaderKey = useCallback(
@@ -105,10 +92,6 @@ export const useSettingsControllerActions = ({
       setProviderField('baseUrl', resolveBaseUrlForRegion(providerId, region)),
     [providerId, setProviderField]
   );
-  const handleToggleTavilyKeyVisibility = useCallback(
-    () => setUiField('showTavilyKey', !showTavilyKey),
-    [setUiField, showTavilyKey]
-  );
   const handleSetOpenAdapterToolEnabled = useCallback(
     (key: OpenAdapterToolKey, value: boolean) =>
       dispatch({
@@ -126,9 +109,6 @@ export const useSettingsControllerActions = ({
       onSetDefaultProvider: handleSetDefaultProvider,
       onModelNameChange: (value: string) => setProviderField('modelName', value),
       onSystemPromptChange: (value: string) => setProviderField('systemPrompt', value),
-      onImageModelNameChange: (value: string) => setProviderField('imageModelName', value),
-      onImageGenerationChange: (value: ImageGenerationSettings) =>
-        setProviderField('imageGeneration', value),
       onApiKeyChange: (value: string) => setProviderField('apiKey', value),
       onRequestModeChange: (value: OpenAIRequestMode) => setProviderField('requestMode', value),
       onToggleApiKeyVisibility: handleToggleApiKeyVisibility,
@@ -160,28 +140,6 @@ export const useSettingsControllerActions = ({
       setProviderField,
       setUiField,
     ]
-  );
-
-  const searchActions = useMemo(
-    () => ({
-      onSetTavilyField: setTavilyField,
-      onToggleTavilyKeyVisibility: handleToggleTavilyKeyVisibility,
-    }),
-    [handleToggleTavilyKeyVisibility, setTavilyField]
-  );
-
-  const aiGatewayActions = useMemo(
-    () => ({
-      onAiGatewayChange: (value: AiGatewaySettings) => setAppField('aiGateway', value),
-    }),
-    [setAppField]
-  );
-
-  const cliActions = useMemo(
-    () => ({
-      onCliSettingsChange: (value: CliSettings) => setAppField('cli', value),
-    }),
-    [setAppField]
   );
 
   const onTabChange = useCallback(
@@ -250,9 +208,6 @@ export const useSettingsControllerActions = ({
   return {
     onTabChange,
     providerActions,
-    searchActions,
-    aiGatewayActions,
-    cliActions,
     appearanceActions,
     versionActions: versionTabActions,
     optionsActions,

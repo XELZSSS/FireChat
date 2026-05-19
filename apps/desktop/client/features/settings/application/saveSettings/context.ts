@@ -30,7 +30,6 @@ export type SaveSettingsTransactionContext = {
   interfaceLayoutChanged: boolean;
   proxyChanged: boolean;
   windowBehaviorChanged: boolean;
-  cliChanged: boolean;
 };
 
 const buildComparableProviderSettingsSnapshot = (
@@ -38,13 +37,10 @@ const buildComparableProviderSettingsSnapshot = (
 ) => ({
   modelName: settings?.modelName ?? '',
   systemPrompt: settings?.systemPrompt ?? '',
-  imageModelName: settings?.imageModelName ?? '',
-  imageGeneration: settings?.imageGeneration ?? {},
   requestMode: settings?.requestMode,
   apiKey: settings?.apiKey ?? '',
   baseUrl: settings?.baseUrl ?? '',
   customHeaders: settings?.customHeaders ?? [],
-  tavily: settings?.tavily ?? {},
   openAdapterTools: settings?.openAdapterTools ?? {},
 });
 
@@ -104,6 +100,5 @@ export const createSaveSettingsTransactionContext = async (
       previousAppSettings.launchAtStartup !== value.app.launchAtStartup ||
       previousAppSettings.startMinimizedToTray !== value.app.startMinimizedToTray ||
       previousAppSettings.rememberWindowBounds !== value.app.rememberWindowBounds,
-    cliChanged: !areComparableValuesEqual(previousAppSettings.cli, value.app.cli),
   };
 };

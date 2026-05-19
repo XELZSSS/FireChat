@@ -45,8 +45,6 @@ const ProviderTab = ({
   onSetDefaultProvider,
   onModelNameChange,
   onSystemPromptChange,
-  onImageModelNameChange,
-  onImageGenerationChange,
   onFetchModels,
   onApiKeyChange,
   onRequestModeChange,
@@ -143,8 +141,6 @@ const ProviderTab = ({
     actions: {
       onModelNameChange,
       onSystemPromptChange,
-      onImageModelNameChange,
-      onImageGenerationChange,
       onApiKeyChange,
       onRequestModeChange,
       onBaseUrlChange,

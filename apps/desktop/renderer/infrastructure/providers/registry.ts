@@ -7,10 +7,9 @@ import type {
   ProviderReasoningPreference,
   ProviderResponseMetadata,
 } from '@/infrastructure/providers/types';
-import type { ChatMessage, ChatPromptInput, TavilyConfig } from '@/shared/types/chat';
+import type { ChatMessage, ChatPromptInput } from '@/shared/types/chat';
 import type { RequestPolicy } from '@/infrastructure/providers/requestPolicy';
 import type { HeaderPair } from '@/infrastructure/providers/aiSdkProviderMessages';
-import type { ImageGenerationSettings } from '@/infrastructure/providers/imageGenerationSettings';
 import type { OpenAdapterToolSettings } from '@/infrastructure/providers/openadapterToolConfig';
 import { BUILTIN_PROVIDER_IDS } from '../../../../shared/provider-ids';
 import {
@@ -39,13 +38,10 @@ class LazyProvider implements ProviderChat {
   private modelName: string;
   private systemPrompt = '';
   private apiKey?: string;
-  private imageModelName?: string;
-  private imageGenerationSettings?: ImageGenerationSettings;
   private reasoningPreference: ProviderReasoningPreference = { enabled: false, level: 'medium' };
   private requestMode?: OpenAIRequestMode;
   private baseUrl?: string;
   private customHeaders: HeaderPair[] = [];
-  private tavilyConfig?: TavilyConfig;
   private openAdapterToolSettings?: OpenAdapterToolSettings;
 
   constructor(private readonly options: LazyProviderOptions) {
@@ -73,15 +69,12 @@ class LazyProvider implements ProviderChat {
     provider.setModelName(this.modelName);
     provider.setSystemPrompt?.(this.systemPrompt);
     provider.setApiKey(this.apiKey);
-    provider.setImageModelName?.(this.imageModelName);
-    provider.setImageGenerationSettings?.(this.imageGenerationSettings);
     provider.setReasoningPreference?.(this.reasoningPreference);
     if (this.requestMode) {
       provider.setRequestMode?.(this.requestMode);
     }
     provider.setBaseUrl?.(this.baseUrl);
     provider.setCustomHeaders?.(this.customHeaders);
-    provider.setTavilyConfig?.(this.tavilyConfig);
     if (this.openAdapterToolSettings) {
       provider.setOpenAdapterToolSettings?.(this.openAdapterToolSettings);
     }
@@ -107,24 +100,6 @@ class LazyProvider implements ProviderChat {
   setSystemPrompt(systemPrompt?: string): void {
     this.systemPrompt = systemPrompt?.trim() ?? '';
     this.provider?.setSystemPrompt?.(this.systemPrompt);
-  }
-
-  getImageModelName(): string | undefined {
-    return this.imageModelName;
-  }
-
-  setImageModelName(model?: string): void {
-    this.imageModelName = model;
-    this.provider?.setImageModelName?.(model);
-  }
-
-  getImageGenerationSettings(): ImageGenerationSettings | undefined {
-    return this.imageGenerationSettings;
-  }
-
-  setImageGenerationSettings(settings?: ImageGenerationSettings): void {
-    this.imageGenerationSettings = settings;
-    this.provider?.setImageGenerationSettings?.(settings);
   }
 
   getApiKey(): string | undefined {
@@ -175,15 +150,6 @@ class LazyProvider implements ProviderChat {
     this.provider?.setCustomHeaders?.(headers);
   }
 
-  getTavilyConfig(): TavilyConfig | undefined {
-    return this.tavilyConfig;
-  }
-
-  setTavilyConfig(config: TavilyConfig | undefined): void {
-    this.tavilyConfig = config;
-    this.provider?.setTavilyConfig?.(config);
-  }
-
   getOpenAdapterToolSettings(): OpenAdapterToolSettings | undefined {
     return this.openAdapterToolSettings;
   }
@@ -199,10 +165,6 @@ class LazyProvider implements ProviderChat {
 
   async listModels(): Promise<ProviderModelItem[]> {
     return (await this.loadProvider()).listModels?.() ?? [];
-  }
-
-  async listImageModels(): Promise<ProviderModelItem[]> {
-    return (await this.loadProvider()).listImageModels?.() ?? [];
   }
 
   resetChat(): void {

@@ -13,7 +13,6 @@ import {
 import { getDefaultOpenCodeBaseUrl } from '@/infrastructure/providers/config/baseUrl';
 import { getProviderDefaults } from '@/infrastructure/providers/config/providerConfig';
 import { fetchOpenAIStyleModels } from '@/infrastructure/providers/modelDiscovery';
-import { AI_GATEWAY_DUMMY_API_KEY } from '@/infrastructure/providers/aiGatewaySettings';
 import {
   buildOpenAICompatibleChatReasoningOptions,
   buildOpenAIReasoningOptions,
@@ -75,8 +74,7 @@ class OpenCodeProvider extends AISdkProviderStateBase implements ProviderChat {
       kind === 'systemPrompt' ||
       kind === 'apiKey' ||
       kind === 'baseUrl' ||
-      kind === 'customHeaders' ||
-      kind === 'tavilyConfig'
+      kind === 'customHeaders'
     ) {
       this.previousResponseId = undefined;
     }
@@ -173,9 +171,7 @@ class OpenCodeProvider extends AISdkProviderStateBase implements ProviderChat {
     onCompleted,
   }: OpenCodeStreamOptions): AsyncGenerator<string, void, unknown> {
     const tools = await resolveProviderTextExecutionTools({
-      requestPolicy,
       runtime,
-      nextHistory,
     });
     const completion = yield* streamProviderTextExecution({
       logLabel: this.logLabel,
@@ -187,9 +183,6 @@ class OpenCodeProvider extends AISdkProviderStateBase implements ProviderChat {
       requestPolicy,
       commitHistory: this.setHistoryWithModelResponse.bind(this),
       onCompleted,
-      onResult: async ({ result }) => {
-        await this.patchGeneratedImagesFromResult(result);
-      },
       streamOptions: {
         model: model as any,
         system: this.systemPrompt,
@@ -207,100 +200,14 @@ class OpenCodeProvider extends AISdkProviderStateBase implements ProviderChat {
     signal?: AbortSignal,
     requestPolicy?: RequestPolicy
   ): AsyncGenerator<string, void, unknown> {
-    if (message.imageGenerationEnabled) {
-      await this.generateImageResponse(message);
-      return;
-    }
-
     const execution = createProviderTextExecution({
       state: this.createTextExecutionState(this.providerName, this.reasoningPreference.enabled),
       message,
     });
     const { promptText, emitReasoning, nextHistory, runtime } = execution;
     const apiKey = this.resolveApiKey();
-    const gatewayConfig = this.resolveAiGatewayCallRequestConfig();
-    const baseURL = gatewayConfig?.baseUrl ?? this.resolveTransportBaseUrl(this.baseUrl);
+    const baseURL = this.resolveTransportBaseUrl(this.baseUrl);
     const transport = resolveOpenCodeModelTransport(this.modelName, baseURL);
-
-    if (gatewayConfig) {
-      this.previousResponseId = undefined;
-
-      if (transport === 'messages') {
-        const provider = createAnthropic({
-          name: runtime.providerName,
-          authToken: gatewayConfig.apiKey ?? AI_GATEWAY_DUMMY_API_KEY,
-          baseURL: gatewayConfig.anthropicBaseUrl,
-          headers: {
-            ...runtime.customHeaders,
-            ...this.buildExtraHeaders(),
-          },
-          fetch: this.buildRuntimeFetch(),
-        });
-        yield* this.streamTextCompletion({
-          signal,
-          emitReasoning,
-          runtime,
-          nextHistory,
-          requestPolicy,
-          model: provider.messages(this.modelName),
-        });
-        return;
-      }
-
-      if (transport === 'google') {
-        const provider = createGoogleGenerativeAI({
-          name: runtime.providerName,
-          apiKey: gatewayConfig.apiKey ?? AI_GATEWAY_DUMMY_API_KEY,
-          baseURL: gatewayConfig.geminiBaseUrl,
-          headers: {
-            ...(gatewayConfig.apiKey
-              ? {
-                  Authorization: `Bearer ${gatewayConfig.apiKey}`,
-                }
-              : {}),
-            ...runtime.customHeaders,
-            ...this.buildExtraHeaders(),
-          },
-          fetch: this.buildRuntimeFetch(),
-        });
-        yield* this.streamTextCompletion({
-          signal,
-          emitReasoning,
-          runtime,
-          nextHistory,
-          requestPolicy,
-          model: provider(this.modelName),
-        });
-        return;
-      }
-
-      const provider = createOpenAICompatible({
-        name: runtime.providerName,
-        apiKey,
-        baseURL: gatewayConfig.baseUrl,
-        headers: {
-          ...runtime.customHeaders,
-          ...this.buildExtraHeaders(),
-        },
-        fetch: this.buildRuntimeFetch(),
-      });
-      yield* this.streamTextCompletion({
-        signal,
-        emitReasoning,
-        runtime,
-        nextHistory,
-        requestPolicy,
-        model: provider(this.modelName),
-        providerOptions: buildProviderOptionsRecord(
-          ['openaiCompatible', runtime.providerName],
-          this.buildChatProviderOptions({
-            emitReasoning,
-            requestPolicy,
-          })
-        ),
-      });
-      return;
-    }
 
     if (transport === 'responses') {
       const previousResponseId = this.previousResponseId;

@@ -1,4 +1,3 @@
-import type { TavilySearchDepth, TavilyTopic } from '@/shared/types/chat';
 import {
   DEFAULT_MAX_TOOL_CALL_ROUNDS,
   MAX_TOOL_CALL_ROUNDS,
@@ -7,9 +6,7 @@ import {
 
 export type AdaptiveToolRequest = {
   query?: string;
-  search_depth?: TavilySearchDepth;
   max_results?: number;
-  topic?: TavilyTopic;
 };
 
 export type RequestPolicyMode = 'serial' | 'balanced' | 'aggressive';
@@ -63,13 +60,7 @@ export const decideAdaptiveToolParallelism = (requests: AdaptiveToolRequest[]): 
 
   const hasComplexIntent = requests.some((request) => {
     const queryLength = request.query?.trim().length ?? 0;
-    return (
-      queryLength >= LONG_QUERY_THRESHOLD ||
-      request.search_depth === 'advanced' ||
-      request.search_depth === 'ultra-fast' ||
-      (request.max_results ?? 0) >= 8 ||
-      request.topic === 'news'
-    );
+    return queryLength >= LONG_QUERY_THRESHOLD || (request.max_results ?? 0) >= 8;
   });
 
   const desired = hasComplexIntent || requests.length >= 3 ? 3 : 2;

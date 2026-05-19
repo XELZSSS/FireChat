@@ -1,6 +1,4 @@
 export const EN_RUNTIME_TRANSLATIONS = {
-  'input.search.enable': 'Search on',
-  'input.search.disable': 'Search off',
   'input.image.enable': 'Image mode on',
   'input.image.disable': 'Image mode off',
   'input.reasoning.enable': 'Reasoning on',

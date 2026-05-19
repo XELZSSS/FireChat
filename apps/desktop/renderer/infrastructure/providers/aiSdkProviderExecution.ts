@@ -1,5 +1,5 @@
 import { stepCountIs, streamText, type ModelMessage } from 'ai';
-import type { ChatPromptInput, ChatMessage, ProviderId, TavilyConfig } from '@/shared/types/chat';
+import type { ChatPromptInput, ChatMessage, ProviderId } from '@/shared/types/chat';
 import type { RequestPolicy } from '@/infrastructure/providers/requestPolicy';
 import { getRequestPolicyToolCallMaxRounds } from '@/infrastructure/providers/requestPolicy';
 import type { ProviderResponseMetadata } from '@/infrastructure/providers/types';
@@ -15,8 +15,6 @@ type ProviderExecutionState = {
   id: ProviderId;
   modelName: string;
   providerName: string;
-  tavilyConfig?: TavilyConfig;
-  supportsTavily: boolean;
   supportsCustomHeaders: boolean;
   customHeaders: HeaderPair[];
   shouldEmitReasoning: (enabled: boolean, promptText: string) => boolean;
@@ -66,8 +64,6 @@ export const createProviderTextExecution = ({
     id: state.id,
     modelName: state.modelName,
     providerName: state.providerName,
-    tavilyConfig: state.tavilyConfig,
-    supportsTavily: state.supportsTavily,
     supportsCustomHeaders: state.supportsCustomHeaders,
     customHeaders: state.customHeaders,
     message,
@@ -77,28 +73,15 @@ export const createProviderTextExecution = ({
   });
 
 export const resolveProviderTextExecutionTools = async ({
-  requestPolicy,
   runtime,
-  hostedSearchTool,
-  hostedToolSearchTool,
   additionalTools,
-  nextHistory,
 }: {
-  requestPolicy?: RequestPolicy;
   runtime: ReturnType<typeof createProviderExecutionContext>['runtime'];
-  hostedSearchTool?: unknown;
-  hostedToolSearchTool?: unknown;
   additionalTools?: Record<string, unknown>;
-  nextHistory?: ChatMessage[];
 }) =>
   resolveProviderExecutionTools({
-    requestPolicy,
     runtime,
-    hostedSearchTool,
-    hostedToolSearchTool,
-    deferredToolProvider: 'openai',
     additionalTools,
-    messages: nextHistory,
   });
 
 export async function* streamProviderTextExecution({

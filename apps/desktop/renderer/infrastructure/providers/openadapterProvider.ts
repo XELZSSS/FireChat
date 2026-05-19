@@ -28,7 +28,7 @@ class OpenAdapterProvider extends AISdkOpenAICompatibleProviderBase implements P
       defaultApiKey,
       defaultBaseUrl: getDefaultOpenAdapterBaseUrl(),
       missingApiKeyError: t('settings.provider.error.openadapter.missingApiKey'),
-      supportsTavily: false,
+
       supportsBaseUrl: true,
       supportsCustomHeaders: false,
       logLabel: 'OpenAdapter',

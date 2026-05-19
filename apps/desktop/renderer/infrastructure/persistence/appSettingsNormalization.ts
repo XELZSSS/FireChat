@@ -18,15 +18,6 @@ import {
   MAX_TOOL_CALL_ROUNDS,
   MIN_TOOL_CALL_ROUNDS,
 } from '@/infrastructure/providers/utils';
-import {
-  getDefaultAiGatewaySettings,
-  normalizeAiGatewaySettings,
-} from '@/infrastructure/providers/aiGatewaySettings';
-import {
-  areCliSettingsEqual,
-  getDefaultCliSettings,
-  normalizeCliSettings,
-} from '@/infrastructure/providers/cliProviderSettings';
 import { isPlainObject } from '@/infrastructure/persistence/jsonBackedStore';
 import type { AppSettings } from '@/infrastructure/persistence/appSettingsStore';
 import {
@@ -85,12 +76,7 @@ export const areAppSettingsEqual = (left: AppSettings, right: AppSettings): bool
     left.toolCallMaxRounds === right.toolCallMaxRounds &&
     left.httpProtocol === right.httpProtocol &&
     left.localProxyHost === right.localProxyHost &&
-    left.localProxyPort === right.localProxyPort &&
-    left.aiGateway.enabled === right.aiGateway.enabled &&
-    left.aiGateway.gatewayId === right.aiGateway.gatewayId &&
-    left.aiGateway.baseUrl === right.aiGateway.baseUrl &&
-    left.aiGateway.apiKey === right.aiGateway.apiKey &&
-    areCliSettingsEqual(left.cli, right.cli)
+    left.localProxyPort === right.localProxyPort
   );
 };
 
@@ -184,8 +170,6 @@ export const getDefaultAppSettings = (): AppSettings => {
     httpProtocol: DEFAULT_HTTP_PROTOCOL,
     localProxyHost: '127.0.0.1',
     localProxyPort: '0',
-    aiGateway: getDefaultAiGatewaySettings(),
-    cli: getDefaultCliSettings(),
   };
 };
 
@@ -274,10 +258,5 @@ export const normalizeAppSettings = (
       normalizeLocalProxyPort(raw.localProxyPort) ??
       currentSettings.localProxyPort ??
       defaults.localProxyPort,
-    aiGateway: normalizeAiGatewaySettings(
-      raw.aiGateway,
-      currentSettings.aiGateway ?? defaults.aiGateway
-    ),
-    cli: normalizeCliSettings(raw.cli, currentSettings.cli ?? defaults.cli),
   };
 };

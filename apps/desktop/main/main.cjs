@@ -36,8 +36,6 @@ const {
   getUpdaterState,
 } = require('./infrastructure/network/updater/index.cjs');
 const { stopLocalApiProxy } = require('./infrastructure/network/localApiProxy.cjs');
-const { stopMcpClients } = require('./infrastructure/mcp/mcpClientManager.cjs');
-const { stopAllCliProviders } = require('./infrastructure/cli/cliProcessManager.cjs');
 const { closeFireChatDatabase } = require('../../../packages/data/persistence/runtime/sqliteStore.cjs');
 const {
   installOpenAdapterProtocolHandler,
@@ -82,9 +80,7 @@ const mainAppRuntime = createMainAppRuntime({
   shouldCloseToTray,
   showWindow,
   startBackgroundServices,
-  stopAllCliProviders,
   stopLocalApiProxy,
-  stopMcpClients,
 });
 
 mainAppRuntime.registerSingleInstanceLock();

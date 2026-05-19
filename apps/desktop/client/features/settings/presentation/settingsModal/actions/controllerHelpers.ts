@@ -17,12 +17,10 @@ export const buildProviderSettingsPayload = (
 ): ProviderSettings => ({
   modelName: source.modelName,
   systemPrompt: source.systemPrompt,
-  imageModelName: source.imageModelName,
   apiKey: source.apiKey,
   requestMode: source.requestMode,
   baseUrl: source.baseUrl,
   customHeaders: source.customHeaders.map((header) => ({ ...header })),
-  tavily: { ...source.tavily },
   openAdapterTools: { ...source.openAdapterTools },
 });
 

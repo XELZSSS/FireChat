@@ -1,6 +1,5 @@
 import type {
   ChatAttachment,
-  ChatGeneratedImage,
   ChatMessage,
   ChatSession,
 } from '@/shared/types/chat';
@@ -16,9 +15,7 @@ export type StoredSession = Partial<ChatSession> &
 export type StoredSessionIndexEntry = Pick<
   ChatSession,
   'id' | 'title' | 'provider' | 'model' | 'createdAt' | 'updatedAt'
-> & {
-  cliSessionIds?: ChatSession['cliSessionIds'];
-};
+>;
 const normalizeAttachment = (attachment: unknown): ChatAttachment | null => {
   if (!attachment || typeof attachment !== 'object' || Array.isArray(attachment)) {
     return null;
@@ -51,64 +48,6 @@ const normalizeAttachment = (attachment: unknown): ChatAttachment | null => {
   };
 };
 
-const normalizeGeneratedImage = (image: unknown): ChatGeneratedImage | null => {
-  if (!image || typeof image !== 'object' || Array.isArray(image)) {
-    return null;
-  }
-
-  const candidate = image as Partial<ChatGeneratedImage>;
-  const id = typeof candidate.id === 'string' && candidate.id.trim() ? candidate.id.trim() : null;
-  const mimeType =
-    typeof candidate.mimeType === 'string' && candidate.mimeType.trim()
-      ? candidate.mimeType.trim()
-      : 'image/png';
-  const data =
-    typeof candidate.data === 'string' && candidate.data.trim() ? candidate.data.trim() : null;
-
-  if (!id || !data) {
-    return null;
-  }
-
-  return {
-    id,
-    mimeType,
-    data,
-    model: typeof candidate.model === 'string' ? candidate.model : undefined,
-    size: typeof candidate.size === 'string' ? candidate.size : undefined,
-    quality: typeof candidate.quality === 'string' ? candidate.quality : undefined,
-    background: typeof candidate.background === 'string' ? candidate.background : undefined,
-    outputFormat: typeof candidate.outputFormat === 'string' ? candidate.outputFormat : undefined,
-  };
-};
-
-const normalizeCliSessionId = (value: unknown): string | undefined => {
-  if (typeof value !== 'string') {
-    return undefined;
-  }
-
-  const trimmed = value.trim();
-  return trimmed || undefined;
-};
-
-const normalizeCliSessionIds = (value: unknown): ChatSession['cliSessionIds'] => {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) {
-    return undefined;
-  }
-
-  const candidate = value as Partial<NonNullable<ChatSession['cliSessionIds']>>;
-  const codex = normalizeCliSessionId(candidate.codex);
-  const claudeCode = normalizeCliSessionId(candidate.claudeCode);
-
-  if (!codex && !claudeCode) {
-    return undefined;
-  }
-
-  return {
-    ...(codex ? { codex } : {}),
-    ...(claudeCode ? { claudeCode } : {}),
-  };
-};
-
 const normalizeMessage = (message: ChatMessage): ChatMessage => {
   const partState = readMessagePartState({
     ...message,
@@ -123,9 +62,6 @@ const normalizeMessage = (message: ChatMessage): ChatMessage => {
       attachments: partState.attachments
         .map((attachment) => normalizeAttachment(attachment))
         .filter((attachment): attachment is ChatAttachment => Boolean(attachment)),
-      generatedImages: partState.generatedImages
-        .map((image) => normalizeGeneratedImage(image))
-        .filter((image): image is ChatGeneratedImage => Boolean(image)),
     }),
     timeLabel: message.timeLabel ?? formatMessageTime(message.timestamp),
   };
@@ -143,7 +79,6 @@ export const normalizeSession = (session: StoredSession): ChatSession => {
     ...session,
     provider,
     model: session.model ?? getProviderDefinition(defaultProviderId).defaultModel,
-    cliSessionIds: normalizeCliSessionIds(session.cliSessionIds),
     messages: (session.messages ?? []).map((message) => normalizeMessage(message)),
   };
 };
@@ -151,15 +86,12 @@ export const normalizeSession = (session: StoredSession): ChatSession => {
 export const cloneSessions = (sessions: ChatSession[]): ChatSession[] =>
   sessions.map((session) => ({
     ...session,
-    cliSessionIds: session.cliSessionIds ? { ...session.cliSessionIds } : undefined,
     messages: session.messages.map((message) => ({
       ...message,
       parts: message.parts.map((part) =>
         part.type === 'attachment'
           ? { ...part, attachment: { ...part.attachment } }
-          : part.type === 'generated-image'
-            ? { ...part, image: { ...part.image } }
-            : part.type === 'tool-call'
+          : part.type === 'tool-call'
               ? { ...part, call: { ...part.call } }
               : part.type === 'tool-result'
                 ? { ...part, result: { ...part.result } }

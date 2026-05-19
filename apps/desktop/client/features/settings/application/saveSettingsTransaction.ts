@@ -9,7 +9,6 @@ import {
   saveProviderRuntimeStep,
   saveProviderSettingsStep,
   saveWindowBehaviorStep,
-  syncCliProviderStep,
 } from '@client/features/settings/application/saveSettings/steps';
 import type { SaveSettingsTransactionOptions } from '@client/features/settings/application/saveSettings/types';
 import { runSettingsTransaction } from '@settings-core/index';
@@ -62,10 +61,6 @@ export const saveSettingsTransaction = async ({
       {
         name: 'window-behavior',
         run: () => saveWindowBehaviorStep(value, context, rollbacks),
-      },
-      {
-        name: 'cli-provider',
-        run: () => syncCliProviderStep(value, context),
       },
       {
         name: 'app-settings',

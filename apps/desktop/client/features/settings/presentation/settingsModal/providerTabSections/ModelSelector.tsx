@@ -37,9 +37,9 @@ export const ProviderSelector = ({
   onProviderChange,
 }: ProviderSelectorProps) => {
   const shouldSplitBuiltInProviders = !providerLabel;
-  const { official, thirdParty, imageOnly } =
+  const { official, thirdParty } =
     partitionBuiltInProviderOptionsByProviderKind(providerOptions);
-  const hasSplitProviderOptions = thirdParty.length > 0 || imageOnly.length > 0;
+  const hasSplitProviderOptions = thirdParty.length > 0;
   const handleProviderChange = (value: string) => onProviderChange(value as ProviderId);
 
   if (shouldSplitBuiltInProviders && hasSplitProviderOptions) {
@@ -61,15 +61,6 @@ export const ProviderSelector = ({
             onChange={handleProviderChange}
             widthClassName={SPLIT_PROVIDER_DROPDOWN_WIDTH_CLASS}
             placeholder={t('settings.modal.provider.thirdParty')}
-          />
-        </Field>
-        <Field label={<FieldLabel title={t('settings.modal.provider.imageOnly')} />}>
-          <Dropdown
-            value={providerId}
-            options={imageOnly}
-            onChange={handleProviderChange}
-            widthClassName={SPLIT_PROVIDER_DROPDOWN_WIDTH_CLASS}
-            placeholder={t('settings.modal.provider.imageOnly')}
           />
         </Field>
         <div className="flex-none">{providerActions}</div>

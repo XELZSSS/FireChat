@@ -14,26 +14,9 @@ export type ChatAttachment = {
   truncated?: boolean;
 };
 
-export type ChatGeneratedImage = {
-  id: string;
-  mimeType: string;
-  data: string;
-  model?: string;
-  size?: string;
-  quality?: string;
-  background?: string;
-  outputFormat?: string;
-};
-
 export type ChatPromptInput = {
   text: string;
   attachments?: ChatAttachment[];
-  imageGenerationEnabled?: boolean;
-};
-
-export type CliSessionIds = {
-  codex?: string;
-  claudeCode?: string;
 };
 
 export type Citation = {
@@ -86,11 +69,6 @@ export type ChatMessagePart =
     }
   | {
       id: string;
-      type: 'generated-image';
-      image: ChatGeneratedImage;
-    }
-  | {
-      id: string;
       type: 'tool-call';
       call: ChatToolCall;
     }
@@ -128,7 +106,6 @@ export interface ChatSession {
   messages: ChatMessage[];
   provider: ProviderId;
   model: string;
-  cliSessionIds?: CliSessionIds;
   createdAt: number;
   updatedAt: number;
 }

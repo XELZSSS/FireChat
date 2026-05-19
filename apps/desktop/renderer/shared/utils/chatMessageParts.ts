@@ -1,6 +1,5 @@
 import type {
   ChatAttachment,
-  ChatGeneratedImage,
   ChatMessage,
   ChatMessagePart,
   ChatToolCall,
@@ -44,10 +43,6 @@ export const getMessageAttachments = (message: ChatMessage): ChatAttachment[] =>
   return getPartsByType(message, 'attachment').map((part) => part.attachment);
 };
 
-export const getMessageGeneratedImages = (message: ChatMessage): ChatGeneratedImage[] => {
-  return getPartsByType(message, 'generated-image').map((part) => part.image);
-};
-
 export const getMessageToolCalls = (message: ChatMessage): ChatToolCall[] => {
   return getPartsByType(message, 'tool-call').map((part) => part.call);
 };
@@ -64,7 +59,6 @@ export const buildMessageParts = ({
   messageId,
   text,
   attachments,
-  generatedImages,
   reasoning,
   reasoningStatus,
   toolCalls,
@@ -74,7 +68,6 @@ export const buildMessageParts = ({
   messageId: string;
   text?: string;
   attachments?: ChatAttachment[];
-  generatedImages?: ChatGeneratedImage[];
   reasoning?: string;
   reasoningStatus?: 'streaming' | 'completed';
   toolCalls?: ChatToolCall[];
@@ -88,14 +81,6 @@ export const buildMessageParts = ({
       id: buildPartId(messageId, `attachment:${attachment.id}`),
       type: 'attachment',
       attachment,
-    });
-  }
-
-  for (const image of generatedImages ?? []) {
-    parts.push({
-      id: buildPartId(messageId, `generated-image:${image.id}`),
-      type: 'generated-image',
-      image,
     });
   }
 
@@ -149,7 +134,6 @@ export const readMessagePartState = (message: ChatMessage) => {
   const state = {
     text: '',
     attachments: [] as ChatAttachment[],
-    generatedImages: [] as ChatGeneratedImage[],
     reasoning: '',
     reasoningStatus: undefined as 'streaming' | 'completed' | undefined,
     toolCalls: [] as ChatToolCall[],
@@ -165,8 +149,6 @@ export const readMessagePartState = (message: ChatMessage) => {
       state.reasoningStatus ??= part.status;
     } else if (part.type === 'attachment') {
       state.attachments.push(part.attachment);
-    } else if (part.type === 'generated-image') {
-      state.generatedImages.push(part.image);
     } else if (part.type === 'tool-call') {
       state.toolCalls.push(part.call);
     } else if (part.type === 'tool-result') {

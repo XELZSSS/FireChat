@@ -3,7 +3,6 @@ const {
 } = require('../../../../../../packages/data/persistence/repositories/storageRepository.cjs');
 const { buildAppHandlers } = require('./appHandlers.cjs');
 const { buildBootstrapHandlers } = require('./bootstrapHandlers.cjs');
-const { buildMcpHandlers } = require('./mcpHandlers.cjs');
 const { buildStorageHandlers } = require('./storageHandlers.cjs');
 const { buildTrayHandlers } = require('./trayHandlers.cjs');
 const { buildUpdaterHandlers } = require('./updaterHandlers.cjs');
@@ -16,7 +15,6 @@ const buildSystemHandlers = (dependencies) => ({
   ...buildUpdaterHandlers(dependencies),
   ...buildAppHandlers({ ...dependencies, storageRepository }),
   ...buildStorageHandlers({ storageRepository }),
-  ...buildMcpHandlers(),
 });
 
 module.exports = {

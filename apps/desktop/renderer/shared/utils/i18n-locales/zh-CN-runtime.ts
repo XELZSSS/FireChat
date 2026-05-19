@@ -1,6 +1,4 @@
 export const ZH_CN_RUNTIME_TRANSLATIONS = {
-  'input.search.enable': '开启搜索',
-  'input.search.disable': '关闭搜索',
   'input.image.enable': '开启生图',
   'input.image.disable': '关闭生图',
   'input.reasoning.enable': '开启思考',

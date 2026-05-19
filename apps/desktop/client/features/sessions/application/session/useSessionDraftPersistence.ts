@@ -57,11 +57,9 @@ export const useSessionDraftPersistence = ({
       defaultSessionTitle,
       providerId: conversationProviderId,
       modelName: conversationModelName,
-      cliSessionIds: chatService.getCliSessionIds(),
       updatedAt,
     });
   }, [
-    chatService,
     conversationModelName,
     conversationProviderId,
     currentSession?.createdAt,

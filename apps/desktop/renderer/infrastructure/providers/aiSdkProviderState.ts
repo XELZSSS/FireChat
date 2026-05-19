@@ -1,18 +1,7 @@
-import { ChatPromptInput, ProviderId, TavilyConfig } from '@/shared/types/chat';
-import { buildMessagePromptContent } from '@/shared/utils/chatAttachments';
+import { ChatPromptInput, ProviderId } from '@/shared/types/chat';
 import { fetchOpenAIStyleModels } from '@/infrastructure/providers/modelDiscovery';
 import { OpenAIStyleProviderBase } from '@/infrastructure/providers/openaiBase';
 import { normalizeCustomHeaders } from '@/infrastructure/providers/headerUtils';
-import { getDefaultProviderImageModel } from '@/infrastructure/providers/providerImageCatalog';
-import {
-  normalizeImageGenerationSettings,
-  type ImageGenerationSettings,
-} from '@/infrastructure/providers/imageGenerationSettings';
-import {
-  executeImageGeneration,
-  resolveImageModelName,
-} from '@/infrastructure/providers/providerImageGenerationRuntime';
-import { normalizeTavilyConfig } from '@/infrastructure/providers/tavily';
 import type {
   ProviderModelItem,
   ProviderReasoningPreference,
@@ -22,14 +11,6 @@ import { sanitizeApiKey } from '@/infrastructure/providers/utils';
 import type { HeaderPair } from '@/infrastructure/providers/aiSdkProviderMessages';
 import { areComparableValuesEqual } from '@/shared/utils/comparable';
 import { providerHttpFetch } from '@/infrastructure/network/proxyFetch';
-import {
-  resolveActiveAiGatewayCallRequestConfig,
-  resolveActiveAiGatewayRequestConfig,
-} from '@/infrastructure/providers/aiGatewayRuntime';
-import type {
-  AiGatewayCallRequestConfig,
-  AiGatewayRequestConfig,
-} from '@/infrastructure/providers/aiGatewaySettings';
 import {
   createSharedProviderBaseState,
   DEFAULT_REASONING_PREFERENCE,
@@ -54,16 +35,12 @@ export abstract class AISdkProviderStateBase extends OpenAIStyleProviderBase {
   protected readonly logLabel: string;
   protected apiKey?: string;
   protected modelName: string;
-  protected imageModelName?: string;
-  protected imageGenerationSettings: ImageGenerationSettings;
-  protected tavilyConfig?: TavilyConfig;
   protected reasoningPreference: ProviderReasoningPreference = DEFAULT_REASONING_PREFERENCE;
   protected baseUrl?: string;
   protected customHeaders: HeaderPair[] = [];
 
   protected readonly defaultApiKey?: string;
   protected readonly missingApiKeyError?: string;
-  protected readonly supportsTavily: boolean;
   protected readonly supportsBaseUrl: boolean;
   protected readonly supportsCustomHeaders: boolean;
   protected readonly providerName: string;
@@ -75,13 +52,9 @@ export abstract class AISdkProviderStateBase extends OpenAIStyleProviderBase {
     this.logLabel = shared.logLabel;
     this.apiKey = shared.apiKey;
     this.modelName = shared.modelName;
-    this.imageModelName = getDefaultProviderImageModel(shared.id);
-    this.imageGenerationSettings = shared.imageGenerationSettings;
-    this.tavilyConfig = shared.tavilyConfig;
     this.baseUrl = shared.baseUrl;
     this.defaultApiKey = shared.defaultApiKey;
     this.missingApiKeyError = shared.missingApiKeyError;
-    this.supportsTavily = shared.supportsTavily;
     this.supportsBaseUrl = shared.supportsBaseUrl;
     this.supportsCustomHeaders = shared.supportsCustomHeaders;
     this.providerName = shared.providerName;
@@ -89,24 +62,7 @@ export abstract class AISdkProviderStateBase extends OpenAIStyleProviderBase {
 
   protected onProviderStateChanged(_kind: ProviderStateChangeKind): void {}
 
-  protected resolveAiGatewayRequestConfig(): AiGatewayRequestConfig | undefined {
-    return resolveActiveAiGatewayRequestConfig();
-  }
-
-  protected resolveAiGatewayCallRequestConfig(): AiGatewayCallRequestConfig | undefined {
-    return resolveActiveAiGatewayCallRequestConfig();
-  }
-
-  protected resolveAiGatewayBaseUrl(): string | undefined {
-    return this.resolveAiGatewayCallRequestConfig()?.baseUrl;
-  }
-
   protected resolveApiKey(): string | undefined {
-    const gatewayConfig = this.resolveAiGatewayCallRequestConfig();
-    if (gatewayConfig) {
-      return gatewayConfig.apiKey;
-    }
-
     const keyToUse = this.apiKey ?? this.defaultApiKey;
     if (!keyToUse && this.missingApiKeyError) {
       throw new Error(this.missingApiKeyError);
@@ -119,7 +75,7 @@ export abstract class AISdkProviderStateBase extends OpenAIStyleProviderBase {
   }
 
   protected resolveTransportBaseUrl(baseUrl?: string): string | undefined {
-    return this.resolveAiGatewayBaseUrl() ?? this.resolveBaseUrl(baseUrl);
+    return this.resolveBaseUrl(baseUrl);
   }
 
   protected resolveListModelsBaseUrl(): string | undefined {
@@ -156,8 +112,6 @@ export abstract class AISdkProviderStateBase extends OpenAIStyleProviderBase {
       id: this.id,
       modelName: this.modelName,
       providerName,
-      tavilyConfig: this.tavilyConfig,
-      supportsTavily: this.supportsTavily,
       supportsCustomHeaders: this.supportsCustomHeaders,
       customHeaders: this.customHeaders,
       shouldEmitReasoning: this.shouldEmitReasoning.bind(this),
@@ -185,31 +139,6 @@ export abstract class AISdkProviderStateBase extends OpenAIStyleProviderBase {
 
   protected getMaxRetries(): number {
     return 0;
-  }
-
-  protected async generateImageResponse(message: ChatPromptInput): Promise<void> {
-    const resolvedImageModelName = resolveImageModelName(this.id, this.getImageModelName());
-    if (!resolvedImageModelName) {
-      throw new Error(`Provider ${this.id} does not support image generation.`);
-    }
-
-    const output = await executeImageGeneration({
-      input: {
-        prompt: buildMessagePromptContent(message),
-      },
-      resolvedImageModelName,
-      providerId: this.id,
-      apiKey: this.resolveApiKey(),
-      baseUrl: this.resolveTransportBaseUrl(this.baseUrl),
-      customHeaders: this.getCustomHeaders(),
-      imageGeneration: this.getImageGenerationSettings(),
-      fetcher: this.buildRuntimeFetch(),
-    });
-
-    this.patchPendingResponseMetadata({
-      generatedImages: output.generatedImages,
-    });
-    this.setHistoryWithModelResponse(this.id, this.createNextHistory(this.id, message), '');
   }
 
   getId(): ProviderId {
@@ -251,34 +180,6 @@ export abstract class AISdkProviderStateBase extends OpenAIStyleProviderBase {
     this.onProviderStateChanged('apiKey');
   }
 
-  getImageModelName(): string | undefined {
-    return this.imageModelName;
-  }
-
-  setImageModelName(model?: string): void {
-    const nextImageModelName = model?.trim() || getDefaultProviderImageModel(this.id);
-    if (nextImageModelName === this.imageModelName) {
-      return;
-    }
-
-    this.imageModelName = nextImageModelName;
-    this.onProviderStateChanged('imageModelName');
-  }
-
-  getImageGenerationSettings(): ImageGenerationSettings {
-    return this.imageGenerationSettings;
-  }
-
-  setImageGenerationSettings(settings?: ImageGenerationSettings): void {
-    const nextSettings = normalizeImageGenerationSettings(settings);
-    if (areComparableValuesEqual(nextSettings, this.imageGenerationSettings)) {
-      return;
-    }
-
-    this.imageGenerationSettings = nextSettings;
-    this.onProviderStateChanged('imageGenerationSettings');
-  }
-
   getBaseUrl(): string | undefined {
     return this.baseUrl;
   }
@@ -314,20 +215,6 @@ export abstract class AISdkProviderStateBase extends OpenAIStyleProviderBase {
 
     this.customHeaders = nextHeaders;
     this.onProviderStateChanged('customHeaders');
-  }
-
-  getTavilyConfig(): TavilyConfig | undefined {
-    return this.tavilyConfig;
-  }
-
-  setTavilyConfig(config?: TavilyConfig): void {
-    const nextConfig = this.supportsTavily ? normalizeTavilyConfig(config) : undefined;
-    if (areComparableValuesEqual(nextConfig, this.tavilyConfig)) {
-      return;
-    }
-
-    this.tavilyConfig = nextConfig;
-    this.onProviderStateChanged('tavilyConfig');
   }
 
   getReasoningPreference(): ProviderReasoningPreference {

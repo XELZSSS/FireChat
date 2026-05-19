@@ -30,15 +30,6 @@ const resolveSessionTitle = (
   return getMessageText(firstUserMessage).trim();
 };
 
-const cloneCliSessionIds = (
-  cliSessionIds: ChatSession['cliSessionIds']
-): ChatSession['cliSessionIds'] => (cliSessionIds ? { ...cliSessionIds } : undefined);
-
-const areCliSessionIdsEqual = (
-  left: ChatSession['cliSessionIds'],
-  right: ChatSession['cliSessionIds']
-): boolean => areComparableValuesEqual(left ?? {}, right ?? {});
-
 export const buildSessionSnapshot = ({
   currentSessionId,
   existingSessionTitle,
@@ -47,7 +38,6 @@ export const buildSessionSnapshot = ({
   defaultSessionTitle,
   providerId,
   modelName,
-  cliSessionIds,
   updatedAt,
 }: {
   currentSessionId: string;
@@ -57,7 +47,6 @@ export const buildSessionSnapshot = ({
   defaultSessionTitle: string;
   providerId: ChatSession['provider'];
   modelName: string;
-  cliSessionIds?: ChatSession['cliSessionIds'];
   updatedAt: number;
 }): ChatSession => ({
   id: currentSessionId,
@@ -65,7 +54,6 @@ export const buildSessionSnapshot = ({
   messages,
   provider: providerId,
   model: modelName,
-  cliSessionIds: cloneCliSessionIds(cliSessionIds),
   createdAt: existingSessionCreatedAt ?? Date.now(),
   updatedAt,
 });
@@ -86,7 +74,6 @@ export const hasSessionSummaryChanged = (
     prev.title !== next.title ||
     prev.provider !== next.provider ||
     prev.model !== next.model ||
-    !areCliSessionIdsEqual(prev.cliSessionIds, next.cliSessionIds) ||
     prev.updatedAt !== next.updatedAt
   );
 };
@@ -100,7 +87,6 @@ export const hasSessionSnapshotChanged = (
     prev.title !== next.title ||
     prev.provider !== next.provider ||
     prev.model !== next.model ||
-    !areCliSessionIdsEqual(prev.cliSessionIds, next.cliSessionIds) ||
     !areComparableValuesEqual(prev.messages, next.messages)
   );
 };
@@ -113,7 +99,7 @@ const applySessionContext = async (
   latestActivationTokenRef: RefObject<number>
 ): Promise<void> => {
   const { setCurrentSessionId, setMessages, syncConversationState } = actions;
-  chatService.setActiveSessionContext(session.id, session.cliSessionIds);
+  chatService.setActiveSessionContext(session.id);
   setCurrentSessionId(session.id);
   setMessages(session.messages);
 

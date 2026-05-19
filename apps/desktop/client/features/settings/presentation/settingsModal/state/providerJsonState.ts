@@ -42,10 +42,6 @@ export const applyProviderJsonToFormState = ({
 
   actions.onModelNameChange(nextSettings.modelName ?? '');
   actions.onSystemPromptChange(nextSettings.systemPrompt ?? '');
-  actions.onImageModelNameChange(nextSettings.imageModelName ?? '');
-  if (nextSettings.imageGeneration) {
-    actions.onImageGenerationChange(nextSettings.imageGeneration);
-  }
   actions.onApiKeyChange(nextSettings.apiKey ?? '');
   if (nextSettings.requestMode) {
     actions.onRequestModeChange(nextSettings.requestMode);

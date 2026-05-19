@@ -12,7 +12,6 @@ type MessagePartState = ReturnType<typeof readMessagePartState>;
 export type MessageOverrides = Omit<Partial<ChatMessage>, 'role' | 'parts'> & {
   text?: string;
   attachments?: MessagePartState['attachments'];
-  generatedImages?: MessagePartState['generatedImages'];
   reasoning?: string;
   reasoningStatus?: MessagePartState['reasoningStatus'];
   toolCalls?: MessagePartState['toolCalls'];
@@ -107,7 +106,6 @@ export const hasMeaningfulMessageChange = (current: ChatMessage, next: ChatMessa
     nextPartState.reasoning !== currentPartState.reasoning ||
     next.isError !== current.isError ||
     !areValuesShallowEqual(nextPartState.attachments, currentPartState.attachments) ||
-    !areValuesShallowEqual(nextPartState.generatedImages, currentPartState.generatedImages) ||
     !areValuesShallowEqual(nextPartState.toolCalls, currentPartState.toolCalls) ||
     !areValuesShallowEqual(nextPartState.toolResults, currentPartState.toolResults) ||
     !areValuesShallowEqual(nextPartState.citations, currentPartState.citations) ||
@@ -148,7 +146,6 @@ export const hasPersistableMessageContent = (message: ChatMessage | undefined): 
   return (
     partState.text.trim().length > 0 ||
     Boolean(partState.attachments.length) ||
-    Boolean(partState.generatedImages.length) ||
     Boolean(partState.reasoning.trim()) ||
     Boolean(partState.reasoningStatus) ||
     Boolean(partState.toolCalls.length) ||

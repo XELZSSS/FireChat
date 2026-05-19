@@ -1,5 +1,4 @@
 const { createAppBridge } = require('./bridge/app.cjs');
-const { createMcpBridge } = require('./bridge/mcp.cjs');
 const { createStorageBridge } = require('./bridge/storage.cjs');
 const { createTrayBridge } = require('./bridge/tray.cjs');
 const { createUpdaterBridge } = require('./bridge/updater.cjs');
@@ -22,7 +21,6 @@ const buildDesktopBridge = ({
   updater: createUpdaterBridge({ ipcRenderer, channels }),
   app: createAppBridge({ ipcRenderer, channels }),
   storage: createStorageBridge({ ipcRenderer, channels }),
-  mcp: createMcpBridge({ ipcRenderer, channels }),
   tray: createTrayBridge({ ipcRenderer, channels }),
 });
 

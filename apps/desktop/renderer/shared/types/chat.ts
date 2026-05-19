@@ -1,7 +1,6 @@
 export {
   Role,
   type ChatAttachment,
-  type ChatGeneratedImage,
   type ChatMessage,
   type ChatMessagePart,
   type ChatPromptInput,
@@ -12,10 +11,4 @@ export {
   type Citation,
   type ProviderError,
   type ProviderId,
-  type SearchEngine,
-  type SearXNGSafeSearch,
-  type SearXNGTimeRange,
-  type TavilyConfig,
-  type TavilySearchDepth,
-  type TavilyTopic,
 } from '@contracts/chat';

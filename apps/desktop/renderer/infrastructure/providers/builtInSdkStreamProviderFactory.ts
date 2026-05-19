@@ -32,7 +32,6 @@ import {
   supportsGlmReasoningControl,
   supportsMoonshotReasoningControl,
 } from '@/infrastructure/providers/reasoningControl';
-import { AI_GATEWAY_DUMMY_API_KEY } from '@/infrastructure/providers/aiGatewaySettings';
 import type { ProviderChat } from '@/infrastructure/providers/types';
 import { AISdkStreamProvider } from '@/infrastructure/providers/sdkStreamProvider';
 import {
@@ -72,7 +71,7 @@ const createImageOnlyProvider = (
     normalizeBaseUrl: (value) => normalizeBaseUrlForProvider(providerId, value),
     missingApiKeyError,
     logLabel: config.label,
-    supportsTavily: false,
+
     supportsBaseUrl: config.capabilities.supportsBaseUrl,
     supportsCustomHeaders: config.capabilities.supportsCustomHeaders,
     createSdkProvider: () => ({}),
@@ -94,16 +93,6 @@ const createGoogleProvider = (): ProviderChat =>
         apiKey,
         baseURL: baseUrl,
         fetch,
-      }),
-    createGatewaySdkProvider: ({ apiKey, gatewayConfig, fetch, customHeaders }) =>
-      createGoogleGenerativeAI({
-        apiKey: apiKey ?? AI_GATEWAY_DUMMY_API_KEY,
-        baseURL: gatewayConfig.geminiBaseUrl,
-        fetch,
-        headers: {
-          ...(apiKey ? { Authorization: `Bearer ${apiKey}` } : {}),
-          ...toHeaderRecord(customHeaders),
-        },
       }),
     listModels: ({ apiKey, baseUrl, fetch }) =>
       fetchGoogleGenerativeAIModels({

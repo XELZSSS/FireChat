@@ -1,7 +1,6 @@
 import { ChatMessage, ChatPromptInput, ProviderId, Role } from '@/shared/types/chat';
 import { buildMessagePromptContent } from '@/shared/utils/chatAttachments';
 import { buildMessageParts } from '@/shared/utils/chatMessageParts';
-import { buildGeneratedImagesMetadataFromStreamResult } from '@/infrastructure/providers/providerImageGenerationRuntime';
 import type { ProviderResponseMetadata } from '@/infrastructure/providers/types';
 import { buildRuntimeSystemPrompt } from '@/infrastructure/providers/runtimeContext';
 
@@ -25,12 +24,6 @@ export abstract class OpenAIStyleProviderBase {
     }
 
     this.pendingResponseMetadata = nextMetadata;
-  }
-
-  protected async patchGeneratedImagesFromResult(result: {
-    staticToolResults: PromiseLike<unknown>;
-  }): Promise<void> {
-    this.patchPendingResponseMetadata(await buildGeneratedImagesMetadataFromStreamResult(result));
   }
 
   consumePendingResponseMetadata(): ProviderResponseMetadata | undefined {

@@ -4,7 +4,6 @@ import type {
   OpenAdapterToolSettings,
 } from '@/infrastructure/providers/openadapterToolConfig';
 import type { OpenAIRequestMode, ProviderModelItem } from '@/infrastructure/providers/types';
-import type { ImageGenerationSettings } from '@/infrastructure/providers/imageGenerationSettings';
 import type { CustomProviderDraft } from '@/infrastructure/providers/runtime/providerFileMutations';
 import type { DropdownOption } from '@/shared/ui';
 import type { SettingsValidationIssue } from '@client/features/settings/presentation/settingsModal/validation/validation';
@@ -49,22 +48,6 @@ export type ModelSelectorProps = {
   onFetchModels: () => Promise<void>;
 };
 
-export type ImageModelSelectorProps = {
-  providerId: ProviderId;
-  imageModelName: string;
-  availableImageModels: ProviderModelItem[];
-  isFetchingImageModels: boolean;
-  imageModelFetchError?: string | null;
-  onImageModelNameChange: (value: string) => void;
-  onFetchImageModels: () => Promise<void>;
-};
-
-export type ImageGenerationTabProps = ImageModelSelectorProps & {
-  imageGeneration: ImageGenerationSettings;
-  mutationsLockedReason?: string | null;
-  onImageGenerationChange: (value: ImageGenerationSettings) => void;
-};
-
 export type OpenAdapterToolsSectionProps = {
   openAdapterTools: OpenAdapterToolSettings;
   mutationsLockedReason?: string | null;
@@ -90,13 +73,9 @@ export type ProviderIdentityProps = {
 export type ProviderModelProps = {
   modelName: string;
   systemPrompt: string;
-  imageModelName: string;
   availableModels: ProviderModelItem[];
-  availableImageModels: ProviderModelItem[];
   isFetchingModels: boolean;
-  isFetchingImageModels: boolean;
   modelFetchError?: string | null;
-  imageModelFetchError?: string | null;
 };
 
 export type ProviderConnectionProps = {
@@ -115,10 +94,7 @@ export type ProviderTabCallbacks = {
   onSetDefaultProvider: () => void;
   onModelNameChange: (value: string) => void;
   onSystemPromptChange: (value: string) => void;
-  onImageModelNameChange: (value: string) => void;
-  onImageGenerationChange: (value: ImageGenerationSettings) => void;
   onFetchModels: () => Promise<void>;
-  onFetchImageModels: () => Promise<void>;
   onApiKeyChange: (value: string) => void;
   onRequestModeChange: (value: OpenAIRequestMode) => void;
   onToggleApiKeyVisibility: () => void;

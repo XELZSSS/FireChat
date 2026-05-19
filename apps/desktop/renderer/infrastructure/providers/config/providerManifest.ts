@@ -3,7 +3,6 @@ import { getRuntimeEnvValue } from '@/infrastructure/config/runtimeEnv';
 import { sanitizeApiKey } from '@/infrastructure/providers/utils';
 
 export type ProviderCapabilities = {
-  supportsTavily: boolean;
   supportsBaseUrl: boolean;
   supportsCustomHeaders: boolean;
   supportsRegion: boolean;
@@ -29,7 +28,6 @@ export type ProviderManifestEntry = ProviderConfig;
 type BuiltInProviderId = (typeof BUILTIN_PROVIDER_IDS)[number];
 
 const STANDARD_PROVIDER_CAPABILITIES = {
-  supportsTavily: true,
   supportsBaseUrl: false,
   supportsCustomHeaders: false,
   supportsRegion: false,
@@ -61,13 +59,11 @@ const COMPATIBLE_PROVIDER_CAPABILITIES = createProviderCapabilities({
 });
 
 const MEDIA_ONLY_PROVIDER_CAPABILITIES = createProviderCapabilities({
-  supportsTavily: false,
   supportsBaseUrl: true,
   supportsCustomHeaders: true,
 });
 
 const PERPLEXITY_PROVIDER_CAPABILITIES = {
-  supportsTavily: false,
   supportsBaseUrl: true,
   supportsCustomHeaders: true,
   supportsRegion: false,

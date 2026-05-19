@@ -4,12 +4,10 @@ import { chatService } from '@client/features/chat/application/chatService';
 import { t } from '@/shared/utils/i18n';
 import { useChatSessions } from '@client/features/sessions/application/useChatSessions';
 import { useStreamingMessages } from '@client/features/chat/application/streaming/useStreamingMessages';
-import { useSearchToggle } from '@client/features/chat/application/search/useSearchToggle';
 import { useReasoningControl } from '@client/features/chat/application/reasoning/useReasoningControl';
 import { useAppSettings } from '@client/features/settings/application/useAppSettings';
 import {
   useAppMetadataSync,
-  useCliProviderConfigSync,
   useDocumentAppOptions,
   useDocumentAppearance,
   useLocalProxyConfigSync,
@@ -27,15 +25,9 @@ import {
 } from '@client/app/application/appControllerState';
 import { useAppControllerSettingsState } from '@client/app/application/appControllerSettingsState';
 import { useAppControllerHandlers } from '@client/app/application/appControllerHandlers';
-import {
-  getSearchAvailability,
-  getSettingsInteractionLockReason,
-} from '@client/app/application/appControllerDerivedState';
-import { supportsProviderImageGeneration } from '@/infrastructure/providers/providerImageCatalog';
-
+import { getSettingsInteractionLockReason } from '@client/app/application/appControllerDerivedState';
 export const useAppController = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [imageGenerationEnabled, setImageGenerationEnabled] = useState(false);
   const {
     defaultProviderState,
     conversationState,
@@ -90,18 +82,10 @@ export const useAppController = () => {
     conversationState;
   const defaultSessionTitle = t('sidebar.newChat');
   const hasMessages = messages.length > 0;
-  const searchAvailable = getSearchAvailability({
-    providerSettings,
-    providerId: conversationProviderId,
-  });
-  const imageGenerationAvailable = supportsProviderImageGeneration(conversationProviderId);
-  const effectiveImageGenerationEnabled = imageGenerationAvailable && imageGenerationEnabled;
-
   useDocumentAppearance(language, themePreference, theme, accentPreference);
   useDocumentAppOptions({ uiFontFamily, uiFontSize, reduceMotion });
   useAppMetadataSync({ setAppVersion, setUpdaterStatus });
   useLocalProxyConfigSync();
-  useCliProviderConfigSync();
   useWindowBehaviorSync({
     closeToTray,
     minimizeToTray,
@@ -138,11 +122,6 @@ export const useAppController = () => {
     commitCurrentSessionNowRef.current = () => commitCurrentSession({ force: true });
   }, [commitCurrentSession]);
 
-  const { searchEnabled, setSearchEnabled } = useSearchToggle({
-    chatService,
-    searchAvailable,
-    currentProviderId: conversationProviderId,
-  });
   const {
     reasoningControlVisible,
     reasoningEnabled,
@@ -199,17 +178,12 @@ export const useAppController = () => {
   const {
     handleNewChatClick,
     handleReasoningLevelChange,
-    handleToggleImageGeneration,
     handleToggleReasoning,
-    handleToggleSearch,
     handleToggleSidebarCollapsed,
   } = useAppControllerHandlers({
     isStreaming: streaming.isStreaming,
     isLoading: streaming.isLoading,
     startNewChat,
-    setSearchEnabled,
-    setImageGenerationEnabled,
-    imageGenerationAvailable,
     setReasoningEnabled,
     setReasoningLevel,
     sidebarCollapsed,
@@ -265,14 +239,8 @@ export const useAppController = () => {
     showMessageTimestamps,
     wrapCodeBlocks,
     petSettings,
-    searchEnabled,
-    imageGenerationEnabled: effectiveImageGenerationEnabled,
-    imageGenerationAvailable,
-    searchAvailable,
     handleReasoningLevelChange,
-    handleToggleImageGeneration,
     handleToggleReasoning,
-    handleToggleSearch,
   });
 
   return {

@@ -1,6 +1,5 @@
 import { listRuntimeProviderIds as listProviderIds } from '@/infrastructure/providers/runtime/providerRuntimeCatalog';
 import { getProviderUiMetaForId } from '@/infrastructure/providers/config/providerConfig';
-import { isImageOnlyProviderId } from '@/infrastructure/providers/providerImageMetadata';
 import type { ProviderId } from '@/shared/types/chat';
 import type { DropdownOption } from '@/shared/ui';
 import { preloadDropdownIcons } from '@/shared/ui/composed/dropdownIconCache';
@@ -78,15 +77,10 @@ const isThirdPartyProviderPlatform = (providerId: string): boolean => {
   return meta?.isOfficialProvider === false;
 };
 
-export const isImageOnlyProviderPlatform = (providerId: string): boolean =>
-  isImageOnlyProviderId(providerId);
-
 export const partitionBuiltInProviderOptionsByProviderKind = (providerOptions: DropdownOption[]) =>
   providerOptions.reduce(
     (result, option) => {
-      if (isImageOnlyProviderPlatform(option.value)) {
-        result.imageOnly.push(option);
-      } else if (isThirdPartyProviderPlatform(option.value)) {
+      if (isThirdPartyProviderPlatform(option.value)) {
         result.thirdParty.push(option);
       } else {
         result.official.push(option);
@@ -97,7 +91,6 @@ export const partitionBuiltInProviderOptionsByProviderKind = (providerOptions: D
     {
       official: [] as DropdownOption[],
       thirdParty: [] as DropdownOption[],
-      imageOnly: [] as DropdownOption[],
     }
   );
 

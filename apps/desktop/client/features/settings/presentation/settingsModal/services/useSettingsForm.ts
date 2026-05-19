@@ -75,11 +75,10 @@ export const useSettingsForm = ({
   }, []);
 
   const activeMeta = getProviderUiMetaForId(state.provider.providerId);
-  const supportsSearch = !!activeMeta?.supportsTavily;
   const tabs = useMemo(() => {
     void language;
-    return buildSettingsTabs({ supportsSearch });
-  }, [language, supportsSearch]);
+    return buildSettingsTabs();
+  }, [language]);
 
   useEffect(() => {
     const nextActiveTab = resolveVisibleSettingsTab(state.ui.activeTab, tabs);

@@ -36,7 +36,6 @@ const initializeSchema = (db) => {
       title TEXT NOT NULL,
       provider TEXT NOT NULL,
       model TEXT NOT NULL,
-      cli_session_ids TEXT,
       messages TEXT NOT NULL,
       search_text TEXT NOT NULL,
       created_at INTEGER NOT NULL,

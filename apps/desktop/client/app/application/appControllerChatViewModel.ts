@@ -24,14 +24,8 @@ type UseChatMainPropsOptions = {
   showMessageTimestamps: boolean;
   wrapCodeBlocks: boolean;
   petSettings: PetSettings;
-  searchEnabled: boolean;
-  imageGenerationEnabled: boolean;
-  imageGenerationAvailable: boolean;
-  searchAvailable: boolean;
   handleReasoningLevelChange: (level: ReasoningLevel) => void;
   handleToggleReasoning: () => void;
-  handleToggleSearch: () => void;
-  handleToggleImageGeneration: () => void;
 };
 
 export const useChatMainProps = ({
@@ -50,14 +44,8 @@ export const useChatMainProps = ({
   showMessageTimestamps,
   wrapCodeBlocks,
   petSettings,
-  searchEnabled,
-  imageGenerationEnabled,
-  imageGenerationAvailable,
-  searchAvailable,
   handleReasoningLevelChange,
   handleToggleReasoning,
-  handleToggleSearch,
-  handleToggleImageGeneration,
 }: UseChatMainPropsOptions) => {
   const {
     isStreaming,
@@ -96,22 +84,14 @@ export const useChatMainProps = ({
       showMessageTimestamps,
       wrapCodeBlocks,
       petSettings,
-      searchEnabled,
-      imageGenerationEnabled,
-      imageGenerationAvailable,
-      searchAvailable,
       onReasoningLevelChange: handleReasoningLevelChange,
       onToggleReasoning: handleToggleReasoning,
-      onToggleSearch: handleToggleSearch,
-      onToggleImageGeneration: handleToggleImageGeneration,
     }),
     [
       currentSessionId,
       handleReasoningLevelChange,
       handleSendMessage,
       handleToggleReasoning,
-      handleToggleSearch,
-      handleToggleImageGeneration,
       isLoading,
       isSessionStateReady,
       isStreaming,
@@ -127,10 +107,6 @@ export const useChatMainProps = ({
       reasoningLevelOptions,
       reasoningLevelSupported,
       reasoningToggleLocked,
-      searchAvailable,
-      searchEnabled,
-      imageGenerationEnabled,
-      imageGenerationAvailable,
       sendShortcut,
       showMessageTimestamps,
       petSettings,

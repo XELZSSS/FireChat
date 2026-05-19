@@ -6,7 +6,6 @@ import {
   persistDefaultProviderId,
 } from '@/infrastructure/persistence/appSettingsStore';
 import {
-  applyGlobalTavilyConfig,
   loadProviderSettings,
   normalizeProviderSettingsRecord,
   normalizeProviderSettingsUpdate,
@@ -53,15 +52,7 @@ export class ProviderSettingsRepository {
   }
 
   updateSettings(providerId: ProviderId, updates: Partial<ProviderSettings>): ProviderSettings {
-    const current = this.getSettings(providerId);
-    const next = normalizeProviderSettingsUpdate(providerId, current, updates);
-    if (updates.tavily !== undefined) {
-      this.commitSettings(
-        applyGlobalTavilyConfig({ ...this.settings, [providerId]: next }, next.tavily)
-      );
-      return next;
-    }
-
+    const next = normalizeProviderSettingsUpdate(providerId, this.getSettings(providerId), updates);
     this.commitSettings({ ...this.settings, [providerId]: next });
     return next;
   }

@@ -35,16 +35,10 @@ interface ChatInputProps {
   reasoningLevelSupported: boolean;
   reasoningToggleLocked: boolean;
   sendShortcut: SendShortcut;
-  searchEnabled: boolean;
-  imageGenerationEnabled: boolean;
-  imageGenerationAvailable: boolean;
-  searchAvailable: boolean;
   showEmojiButton?: boolean;
   onHasInputChange?: (hasInput: boolean) => void;
   onReasoningLevelChange: (level: ReasoningLevel) => void;
   onToggleReasoning: () => void;
-  onToggleSearch: () => void;
-  onToggleImageGeneration: () => void;
 }
 
 type ChatInputAttachmentsListProps = {
@@ -86,16 +80,10 @@ const ChatInputComponent = ({
   reasoningLevelSupported,
   reasoningToggleLocked,
   sendShortcut,
-  searchEnabled,
-  imageGenerationEnabled,
-  imageGenerationAvailable,
-  searchAvailable,
   showEmojiButton = true,
   onHasInputChange,
   onReasoningLevelChange,
   onToggleReasoning,
-  onToggleSearch,
-  onToggleImageGeneration,
 }: ChatInputProps) => {
   const {
     containerRef,
@@ -114,13 +102,10 @@ const ChatInputComponent = ({
     visibleEmojiGroups,
     isEmojiPickerVisible,
     isInputDisabled,
-    isSearchDisabled,
     isSendDisabled,
     isDragActive,
     attachmentButtonToneClass,
     reasoningButtonToneClass,
-    searchButtonToneClass,
-    imageGenerationButtonToneClass,
     sendButtonToneClass,
     emojiButtonToneClass,
     handleFileInputChange,
@@ -147,9 +132,6 @@ const ChatInputComponent = ({
     isStreaming,
     onStop,
     reasoningEnabled,
-    searchEnabled,
-    imageGenerationEnabled,
-    searchAvailable,
     sendShortcut,
     onHasInputChange,
   });
@@ -209,7 +191,6 @@ const ChatInputComponent = ({
         </div>
         <ChatInputActionBar
           isInputDisabled={isInputDisabled}
-          isSearchDisabled={isSearchDisabled}
           isStreaming={isStreaming}
           isSendDisabled={isSendDisabled}
           reasoningControlVisible={reasoningControlVisible}
@@ -218,23 +199,16 @@ const ChatInputComponent = ({
           reasoningLevelOptions={reasoningLevelOptions}
           reasoningLevelSupported={reasoningLevelSupported}
           reasoningToggleLocked={reasoningToggleLocked}
-          searchEnabled={searchEnabled}
-          imageGenerationEnabled={imageGenerationEnabled}
-          imageGenerationAvailable={imageGenerationAvailable}
           showEmojiButton={showEmojiButton}
           emojiPickerOpen={isEmojiPickerVisible}
           attachmentButtonToneClass={attachmentButtonToneClass}
           reasoningButtonToneClass={reasoningButtonToneClass}
-          searchButtonToneClass={searchButtonToneClass}
-          imageGenerationButtonToneClass={imageGenerationButtonToneClass}
           sendButtonToneClass={sendButtonToneClass}
           emojiButtonToneClass={emojiButtonToneClass}
           onOpenFilePicker={openFilePicker}
           onToggleEmojiPicker={handleToggleEmojiPicker}
           onToggleReasoning={onToggleReasoning}
           onReasoningLevelChange={onReasoningLevelChange}
-          onToggleSearch={onToggleSearch}
-          onToggleImageGeneration={onToggleImageGeneration}
           onSendClick={handleSendClick}
           emojiButtonRef={emojiButtonRef}
         />

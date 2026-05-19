@@ -4,7 +4,6 @@ import {
   ProviderSettings,
 } from '@/infrastructure/providers/defaults';
 import { listRuntimeProviderIds as listProviderIds } from '@/infrastructure/providers/runtime/providerRuntimeCatalog';
-import { normalizeTavilyConfig } from '@/infrastructure/providers/tavily';
 import {
   isPlainObject,
   loadJsonBackedStore,
@@ -21,7 +20,7 @@ import {
 import { areComparableValuesEqual } from '@/shared/utils/comparable';
 
 type StoredProviderLocalSettings = Partial<
-  Pick<ProviderSettings, 'imageModelName' | 'imageGeneration' | 'tavily' | 'openAdapterTools'>
+  Pick<ProviderSettings, 'openAdapterTools'>
 >;
 
 const normalizeStoredProviderLocalSettingsRecord = (
@@ -43,18 +42,6 @@ const normalizeStoredProviderLocalSettingsRecord = (
     );
     const localSettings: StoredProviderLocalSettings = {};
 
-    if (normalized.tavily !== undefined) {
-      localSettings.tavily = normalized.tavily;
-    }
-
-    if (normalized.imageModelName !== undefined) {
-      localSettings.imageModelName = normalized.imageModelName;
-    }
-
-    if (normalized.imageGeneration !== undefined) {
-      localSettings.imageGeneration = normalized.imageGeneration;
-    }
-
     if (normalized.openAdapterTools !== undefined) {
       localSettings.openAdapterTools = normalized.openAdapterTools;
     }
@@ -65,33 +52,6 @@ const normalizeStoredProviderLocalSettingsRecord = (
   }
 
   return next;
-};
-
-const resolveGlobalTavilyConfig = (
-  settings: Record<ProviderId, ProviderSettings>
-): ProviderSettings['tavily'] => {
-  for (const id of listProviderIds()) {
-    const tavily = normalizeTavilyConfig(settings[id]?.tavily);
-    if (tavily) return tavily;
-  }
-  return undefined;
-};
-
-export const applyGlobalTavilyConfig = (
-  settings: Record<ProviderId, ProviderSettings>,
-  tavily: ProviderSettings['tavily']
-): Record<ProviderId, ProviderSettings> => {
-  const next = {} as Record<ProviderId, ProviderSettings>;
-  for (const id of listProviderIds()) {
-    next[id] = { ...settings[id], tavily };
-  }
-  return next;
-};
-
-const applyResolvedGlobalTavily = (
-  settings: Record<ProviderId, ProviderSettings>
-): Record<ProviderId, ProviderSettings> => {
-  return applyGlobalTavilyConfig(settings, resolveGlobalTavilyConfig(settings));
 };
 
 const toStoredProviderSettingsRecord = (
@@ -112,7 +72,7 @@ const canonicalizeProviderSettingsRecord = (
     defaults[id] = normalizeStoredProviderSettings(id, defaults[id], storedSettings[id] ?? {});
   }
 
-  return applyResolvedGlobalTavily(defaults);
+  return defaults;
 };
 
 export const normalizeProviderSettingsRecord = (
@@ -141,9 +101,6 @@ const toPersistableProviderSettingsRecord = (
     }
 
     next[id] = {
-      imageModelName: entry.imageModelName,
-      imageGeneration: entry.imageGeneration,
-      tavily: entry.tavily,
       openAdapterTools: entry.openAdapterTools,
     };
   }
@@ -161,7 +118,7 @@ export const persistDefaultProviderId = (providerId: ProviderId): void => {
 
 export const loadProviderSettings = (): Record<ProviderId, ProviderSettings> => {
   const defaults = buildDefaultProviderSettings();
-  const emptyValue = applyResolvedGlobalTavily(defaults);
+  const emptyValue = defaults;
 
   return loadJsonBackedStore({
     storageKey: 'providerSettings',

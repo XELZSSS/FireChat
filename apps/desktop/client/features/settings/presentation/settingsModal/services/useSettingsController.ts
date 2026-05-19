@@ -54,9 +54,6 @@ export const useSettingsController = ({
     onTabChange,
     providerActions,
     appearanceActions,
-    searchActions,
-    aiGatewayActions,
-    cliActions,
     versionActions,
     optionsActions,
   } = useSettingsControllerActions({
@@ -69,13 +66,9 @@ export const useSettingsController = ({
   });
   const {
     availableModels,
-    availableImageModels,
     isFetchingModels,
-    isFetchingImageModels,
     modelFetchError,
-    imageModelFetchError,
     handleFetchModels,
-    handleFetchImageModels,
     handleCreateProvider,
     handleDeleteProvider,
     builtInProviderOptions,
@@ -98,11 +91,8 @@ export const useSettingsController = ({
     builtInProviderOptions,
     customProviderOptions,
     availableModels,
-    availableImageModels,
     isFetchingModels,
-    isFetchingImageModels,
     modelFetchError,
-    imageModelFetchError,
     activeMeta,
     validation,
     isDirty,
@@ -115,13 +105,9 @@ export const useSettingsController = ({
     onTabChange,
     providerActions,
     appearanceActions,
-    searchActions,
-    aiGatewayActions,
-    cliActions,
     versionActions,
     optionsActions,
     handleFetchModels,
-    handleFetchImageModels,
     handleCreateProvider,
     handleDeleteProvider,
     providerSource,
@@ -129,4 +115,3 @@ export const useSettingsController = ({
 };
 
 export type SettingsControllerValue = ReturnType<typeof useSettingsController>;
-

@@ -94,7 +94,7 @@ class BuiltInCompatibleProvider extends AISdkOpenAICompatibleProviderBase implem
       missingApiKeyError: descriptor.missingApiKeyError?.(),
       missingBaseUrlError: descriptor.missingBaseUrlError?.(),
       logLabel: config.label,
-      supportsTavily: config.capabilities.supportsTavily,
+
       supportsBaseUrl: config.capabilities.supportsBaseUrl,
       supportsCustomHeaders: config.capabilities.supportsCustomHeaders,
       providerName: providerId,

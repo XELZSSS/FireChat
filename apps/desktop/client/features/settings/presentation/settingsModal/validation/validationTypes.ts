@@ -12,8 +12,7 @@ export type SettingsValidationField =
   | 'search.maxResults'
   | 'options.interfaceLayoutConfig'
   | 'version.localProxyHost'
-  | 'version.localProxyPort'
-  | 'aiGateway.baseUrl';
+  | 'version.localProxyPort';
 
 export type SettingsValidationIssue = {
   severity: SettingsValidationSeverity;

@@ -21,7 +21,6 @@ export const APP_SETTINGS_FIELD_KEYS = [
   'httpProtocol',
   'localProxyHost',
   'localProxyPort',
-  'aiGateway',
 ] as const;
 
 export type AppSettingsFieldKey = (typeof APP_SETTINGS_FIELD_KEYS)[number];

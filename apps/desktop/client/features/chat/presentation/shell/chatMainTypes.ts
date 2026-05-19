@@ -29,12 +29,6 @@ export type ChatMainProps = {
   showMessageTimestamps: boolean;
   wrapCodeBlocks: boolean;
   petSettings: PetSettings;
-  searchEnabled: boolean;
-  imageGenerationEnabled: boolean;
-  imageGenerationAvailable: boolean;
-  searchAvailable: boolean;
   onReasoningLevelChange: (level: ReasoningLevel) => void;
   onToggleReasoning: () => void;
-  onToggleSearch: () => void;
-  onToggleImageGeneration: () => void;
 };

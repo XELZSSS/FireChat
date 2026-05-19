@@ -13,26 +13,10 @@ const rowToChatSession = (row, includeMessages) => ({
   title: row.title,
   provider: row.provider,
   model: row.model,
-  cliSessionIds: parseJson(row.cliSessionIds, undefined),
   messages: includeMessages ? parseJson(row.messages, []) : [],
   createdAt: Number(row.createdAt),
   updatedAt: Number(row.updatedAt),
 });
-
-const normalizeCliSessionIds = (value) => {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) {
-    return null;
-  }
-
-  const codex = normalizeOptionalString(value.codex);
-  const claudeCode = normalizeOptionalString(value.claudeCode);
-  const next = {
-    ...(codex ? { codex } : {}),
-    ...(claudeCode ? { claudeCode } : {}),
-  };
-
-  return Object.keys(next).length > 0 ? next : null;
-};
 
 const normalizeChatSessionPayload = (payload) => {
   if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
@@ -48,7 +32,6 @@ const normalizeChatSessionPayload = (payload) => {
     title: normalizeRequiredString(payload.title, 'session title'),
     provider: normalizeRequiredString(payload.provider, 'session provider'),
     model: normalizeRequiredString(payload.model, 'session model'),
-    cliSessionIds: normalizeCliSessionIds(payload.cliSessionIds),
     messages: payload.messages,
     searchText: typeof payload.searchText === 'string' ? payload.searchText.toLowerCase() : '',
     createdAt: normalizeNumber(payload.createdAt, 'session createdAt'),
@@ -62,7 +45,6 @@ const selectSessionColumns = `
     title,
     provider,
     model,
-    cli_session_ids AS cliSessionIds,
     messages,
     created_at AS createdAt,
     updated_at AS updatedAt
@@ -75,7 +57,6 @@ const selectSessionSummaryColumns = `
     title,
     provider,
     model,
-    cli_session_ids AS cliSessionIds,
     created_at AS createdAt,
     updated_at AS updatedAt
   FROM chat_sessions
@@ -118,18 +99,16 @@ const saveChatSession = (payload) => {
           title,
           provider,
           model,
-          cli_session_ids,
           messages,
           search_text,
           created_at,
           updated_at
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(id) DO UPDATE SET
           title = excluded.title,
           provider = excluded.provider,
           model = excluded.model,
-          cli_session_ids = excluded.cli_session_ids,
           messages = excluded.messages,
           search_text = excluded.search_text,
           created_at = excluded.created_at,
@@ -141,7 +120,6 @@ const saveChatSession = (payload) => {
       session.title,
       session.provider,
       session.model,
-      session.cliSessionIds ? JSON.stringify(session.cliSessionIds) : null,
       JSON.stringify(session.messages),
       session.searchText,
       session.createdAt,

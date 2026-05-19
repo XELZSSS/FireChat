@@ -124,7 +124,6 @@ export const finalizeStreamingMessage = ({
     reasoning: accumulator.reasoning || undefined,
     reasoningStatus: accumulator.hasReasoning ? 'completed' : undefined,
     citations: responseMetadata?.citations,
-    generatedImages: responseMetadata?.generatedImages,
   });
 
   emitStreamEvent(options?.onEvent, {

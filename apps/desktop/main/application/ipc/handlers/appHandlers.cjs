@@ -28,14 +28,6 @@ const {
 const { writeStartupAppearance } = require('../../../infrastructure/electron/startupAppearance.cjs');
 const { applyWindowAppearance } = require('../../../infrastructure/electron/appWindow.cjs');
 const { writeWindowBehavior } = require('../../../infrastructure/electron/windowBehavior.cjs');
-const {
-  cleanupCliSessions,
-  getCliProviderStatus,
-  runCliPrompt,
-  stopCliProvider,
-  syncCliProviderConfig,
-} = require('../../../infrastructure/cli/cliProcessManager.cjs');
-
 const openExternalUrl = async (url) => {
   const target = String(url ?? '').trim();
   if (!target) return;
@@ -129,13 +121,6 @@ const buildAppHandlers = ({
   ...buildAppNetworkHandlers(),
   [IPC_CHANNELS.app.updateWindowBehavior]: async (_event, payload) =>
     writeWindowBehavior(toRecord(payload)),
-  [IPC_CHANNELS.app.getCliProviderStatus]: async () => getCliProviderStatus(),
-  [IPC_CHANNELS.app.syncCliProviderConfig]: async (_event, payload) =>
-    syncCliProviderConfig(toRecord(payload)),
-  [IPC_CHANNELS.app.runCliPrompt]: async (_event, payload) => runCliPrompt(toRecord(payload)),
-  [IPC_CHANNELS.app.stopCliProvider]: async (_event, provider) => stopCliProvider(provider),
-  [IPC_CHANNELS.app.cleanupCliSessions]: async (_event, payload) =>
-    cleanupCliSessions(toRecord(payload)),
   [IPC_CHANNELS.app.appendRequestLog]: async (_event, payload) =>
     storageRepository.requestLogs.append(toRecord(payload)),
   [IPC_CHANNELS.app.queryRequestLogs]: async (_event, payload) =>

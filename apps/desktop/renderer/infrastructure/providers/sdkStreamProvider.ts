@@ -4,7 +4,6 @@ import {
   buildProviderOptionsRecord,
   toModelMessages,
 } from '@/infrastructure/providers/aiSdkProviderBase';
-import type { AiGatewayCallRequestConfig } from '@/infrastructure/providers/aiGatewaySettings';
 import {
   AISdkProviderStateBase,
   type SharedProviderBaseOptions,
@@ -24,14 +23,6 @@ import {
 type ProviderFactoryContext = {
   apiKey: string;
   baseUrl?: string;
-  fetch: typeof fetch;
-  customHeaders?: Array<{ key: string; value: string }>;
-};
-
-type GatewayProviderFactoryContext = {
-  apiKey?: string;
-  baseUrl: string;
-  gatewayConfig: AiGatewayCallRequestConfig;
   fetch: typeof fetch;
   customHeaders?: Array<{ key: string; value: string }>;
 };
@@ -59,19 +50,11 @@ export type AISdkStreamProviderOptions<TProvider> = SharedProviderBaseOptions & 
   normalizeBaseUrl?: BaseUrlNormalizer;
   resolveTransportBaseUrl?: TransportBaseUrlResolver;
   createSdkProvider: (context: ProviderFactoryContext) => TProvider;
-  createGatewaySdkProvider?: (context: GatewayProviderFactoryContext) => TProvider;
   createModel: (context: RequestModelContext<TProvider>) => unknown;
   buildProviderOptions?: (context: ProviderOptionsContext) => Record<string, unknown> | undefined;
   listModels?: (context: {
     apiKey: string;
     baseUrl: string;
-    fetch: typeof fetch;
-    customHeaders?: Array<{ key: string; value: string }>;
-  }) => Promise<ProviderModelItem[]>;
-  listGatewayModels?: (context: {
-    apiKey?: string;
-    baseUrl: string;
-    gatewayConfig: AiGatewayCallRequestConfig;
     fetch: typeof fetch;
     customHeaders?: Array<{ key: string; value: string }>;
   }) => Promise<ProviderModelItem[]>;
@@ -83,7 +66,7 @@ export class AISdkStreamProvider<TProvider> extends AISdkProviderStateBase {
     super({
       ...options,
       defaultBaseUrl: options.getDefaultBaseUrl?.(),
-      supportsTavily: options.supportsTavily ?? true,
+
       supportsBaseUrl: options.supportsBaseUrl ?? true,
       supportsCustomHeaders: options.supportsCustomHeaders ?? false,
     });
@@ -99,32 +82,10 @@ export class AISdkStreamProvider<TProvider> extends AISdkProviderStateBase {
   }
 
   protected override resolveTransportBaseUrl(baseUrl?: string): string | undefined {
-    return (
-      this.resolveAiGatewayBaseUrl() ?? this.options.resolveTransportBaseUrl?.(baseUrl) ?? baseUrl
-    );
+    return this.options.resolveTransportBaseUrl?.(baseUrl) ?? baseUrl;
   }
 
   override async listModels(): Promise<ProviderModelItem[]> {
-    const gatewayConfig = this.resolveAiGatewayCallRequestConfig();
-    if (gatewayConfig) {
-      if (this.options.listGatewayModels) {
-        return this.options.listGatewayModels({
-          apiKey: gatewayConfig.apiKey,
-          baseUrl: gatewayConfig.baseUrl,
-          gatewayConfig,
-          fetch: this.buildRuntimeFetch(),
-          customHeaders: this.getCustomHeaders(),
-        });
-      }
-
-      return fetchOpenAIStyleModels({
-        apiKey: gatewayConfig.apiKey,
-        baseUrl: gatewayConfig.baseUrl,
-        customHeaders: this.getCustomHeaders(),
-        fetcher: this.buildRuntimeFetch(),
-      });
-    }
-
     const apiKey = this.resolveApiKey();
     if (!apiKey) {
       throw new Error(this.missingApiKeyError ?? 'Missing API key');
@@ -165,9 +126,7 @@ export class AISdkStreamProvider<TProvider> extends AISdkProviderStateBase {
     providerOptions?: Record<string, unknown>;
   }): AsyncGenerator<string, void, unknown> {
     const tools = await resolveProviderTextExecutionTools({
-      requestPolicy,
       runtime,
-      nextHistory,
     });
 
     const completion = yield* streamProviderTextExecution({
@@ -179,9 +138,6 @@ export class AISdkStreamProvider<TProvider> extends AISdkProviderStateBase {
       nextHistory,
       requestPolicy,
       commitHistory: this.setHistoryWithModelResponse.bind(this),
-      onResult: async ({ result }) => {
-        await this.patchGeneratedImagesFromResult(result);
-      },
       streamOptions: {
         model: model as any,
         system: this.systemPrompt,
@@ -199,11 +155,6 @@ export class AISdkStreamProvider<TProvider> extends AISdkProviderStateBase {
     signal?: AbortSignal,
     requestPolicy?: RequestPolicy
   ): AsyncGenerator<string, void, unknown> {
-    if (message.imageGenerationEnabled) {
-      await this.generateImageResponse(message);
-      return;
-    }
-
     const execution = createProviderTextExecution({
       state: this.createTextExecutionState(this.providerName, this.reasoningPreference.enabled),
       message,
@@ -214,53 +165,6 @@ export class AISdkStreamProvider<TProvider> extends AISdkProviderStateBase {
         modelName: this.modelName,
         emitReasoning,
       }) ?? this.modelName;
-    const gatewayConfig = this.resolveAiGatewayCallRequestConfig();
-    if (gatewayConfig) {
-      if (this.options.createGatewaySdkProvider) {
-        const provider = this.options.createGatewaySdkProvider({
-          apiKey: gatewayConfig.apiKey,
-          baseUrl: gatewayConfig.baseUrl,
-          gatewayConfig,
-          fetch: this.buildRuntimeFetch(),
-          customHeaders: this.getCustomHeaders(),
-        });
-        yield* this.streamTextCompletion({
-          signal,
-          emitReasoning,
-          requestPolicy,
-          runtime,
-          nextHistory,
-          model: this.options.createModel({
-            provider,
-            modelName: this.modelName,
-            requestModelName,
-            emitReasoning,
-          }),
-        });
-
-        return;
-      }
-
-      const provider = createOpenAICompatible({
-        name: runtime.providerName,
-        apiKey: gatewayConfig.apiKey,
-        baseURL: gatewayConfig.baseUrl,
-        headers: runtime.customHeaders,
-        fetch: this.buildRuntimeFetch(),
-      });
-      yield* this.streamTextCompletion({
-        signal,
-        emitReasoning,
-        requestPolicy,
-        runtime,
-        nextHistory,
-        model: provider(requestModelName),
-        providerOptions: buildProviderOptionsRecord(['openaiCompatible', runtime.providerName]),
-      });
-
-      return;
-    }
-
     const apiKey = this.resolveApiKey();
     if (!apiKey) {
       throw new Error(this.missingApiKeyError ?? 'Missing API key');

@@ -17,9 +17,6 @@ type UseChatInputControllerOptions = {
   isStreaming: boolean;
   onStop: () => void;
   reasoningEnabled: boolean;
-  searchEnabled: boolean;
-  imageGenerationEnabled: boolean;
-  searchAvailable: boolean;
   sendShortcut: SendShortcut;
   onHasInputChange?: (hasInput: boolean) => void;
 };
@@ -31,9 +28,6 @@ export const useChatInputController = ({
   isStreaming,
   onStop,
   reasoningEnabled,
-  searchEnabled,
-  imageGenerationEnabled,
-  searchAvailable,
   sendShortcut,
   onHasInputChange,
 }: UseChatInputControllerOptions) => {
@@ -84,7 +78,6 @@ export const useChatInputController = ({
     currentInputRef,
     hasInput,
     attachments,
-    imageGenerationEnabled,
     isInputDisabled,
     isStreaming,
     onSend,
@@ -112,12 +105,9 @@ export const useChatInputController = ({
   const viewState = getChatInputViewState({
     disabled,
     isStreaming,
-    searchAvailable,
     hasAttachments,
     hasSendableContent,
     reasoningEnabled,
-    searchEnabled,
-    imageGenerationEnabled,
     isEmojiPickerVisible,
   });
 

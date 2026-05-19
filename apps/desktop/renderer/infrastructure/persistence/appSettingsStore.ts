@@ -2,8 +2,6 @@ import { ProviderId } from '@/shared/types/chat';
 import type { LanguagePreference } from '@/shared/utils/i18n';
 import type { AccentPreference, ThemePreference } from '@/shared/utils/theme';
 import type { AppFontSize, HttpProtocolPreference, SendShortcut } from '@/shared/utils/appOptions';
-import type { AiGatewaySettings } from '@/infrastructure/providers/aiGatewaySettings';
-import type { CliSettings } from '@contracts/desktop';
 import type { PetSettings } from '@client/features/pet/domain/petTypes';
 import {
   isPlainObject,
@@ -41,8 +39,6 @@ export type AppSettings = {
   httpProtocol: HttpProtocolPreference;
   localProxyHost: string;
   localProxyPort: string;
-  aiGateway: AiGatewaySettings;
-  cli: CliSettings;
 };
 
 let cachedAppSettings: AppSettings | null = null;

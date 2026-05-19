@@ -4,7 +4,6 @@ import {
   SettingsModalState,
   type ActiveSettingsTab,
 } from '@client/features/settings/presentation/settingsModal/state/reducer';
-import { buildComparableSettingsStateSnapshot } from '@client/features/settings/presentation/settingsModal/state/stateMappers';
 import { validateSettingsState } from '@client/features/settings/presentation/settingsModal/validation/validation';
 import type { SaveSettingsPayload } from '@client/features/settings/domain/settingsTypes';
 import { areComparableValuesEqual } from '@/shared/utils/comparable';
@@ -32,14 +31,9 @@ export const useSettingsControllerLifecycle = ({
   setUiField,
 }: UseSettingsControllerLifecycleOptions) => {
   const validation = useMemo(() => validateSettingsState(state), [state]);
-  const comparableState = useMemo(() => buildComparableSettingsStateSnapshot(state), [state]);
-  const comparableSeedState = useMemo(
-    () => buildComparableSettingsStateSnapshot(stateSeed),
-    [stateSeed]
-  );
   const isDirty = useMemo(
-    () => !areComparableValuesEqual(comparableState, comparableSeedState),
-    [comparableSeedState, comparableState]
+    () => !areComparableValuesEqual(state, stateSeed),
+    [state, stateSeed]
   );
 
   const [showDiscardChangesPrompt, setShowDiscardChangesPrompt] = useState(false);

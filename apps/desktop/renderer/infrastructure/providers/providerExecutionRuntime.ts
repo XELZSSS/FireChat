@@ -48,8 +48,6 @@ export const createProviderExecutionContext = ({
   id,
   modelName,
   providerName,
-  tavilyConfig,
-  supportsTavily,
   supportsCustomHeaders,
   customHeaders,
   message,
@@ -68,8 +66,6 @@ export const createProviderExecutionContext = ({
       id,
       modelName,
       providerName,
-      tavilyConfig,
-      supportsTavily,
       supportsCustomHeaders,
       customHeaders,
     }),
@@ -77,30 +73,11 @@ export const createProviderExecutionContext = ({
 };
 
 export const resolveProviderExecutionTools = async ({
-  requestPolicy,
-  runtime,
-  hostedSearchTool,
-  hostedToolSearchTool,
-  deferredToolProvider,
   additionalTools,
-  messages,
 }: ProviderExecutionToolsOptions): Promise<Record<string, unknown> | undefined> => {
-  const tools = await buildToolSet({
-    requestPolicy,
-    tavilyConfig: runtime.tavilyConfig,
-    searchEnabled: runtime.searchEnabled,
-    hostedSearchTool,
-    hostedToolSearchTool,
-    deferredToolProvider,
-    messages,
-  });
+  const tools = await buildToolSet();
 
-  const mergedTools = {
-    ...(tools ?? {}),
-    ...(additionalTools ?? {}),
-  };
-
-  return Object.keys(mergedTools).length > 0 ? mergedTools : undefined;
+    return Object.keys(tools ?? {}).length > 0 ? tools : undefined;
 };
 
 export const streamProviderExecutionResult = async function* ({

@@ -10,129 +10,6 @@ import type {
 } from '@contracts/request-log';
 import type { ChatSession } from '@contracts/chat';
 
-export type McpServerTransport = 'http' | 'stdio';
-
-export type McpServerConfig = {
-  id: string;
-  name: string;
-  transport: McpServerTransport;
-  url?: string;
-  command?: string;
-  args?: string[];
-  env?: Record<string, string>;
-  enabled: boolean;
-  timeoutMs: number;
-  bearerToken?: string;
-  headers?: Record<string, string>;
-};
-
-export type McpConfig = {
-  enabled: boolean;
-  servers: McpServerConfig[];
-};
-
-export type McpToolInfo = {
-  key: string;
-  serverId: string;
-  serverName: string;
-  name: string;
-  title?: string;
-  description?: string;
-  inputSchema: Record<string, unknown>;
-};
-
-export type McpToolListResult = {
-  tools: McpToolInfo[];
-  errors: Array<{
-    serverId: string;
-    message: string;
-  }>;
-};
-
-export type McpToolCallPayload = {
-  serverId: string;
-  toolName: string;
-  arguments?: Record<string, unknown>;
-};
-
-export type SearchMcpEngine = 'exa' | 'tavily' | 'firecrawl' | 'searxng';
-
-export type SearchMcpPayload = {
-  engine: SearchMcpEngine;
-  query: string;
-  maxResults?: number;
-  apiKey?: string;
-  searchDepth?: 'basic' | 'advanced' | 'fast' | 'ultra-fast';
-  topic?: 'general' | 'news';
-  searxngBaseUrl?: string;
-  searxngLanguage?: string;
-  searxngTimeRange?: 'day' | 'month' | 'year';
-  searxngSafeSearch?: 0 | 1 | 2;
-  firecrawlLocation?: string;
-  firecrawlCountry?: string;
-  firecrawlScrapeContent?: boolean;
-};
-
-export type McpToolCallResult = {
-  serverId: string;
-  toolName: string;
-  isError: boolean;
-  content: unknown[];
-  structuredContent?: Record<string, unknown>;
-};
-
-export type CliProviderId = 'codex' | 'claude-code';
-
-export type CliProviderKey = 'codex' | 'claudeCode';
-
-export type CliProviderConnectionSettings = {
-  enabled: boolean;
-  command: string;
-  workingDirectory: string;
-};
-
-export type CliSettings = Record<CliProviderKey, CliProviderConnectionSettings>;
-
-export type CliProviderRuntimeStatus = {
-  enabled: boolean;
-  running: boolean;
-  connected: boolean;
-  status: 'disabled' | 'stopped' | 'starting' | 'connected' | 'running' | 'error';
-  message?: string;
-};
-
-export type CliProviderStatusMap = Record<CliProviderKey, CliProviderRuntimeStatus>;
-
-export type CliPromptPayload = {
-  provider: CliProviderId;
-  prompt: string;
-  model?: string;
-  sessionId?: string;
-  workingDirectory?: string;
-};
-
-export type CliPromptResult = {
-  text: string;
-  sessionId?: string;
-};
-
-export type CliSessionCleanupPayload = {
-  codex?: string;
-  claudeCode?: string;
-};
-
-export type CliSessionCleanupProviderResult = {
-  ok: boolean;
-  action: 'archived' | 'deleted' | 'skipped';
-  deletedFiles?: number;
-  message?: string;
-};
-
-export type CliSessionCleanupResult = {
-  codex?: CliSessionCleanupProviderResult;
-  claudeCode?: CliSessionCleanupProviderResult;
-};
-
 export type AppStorageWritePayload = {
   key: string;
   value: string;
@@ -289,11 +166,6 @@ export interface FireChatDesktopBridge {
       startMinimizedToTray: boolean;
       rememberWindowBounds: boolean;
     }>;
-    getCliProviderStatus: () => Promise<CliProviderStatusMap>;
-    syncCliProviderConfig: (payload: CliSettings) => Promise<CliProviderStatusMap>;
-    runCliPrompt: (payload: CliPromptPayload) => Promise<CliPromptResult>;
-    stopCliProvider: (provider: CliProviderId) => Promise<CliProviderStatusMap>;
-    cleanupCliSessions: (payload: CliSessionCleanupPayload) => Promise<CliSessionCleanupResult>;
     appendRequestLog: (payload: AppendRequestLogPayload) => Promise<RequestLogRecord>;
     queryRequestLogs: (payload?: RequestLogQuery) => Promise<RequestLogQueryResult>;
     clearRequestLogs: () => Promise<ClearRequestLogsResult>;
@@ -325,19 +197,6 @@ export interface FireChatDesktopBridge {
     getActiveSessionId: () => Promise<string | null>;
     setActiveSessionId: (sessionId: string) => Promise<void>;
     clearActiveSessionId: () => Promise<void>;
-  };
-  mcp: {
-    getConfig: () => Promise<McpConfig>;
-    saveConfig: (payload: McpConfig) => Promise<McpConfig>;
-    reload: () => Promise<McpToolListResult>;
-    getServers: () => Promise<{
-      enabled: boolean;
-      servers: Array<Omit<McpServerConfig, 'bearerToken' | 'headers'> & { connected: boolean }>;
-    }>;
-    listTools: () => Promise<McpToolListResult>;
-    testConfig: (payload: McpConfig) => Promise<McpToolListResult>;
-    callTool: (payload: McpToolCallPayload) => Promise<McpToolCallResult>;
-    callSearch: (payload: SearchMcpPayload) => Promise<McpToolCallResult>;
   };
   tray: {
     setLanguage: (language: 'en' | 'zh-CN') => Promise<void>;

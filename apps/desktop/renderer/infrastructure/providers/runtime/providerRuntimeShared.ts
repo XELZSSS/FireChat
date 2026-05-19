@@ -6,14 +6,12 @@ import type {
 import type { ProviderCapabilities } from '@/infrastructure/providers/config/providerManifest';
 
 export const CUSTOM_OPENAI_CAPABILITIES: ProviderCapabilities = {
-  supportsTavily: true,
   supportsBaseUrl: true,
   supportsCustomHeaders: true,
   supportsRegion: false,
 };
 
 export const CUSTOM_OPENAI_COMPATIBLE_CAPABILITIES: ProviderCapabilities = {
-  supportsTavily: true,
   supportsBaseUrl: true,
   supportsCustomHeaders: true,
   supportsRegion: false,

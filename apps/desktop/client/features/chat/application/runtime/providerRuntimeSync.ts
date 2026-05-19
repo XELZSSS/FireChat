@@ -1,4 +1,3 @@
-import { TavilyConfig } from '@/shared/types/chat';
 import type { ProviderSettings } from '@/infrastructure/providers/defaults';
 import { createDefaultOpenAdapterToolSettings } from '@/infrastructure/providers/openadapterToolConfig';
 import {
@@ -40,7 +39,6 @@ const syncProviderValue = <T>(
 type ApplyProviderSettingsOptions = {
   provider: ProviderChat;
   settings: ProviderSettings;
-  searchEnabled: boolean;
   reasoningPreference: ProviderReasoningPreference;
   requestMode: OpenAIRequestMode;
 };
@@ -48,7 +46,6 @@ type ApplyProviderSettingsOptions = {
 export const applyProviderSettingsSnapshot = ({
   provider,
   settings,
-  searchEnabled,
   reasoningPreference,
   requestMode,
 }: ApplyProviderSettingsOptions): OpenAIRequestMode => {
@@ -64,24 +61,6 @@ export const applyProviderSettingsSnapshot = ({
     );
   }
 
-  if (provider.setImageModelName) {
-    syncProviderValue(
-      provider.getImageModelName?.(),
-      settings?.imageModelName,
-      (nextImageModelName) => provider.setImageModelName?.(nextImageModelName)
-    );
-  }
-
-  if (provider.setImageGenerationSettings) {
-    syncProviderValue(
-      provider.getImageGenerationSettings?.(),
-      settings?.imageGeneration,
-      (nextImageGenerationSettings) =>
-        provider.setImageGenerationSettings?.(nextImageGenerationSettings),
-      isStructuredEqual
-    );
-  }
-
   if (provider.setBaseUrl) {
     syncProviderValue(provider.getBaseUrl?.(), settings?.baseUrl, (nextBaseUrl) =>
       provider.setBaseUrl?.(nextBaseUrl)
@@ -94,15 +73,6 @@ export const applyProviderSettingsSnapshot = ({
       settings?.customHeaders ?? [],
       (nextHeaders) => provider.setCustomHeaders?.(nextHeaders),
       isStructuredEqual
-    );
-  }
-
-  if (provider.setTavilyConfig) {
-    syncProviderValue(
-      provider.getTavilyConfig?.(),
-      searchEnabled ? settings?.tavily : undefined,
-      (nextTavily) => provider.setTavilyConfig?.(nextTavily),
-      isStructuredEqual<TavilyConfig | undefined>
     );
   }
 

@@ -19,10 +19,7 @@ import {
   activateSessionAsync,
   type SessionContextActions,
 } from '@client/features/sessions/application/session/sessionHelpers';
-import {
-  cleanupDesktopCliSessions,
-  isDesktopEnvironment,
-} from '@client/features/desktop-shell/infrastructure/nativeDesktop';
+
 
 type UseSessionActionsOptions = {
   chatService: ChatService;
@@ -42,27 +39,6 @@ type UseSessionActionsOptions = {
   latestActivationTokenRef: RefObject<number>;
   lastPersistedSessionRef: RefObject<ChatSession | null>;
   deletedSessionIdsRef: RefObject<Set<string>>;
-};
-
-const cleanupSessionCliBindings = async (
-  cliSessionIds?: ChatSession['cliSessionIds']
-): Promise<void> => {
-  if ((!cliSessionIds?.codex && !cliSessionIds?.claudeCode) || !isDesktopEnvironment()) {
-    return;
-  }
-
-  try {
-    const result = await cleanupDesktopCliSessions(cliSessionIds);
-    if (result.codex && !result.codex.ok) {
-      throw new Error(result.codex.message || 'Failed to archive Codex CLI session.');
-    }
-    if (result.claudeCode && !result.claudeCode.ok) {
-      throw new Error(result.claudeCode.message || 'Failed to clean up Claude Code CLI session.');
-    }
-  } catch (error) {
-    console.error('Failed to clean up CLI session bindings:', error);
-    throw error;
-  }
 };
 
 export const useSessionActions = ({
@@ -200,21 +176,11 @@ export const useSessionActions = ({
         resetEditState();
       }
 
-      const activeCliSessionIds =
-        sessionId === currentSessionId ? chatService.getCliSessionIds() : undefined;
-
       discardSessionSave(sessionId);
       deletedSessionIdsRef.current.add(sessionId);
 
       void commitCurrentSession({ force: true })
         .then(() => drainSaveQueue())
-        .then(async () => {
-          const storedSession = await getSession(sessionId);
-          await cleanupSessionCliBindings({
-            ...(storedSession?.cliSessionIds ?? {}),
-            ...(activeCliSessionIds ?? {}),
-          });
-        })
         .then(() => deleteSession(sessionId))
         .then(async (updatedSessions) => {
           setSessions(updatedSessions);

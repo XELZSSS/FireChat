@@ -35,7 +35,6 @@ const OptionsTab = ({
   httpProtocol,
   localProxyHost,
   localProxyPort,
-  aiGateway,
   updateStatusText,
   updaterStatus,
   mutationsLockedReason = null,
@@ -104,7 +103,6 @@ const OptionsTab = ({
           httpProtocol,
           localProxyHost,
           localProxyPort,
-          aiGateway,
         },
         interfaceLayout: parseInterfaceLayoutConfigText(interfaceLayoutConfigText),
       };

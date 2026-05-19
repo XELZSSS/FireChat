@@ -23,7 +23,6 @@ const createMainAppRuntime = ({
   shouldCloseToTray,
   showWindow,
   startBackgroundServices,
-  stopAllCliProviders,
   stopLocalApiProxy,
   stopMcpClients,
 }) => {
@@ -36,7 +35,6 @@ const createMainAppRuntime = ({
     destroyTray();
     void stopLocalApiProxy();
     void stopMcpClients();
-    void stopAllCliProviders();
     closeFireChatDatabase();
   };
 

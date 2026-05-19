@@ -6,7 +6,6 @@ export type {
   ResponseInputMessage,
   ResponseNamespaceTool,
   ResponseStreamEvent,
-  ResponseTavilyToolOptions,
   ResponseToolCallArgs,
   ResponseToolDefinition,
   ResponseToolExecutionMessages,
@@ -19,13 +18,6 @@ export {
   supportsHostedToolSearch,
   supportsResponseReasoningSummary,
 } from '@/infrastructure/providers/responsesSharedStream';
-
-export {
-  buildResponseTavilyTools,
-  createResponseTools,
-  parseResponseToolCallArgs,
-  runResponseTavilyToolCall,
-} from '@/infrastructure/providers/responsesSharedTools';
 
 import type { ResponseInputMessage } from '@/infrastructure/providers/responsesSharedTypes';
 import { buildMessagePromptContent } from '@/shared/utils/chatAttachments';

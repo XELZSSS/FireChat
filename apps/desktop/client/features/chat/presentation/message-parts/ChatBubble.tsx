@@ -5,7 +5,6 @@ import { t } from '@/shared/utils/i18n';
 import { CheckIcon, ContentCopyIcon } from '@/shared/ui/icons';
 import MessageMarkdown from '@client/features/chat/presentation/message-parts/MessageMarkdown';
 import { CitationsSection } from '@client/features/chat/presentation/chatBubbleParts/CitationsSection';
-import { GeneratedImagesSection } from '@client/features/chat/presentation/chatBubbleParts/GeneratedImagesSection';
 import { MessageAttachmentsSection } from '@client/features/chat/presentation/chatBubbleParts/MessageAttachmentsSection';
 import { ReasoningIndicator } from '@client/features/chat/presentation/chatBubbleParts/ReasoningIndicator';
 import { TextContent } from '@client/features/chat/presentation/chatBubbleParts/TextContent';
@@ -134,9 +133,6 @@ const ChatBubble = ({
                 {viewModel.hasToolCalls && <ToolCallsSection toolCalls={viewModel.toolCalls} />}
                 {viewModel.hasToolResults && (
                   <ToolResultsSection toolResults={viewModel.toolResults} />
-                )}
-                {viewModel.hasGeneratedImages && (
-                  <GeneratedImagesSection images={viewModel.generatedImages} />
                 )}
                 {!viewModel.hasText && isStreaming && !viewModel.isReasoning && <TypingIndicator />}
                 {viewModel.hasText ? (

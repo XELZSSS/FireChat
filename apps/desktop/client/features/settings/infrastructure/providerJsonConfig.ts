@@ -8,7 +8,6 @@ import type { ProviderId } from '@/shared/types/chat';
 import type { ProviderSettings } from '@/infrastructure/providers/defaults';
 import type { ProviderModelItem } from '@/infrastructure/providers/types';
 import { createDefaultOpenAdapterToolSettings } from '@/infrastructure/providers/openadapterToolConfig';
-import { normalizeImageGenerationSettings } from '@/infrastructure/providers/imageGenerationSettings';
 import { upsertProviderSnapshot } from '@/infrastructure/providers/runtime/providerFileMutations';
 import { getCurrentProviderFileSnapshot } from '@/infrastructure/providers/runtime/providerRuntimeSync';
 import {
@@ -21,8 +20,6 @@ import {
 
 export type ProviderJsonConfig = {
   providerId: string;
-  imageModelName?: string;
-  imageGeneration?: Partial<ProviderSettings['imageGeneration']>;
   config: ProviderConfigEntry;
   auth: ProviderAuthEntry;
 };
@@ -46,12 +43,6 @@ const buildProviderJsonConfig = (
 
   return {
     providerId,
-    ...(trimText(providerSettings?.imageModelName)
-      ? { imageModelName: trimText(providerSettings?.imageModelName) }
-      : {}),
-    ...(providerSettings?.imageGeneration
-      ? { imageGeneration: providerSettings.imageGeneration }
-      : {}),
     config: {
       ...config,
       defaultModel,
@@ -152,11 +143,6 @@ export const parseProviderJsonText = (value: string): ProviderJsonConfig => {
 
   return {
     providerId,
-    imageModelName: trimText(parsed.imageModelName),
-    imageGeneration:
-      parsed.imageGeneration && typeof parsed.imageGeneration === 'object'
-        ? parsed.imageGeneration
-        : undefined,
     config: config as ProviderConfigEntry,
     auth: auth as ProviderAuthEntry,
   };
@@ -170,10 +156,6 @@ export const applyProviderJsonToSettings = (
   return {
     modelName: trimText(providerJson.config.defaultModel) ?? '',
     systemPrompt: trimText(options.systemPrompt) ?? '',
-    imageModelName: trimText(providerJson.imageModelName) ?? '',
-    imageGeneration: providerJson.imageGeneration
-      ? normalizeImageGenerationSettings(providerJson.imageGeneration)
-      : undefined,
     apiKey: trimText(providerJson.auth.apiKey) ?? '',
     requestMode: normalizeRequestMode(options.requestMode),
     baseUrl: trimText(options.baseURL),

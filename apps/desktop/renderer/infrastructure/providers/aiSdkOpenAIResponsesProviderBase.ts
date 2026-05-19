@@ -1,6 +1,5 @@
 import { type ChatMessage, type ChatPromptInput } from '@/shared/types/chat';
 import { createOpenAI } from '@ai-sdk/openai';
-import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
 import type { RequestPolicy } from '@/infrastructure/providers/requestPolicy';
 import type { ProviderChat } from '@/infrastructure/providers/types';
 import { toModelMessages } from '@/infrastructure/providers/aiSdkProviderMessages';
@@ -52,13 +51,6 @@ export abstract class AISdkOpenAIResponsesProviderBase
     requestPolicy?: RequestPolicy;
   }): Promise<Record<string, unknown> | undefined> {
     return undefined;
-  }
-
-  protected async handleResponseResult(_payload: {
-    result: ReturnType<typeof import('ai').streamText>;
-    modelName: string;
-  }): Promise<void> {
-    await this.patchGeneratedImagesFromResult(_payload.result);
   }
 
   protected getPreviousResponseId(): string | undefined {
@@ -113,8 +105,7 @@ export abstract class AISdkOpenAIResponsesProviderBase
       kind === 'systemPrompt' ||
       kind === 'apiKey' ||
       kind === 'baseUrl' ||
-      kind === 'customHeaders' ||
-      kind === 'tavilyConfig'
+      kind === 'customHeaders'
     ) {
       this.invalidateConversationState();
     }
@@ -139,11 +130,6 @@ export abstract class AISdkOpenAIResponsesProviderBase
     signal?: AbortSignal,
     requestPolicy?: RequestPolicy
   ): AsyncGenerator<string, void, unknown> {
-    if (message.imageGenerationEnabled) {
-      await this.generateImageResponse(message);
-      return;
-    }
-
     const providerName = this.getProviderName();
     const execution = createProviderTextExecution({
       state: this.createTextExecutionState(providerName, this.reasoningPreference.enabled),
@@ -160,51 +146,6 @@ export abstract class AISdkOpenAIResponsesProviderBase
       requestPolicy,
       previousResponseId,
     });
-    const gatewayConfig = this.resolveAiGatewayCallRequestConfig();
-
-    if (gatewayConfig) {
-      this.invalidateConversationState();
-      const provider = createOpenAICompatible({
-        name: runtime.providerName,
-        apiKey: this.resolveApiKey(),
-        baseURL: gatewayConfig.baseUrl,
-        headers: {
-          ...runtime.customHeaders,
-          ...this.buildExtraHeaders(),
-        },
-        fetch: this.buildRuntimeFetch(),
-      });
-      const tools = await resolveProviderTextExecutionTools({
-        requestPolicy,
-        runtime,
-        nextHistory,
-      });
-      const completion = yield* streamProviderTextExecution({
-        logLabel: this.logLabel,
-        maxRetries: this.getMaxRetries(),
-        signal,
-        emitReasoning,
-        providerId: runtime.id,
-        nextHistory,
-        requestPolicy,
-        commitHistory: this.setHistoryWithModelResponse.bind(this),
-        onResult: ({ result }) =>
-          this.handleResponseResult({
-            result,
-            modelName: requestModelName,
-          }),
-        streamOptions: {
-          model: provider(requestModelName),
-          system: this.systemPrompt,
-          messages: toModelMessages(nextHistory),
-          tools: tools as any,
-        },
-      });
-
-      this.recordResponseCompletionMetadata(completion.responseId);
-      return;
-    }
-
     const provider = createOpenAI({
       name: runtime.providerName,
       apiKey: this.resolveApiKey(),
@@ -218,21 +159,13 @@ export abstract class AISdkOpenAIResponsesProviderBase
 
     const prompt = this.buildResponsePrompt(nextHistory, promptText);
     const tools = await resolveProviderTextExecutionTools({
-      requestPolicy,
       runtime,
-      hostedSearchTool: runtime.hostedSearchEnabled
-        ? this.createHostedSearchTool(provider)
-        : undefined,
-      hostedToolSearchTool: runtime.toolSearchEnabled
-        ? this.createHostedToolSearchTool(provider)
-        : undefined,
       additionalTools: await this.buildAdditionalResponseTools({
         provider,
         modelName: requestModelName,
-        searchEnabled: runtime.searchEnabled,
+        searchEnabled: false,
         requestPolicy,
       }),
-      nextHistory,
     });
 
     const completion = yield* streamProviderTextExecution({
@@ -249,11 +182,6 @@ export abstract class AISdkOpenAIResponsesProviderBase
           this.setPreviousResponseId(streamed.lastResponseId ?? previousResponseId);
         }
       },
-      onResult: ({ result }) =>
-        this.handleResponseResult({
-          result,
-          modelName: requestModelName,
-        }),
       streamOptions: {
         model: provider(requestModelName),
         system: this.systemPrompt,

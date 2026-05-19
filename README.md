@@ -45,21 +45,9 @@
       Connect many mainstream AI providers in one client.
     </td>
     <td width="50%">
-      <strong>Web search</strong>
+      <strong>OpenAdapter tools</strong>
       <br />
-      Add live Web search context to conversations.
-    </td>
-  </tr>
-  <tr>
-    <td width="50%">
-      <strong>Image generation</strong>
-      <br />
-      Generate images with supported image models.
-    </td>
-    <td width="50%">
-      <strong>Tool calling</strong>
-      <br />
-      Use built-in, search, OpenAdapter, and MCP tools.
+      Extend chat with web search, page fetch, and crawl tools.
     </td>
   </tr>
   <tr>
@@ -69,33 +57,21 @@
       Parse common documents into chat context.
     </td>
     <td width="50%">
-      <strong>MCP integration</strong>
-      <br />
-      Connect remote and local MCP servers.
-    </td>
-  </tr>
-  <tr>
-    <td width="50%">
       <strong>Custom providers</strong>
       <br />
       Add custom OpenAI-compatible providers.
     </td>
-    <td width="50%">
-      <strong>CLI integration</strong>
-      <br />
-      Connect local Codex CLI and Claude Code CLI to chat.
-    </td>
   </tr>
   <tr>
-    <td width="50%">
-      <strong>AI gateway</strong>
-      <br />
-      Supports CLIProxyAPI, New API, and Sub2API gateways.
-    </td>
     <td width="50%">
       <strong>Sessions and logs</strong>
       <br />
       Manage local conversations and inspect recent requests.
+    </td>
+    <td width="50%">
+      <strong>Local API proxy</strong>
+      <br />
+      Route provider requests through a local proxy.
     </td>
   </tr>
 </table>
@@ -147,7 +123,7 @@ Notes:
 apps/
   desktop/
     client/         app shell, feature UI, app controller, and desktop-facing services
-    main/           Electron startup, windowing, IPC, proxy, updater, MCP, and CLI
+    main/           Electron startup, windowing, IPC, proxy, and updater
     renderer/       Vite renderer entry, provider runtime, persistence clients, shared UI, styles
   shared/           cross-process shared constants and helpers
 packages/

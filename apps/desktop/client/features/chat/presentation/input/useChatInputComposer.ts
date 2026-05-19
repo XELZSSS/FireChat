@@ -7,7 +7,6 @@ type UseChatInputComposerOptions = {
   currentInputRef: RefObject<string>;
   hasInput: boolean;
   attachments: ChatAttachment[];
-  imageGenerationEnabled: boolean;
   isInputDisabled: boolean;
   isStreaming: boolean;
   onSend: (message: ChatPromptInput) => void;
@@ -23,7 +22,6 @@ export const useChatInputComposer = ({
   currentInputRef,
   hasInput,
   attachments,
-  imageGenerationEnabled,
   isInputDisabled,
   isStreaming,
   onSend,
@@ -54,7 +52,6 @@ export const useChatInputComposer = ({
       onSend({
         text: input,
         attachments: hasAttachments ? attachments : undefined,
-        imageGenerationEnabled,
       });
       clearInputValue();
       clearDraft();
@@ -68,7 +65,6 @@ export const useChatInputComposer = ({
       currentInputRef,
       hasAttachments,
       hasSendableContent,
-      imageGenerationEnabled,
       isInputDisabled,
       isStreaming,
       onSend,

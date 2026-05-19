@@ -15,7 +15,6 @@ import { writeAppStorage } from '@/infrastructure/persistence/storageKeys';
 import { loadAppSettings } from '@/infrastructure/persistence/appSettingsStore';
 import {
   getDesktopAppVersion,
-  syncDesktopCliProviderConfig,
   syncDesktopLocalProxyConfig,
   updateDesktopWindowBehavior,
   updateDesktopStartupAppearance,
@@ -125,15 +124,6 @@ export const useLocalProxyConfigSync = () => {
       port: localProxyPort,
     }).catch((error) => {
       console.error('Failed to sync local proxy config to desktop runtime:', error);
-    });
-  }, []);
-};
-
-export const useCliProviderConfigSync = () => {
-  useEffect(() => {
-    const { cli } = loadAppSettings();
-    void syncDesktopCliProviderConfig(cli).catch((error) => {
-      console.error('Failed to sync CLI provider config to desktop runtime:', error);
     });
   }, []);
 };

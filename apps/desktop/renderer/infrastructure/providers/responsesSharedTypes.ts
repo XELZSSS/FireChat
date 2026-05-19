@@ -1,5 +1,3 @@
-import { TavilyConfig } from '@/shared/types/chat';
-
 export type ResponseInputMessage = {
   type: 'message';
   role: 'system' | 'user' | 'assistant';
@@ -107,17 +105,8 @@ export type ResponseToolCallArgs = {
   topic?: 'general' | 'news';
 };
 
-export type ResponseTavilyToolOptions = {
-  tavilyConfig?: TavilyConfig;
-  useHostedToolSearch?: boolean;
-};
-
 export type ResponseToolExecutionMessages = {
   unsupportedTool: (toolName: string) => string;
   missingQuery: string;
   requestFailed?: string;
-};
-
-export type ResponseToolExecutionOptions = {
-  searchEnabled: boolean;
 };

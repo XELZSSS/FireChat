@@ -48,14 +48,8 @@ const ChatMainComponent = ({
   showMessageTimestamps,
   wrapCodeBlocks,
   petSettings,
-  searchEnabled,
-  imageGenerationEnabled,
-  imageGenerationAvailable,
-  searchAvailable,
   onReasoningLevelChange,
   onToggleReasoning,
-  onToggleSearch,
-  onToggleImageGeneration,
 }: ChatMainProps) => {
   const [inputValueState, setInputValueState] = useState({ sessionId, hasInput: false });
   const hasMessages = messages.length > 0;
@@ -112,15 +106,9 @@ const ChatMainComponent = ({
     reasoningLevelSupported,
     reasoningToggleLocked,
     sendShortcut,
-    searchEnabled,
-    imageGenerationEnabled,
-    imageGenerationAvailable,
-    searchAvailable,
     onHasInputChange: handleHasInputChange,
     onReasoningLevelChange,
     onToggleReasoning,
-    onToggleSearch,
-    onToggleImageGeneration,
   };
   const welcomeInput = (
     <ChatInput

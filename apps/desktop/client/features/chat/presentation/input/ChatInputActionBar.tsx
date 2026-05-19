@@ -1,10 +1,8 @@
 import { memo, type ReactNode, type Ref } from 'react';
 import {
   AttachFileIcon,
-  ImagePlusIcon,
   MoodIcon,
   PsychologyAltOutlinedIcon,
-  PublicIcon,
   SendRoundedIcon,
   StopCircleOutlinedIcon,
 } from '@/shared/ui/icons';
@@ -26,7 +24,6 @@ type ActionButtonConfig = {
 
 type ChatInputActionBarProps = {
   isInputDisabled: boolean;
-  isSearchDisabled: boolean;
   isStreaming: boolean;
   isSendDisabled: boolean;
   reasoningControlVisible: boolean;
@@ -35,23 +32,16 @@ type ChatInputActionBarProps = {
   reasoningLevelOptions: ReasoningLevel[];
   reasoningLevelSupported: boolean;
   reasoningToggleLocked: boolean;
-  searchEnabled: boolean;
-  imageGenerationEnabled: boolean;
-  imageGenerationAvailable: boolean;
   showEmojiButton: boolean;
   emojiPickerOpen: boolean;
   attachmentButtonToneClass: string;
   reasoningButtonToneClass: string;
-  searchButtonToneClass: string;
-  imageGenerationButtonToneClass: string;
   sendButtonToneClass: string;
   emojiButtonToneClass: string;
   onOpenFilePicker: () => void;
   onToggleEmojiPicker: () => void;
   onToggleReasoning: () => void;
   onReasoningLevelChange: (level: ReasoningLevel) => void;
-  onToggleSearch: () => void;
-  onToggleImageGeneration: () => void;
   onSendClick: () => void;
   emojiButtonRef?: Ref<HTMLButtonElement>;
 };
@@ -112,7 +102,6 @@ const ReasoningLevelControl = ({
 
 export const ChatInputActionBar = memo(function ChatInputActionBar({
   isInputDisabled,
-  isSearchDisabled,
   isStreaming,
   isSendDisabled,
   reasoningControlVisible,
@@ -121,23 +110,16 @@ export const ChatInputActionBar = memo(function ChatInputActionBar({
   reasoningLevelOptions,
   reasoningLevelSupported,
   reasoningToggleLocked,
-  searchEnabled,
-  imageGenerationEnabled,
-  imageGenerationAvailable,
   showEmojiButton,
   emojiPickerOpen,
   attachmentButtonToneClass,
   reasoningButtonToneClass,
-  searchButtonToneClass,
-  imageGenerationButtonToneClass,
   sendButtonToneClass,
   emojiButtonToneClass,
   onOpenFilePicker,
   onToggleEmojiPicker,
   onToggleReasoning,
   onReasoningLevelChange,
-  onToggleSearch,
-  onToggleImageGeneration,
   onSendClick,
   emojiButtonRef,
 }: ChatInputActionBarProps) {
@@ -167,28 +149,6 @@ export const ChatInputActionBar = memo(function ChatInputActionBar({
       ariaPressed: reasoningToggleLocked ? true : reasoningEnabled,
     });
   }
-
-  if (imageGenerationAvailable) {
-    actionButtons.push({
-      key: 'image-generation',
-      onClick: onToggleImageGeneration,
-      disabled: isInputDisabled,
-      label: imageGenerationEnabled ? t('input.image.disable') : t('input.image.enable'),
-      toneClassName: imageGenerationButtonToneClass,
-      icon: <ImagePlusIcon size={18} strokeWidth={2} />,
-      ariaPressed: imageGenerationEnabled,
-    });
-  }
-
-  actionButtons.push({
-    key: 'search',
-    onClick: onToggleSearch,
-    disabled: isSearchDisabled,
-    label: searchEnabled ? t('input.search.disable') : t('input.search.enable'),
-    toneClassName: searchButtonToneClass,
-    icon: <PublicIcon size={18} strokeWidth={2} />,
-    ariaPressed: searchEnabled,
-  });
 
   if (showEmojiButton) {
     actionButtons.push({

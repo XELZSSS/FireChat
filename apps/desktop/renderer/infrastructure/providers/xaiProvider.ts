@@ -1,5 +1,4 @@
 import { createXai, type XaiProvider } from '@ai-sdk/xai';
-import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
 import { ChatMessage, ChatPromptInput, ProviderId } from '@/shared/types/chat';
 import { getMessageAttachments, getMessageText } from '@/shared/utils/chatMessageParts';
 import { buildProviderOptionsRecord } from '@/infrastructure/providers/aiSdkProviderBase';
@@ -14,7 +13,6 @@ import { toResponseInputMessages } from '@/infrastructure/providers/responsesSha
 import { resolveXaiModelForReasoning } from '@/infrastructure/providers/reasoningControl';
 import type { OpenAIRequestMode, ProviderChat } from '@/infrastructure/providers/types';
 import { toModelMessages } from '@/infrastructure/providers/aiSdkProviderMessages';
-import { resolveActiveAiGatewayCallRequestConfig } from '@/infrastructure/providers/aiGatewayRuntime';
 import { resolveProviderExecutionTools } from '@/infrastructure/providers/providerExecutionRuntime';
 import {
   createProviderTextExecution,
@@ -45,7 +43,7 @@ class XAIProvider extends AISdkProviderStateBase implements ProviderChat {
       defaultBaseUrl: defaultBaseUrl ?? getDefaultXaiBaseUrl(),
       missingApiKeyError: 'Missing XAI_API_KEY',
       logLabel: 'xAI',
-      supportsTavily: true,
+
       supportsBaseUrl: true,
       supportsCustomHeaders: false,
       providerName: XAI_PROVIDER_ID,
@@ -157,11 +155,6 @@ class XAIProvider extends AISdkProviderStateBase implements ProviderChat {
     signal?: AbortSignal,
     requestPolicy?: RequestPolicy
   ): AsyncGenerator<string, void, unknown> {
-    if (message.imageGenerationEnabled) {
-      await this.generateImageResponse(message);
-      return;
-    }
-
     const execution = createProviderTextExecution({
       state: this.createTextExecutionState(this.providerName, this.reasoningPreference.enabled),
       message,
@@ -170,43 +163,6 @@ class XAIProvider extends AISdkProviderStateBase implements ProviderChat {
     const requestModelName = resolveXaiModelForReasoning(this.modelName, emitReasoning);
 
     try {
-      const gatewayConfig = resolveActiveAiGatewayCallRequestConfig();
-      if (gatewayConfig) {
-        this.invalidateResponseState();
-        const gatewayProvider = createOpenAICompatible({
-          name: runtime.providerName,
-          apiKey: this.resolveApiKey(),
-          baseURL: gatewayConfig.baseUrl,
-          fetch: this.buildRuntimeFetch(),
-        });
-        const tools = await resolveProviderExecutionTools({
-          requestPolicy,
-          runtime,
-          messages: nextHistory,
-        });
-
-        yield* streamProviderTextExecution({
-          logLabel: 'xAI',
-          maxRetries: 0,
-          signal,
-          emitReasoning,
-          providerId: this.getId(),
-          nextHistory,
-          requestPolicy,
-          commitHistory: this.setHistoryWithModelResponse.bind(this),
-          onResult: async ({ result }) => {
-            await this.patchGeneratedImagesFromResult(result);
-          },
-          streamOptions: {
-            model: gatewayProvider(requestModelName),
-            system: this.systemPrompt,
-            messages: toModelMessages(nextHistory),
-            tools: tools as any,
-          },
-        });
-        return;
-      }
-
       const provider = this.createSdkProvider();
 
       if (this.requestMode === 'responses') {
@@ -240,9 +196,6 @@ class XAIProvider extends AISdkProviderStateBase implements ProviderChat {
           onCompleted: (streamed) => {
             this.previousResponseId = streamed.lastResponseId ?? this.previousResponseId;
           },
-          onResult: async ({ result }) => {
-            await this.patchGeneratedImagesFromResult(result);
-          },
           streamOptions: {
             model: provider.responses(requestModelName),
             messages: responseMessages as any,
@@ -271,9 +224,6 @@ class XAIProvider extends AISdkProviderStateBase implements ProviderChat {
         nextHistory,
         requestPolicy,
         commitHistory: this.setHistoryWithModelResponse.bind(this),
-        onResult: async ({ result }) => {
-          await this.patchGeneratedImagesFromResult(result);
-        },
         streamOptions: {
           model: provider.chat(requestModelName),
           system: this.systemPrompt,

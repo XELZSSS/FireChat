@@ -5,7 +5,6 @@ import type { ProviderSettings } from '@/infrastructure/providers/defaults';
 import { persistAppSettingsAsync } from '@/infrastructure/persistence/appSettingsStore';
 import {
   saveDesktopInterfaceLayoutConfig,
-  syncDesktopCliProviderConfig,
   updateDesktopLocalProxyConfig,
   updateDesktopWindowBehavior,
 } from '@client/features/desktop-shell/infrastructure/nativeDesktop';
@@ -162,17 +161,6 @@ export const saveWindowBehaviorStep = async (
       });
     }
   );
-};
-
-export const syncCliProviderStep = async (
-  value: SaveSettingsPayload,
-  context: SaveSettingsTransactionContext
-): Promise<void> => {
-  if (!context.cliChanged) {
-    return;
-  }
-
-  await syncDesktopCliProviderConfig(value.app.cli);
 };
 
 export const saveAppSettingsStep = async ({

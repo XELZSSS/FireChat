@@ -45,21 +45,9 @@
       在一个客户端中接入多家主流 AI 供应商。
     </td>
     <td width="50%">
-      <strong>Web 搜索</strong>
+      <strong>OpenAdapter 工具</strong>
       <br />
-      为对话补充实时 Web 搜索上下文。
-    </td>
-  </tr>
-  <tr>
-    <td width="50%">
-      <strong>生图</strong>
-      <br />
-      使用支持的生图模型生成图片。
-    </td>
-    <td width="50%">
-      <strong>工具调用</strong>
-      <br />
-      使用内置、搜索、OpenAdapter 和 MCP 工具。
+      通过 Web 搜索、网页抓取和站点爬取扩展对话。
     </td>
   </tr>
   <tr>
@@ -69,33 +57,21 @@
       将常见文档解析为对话上下文。
     </td>
     <td width="50%">
-      <strong>MCP 集成</strong>
-      <br />
-      连接远程和本地 MCP Server。
-    </td>
-  </tr>
-  <tr>
-    <td width="50%">
       <strong>自定义供应商</strong>
       <br />
       添加自定义 OpenAI 兼容供应商。
     </td>
-    <td width="50%">
-      <strong>CLI 接入</strong>
-      <br />
-      支持本地 Codex CLI 和 Claude Code CLI 接入聊天。
-    </td>
   </tr>
   <tr>
-    <td width="50%">
-      <strong>AI 网关</strong>
-      <br />
-      支持 CLIProxyAPI、New API 和 Sub2API 三个网关。
-    </td>
     <td width="50%">
       <strong>会话与记录</strong>
       <br />
       管理本地对话并查看最近请求和失败详情。
+    </td>
+    <td width="50%">
+      <strong>本地代理</strong>
+      <br />
+      通过本地代理转发供应商请求。
     </td>
   </tr>
 </table>
@@ -147,7 +123,7 @@ npm run electron:dev
 apps/
   desktop/
     client/         应用壳层、功能界面、应用控制器、桌面服务调用
-    main/           Electron 启动、窗口、IPC、代理、更新、MCP、CLI
+    main/           Electron 启动、窗口、IPC、代理和更新
     renderer/       Vite 渲染入口、Provider 运行时、持久化客户端、共享 UI、样式
   shared/           跨进程共享常量与工具
 packages/

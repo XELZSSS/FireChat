@@ -1,7 +1,6 @@
 import type { AppFontSize, HttpProtocolPreference, SendShortcut } from '@/shared/utils/appOptions';
 import type { LanguagePreference } from '@/shared/utils/i18n';
 import type { AccentPreference, ThemePreference } from '@/shared/utils/theme';
-import type { AiGatewaySettings } from '@/infrastructure/providers/aiGatewaySettings';
 import type { SettingsValidationIssue } from '@client/features/settings/presentation/settingsModal/validation/validation';
 
 export type OptionsTabProps = {
@@ -25,7 +24,6 @@ export type OptionsTabProps = {
   httpProtocol: HttpProtocolPreference;
   localProxyHost: string;
   localProxyPort: string;
-  aiGateway: AiGatewaySettings;
   updateStatusText: string;
   updaterStatus: 'idle' | 'checking' | 'available' | 'not-available' | 'error' | 'disabled';
   mutationsLockedReason?: string | null;

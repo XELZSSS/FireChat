@@ -1,8 +1,6 @@
 import type { SettingsModalState } from '@client/features/settings/presentation/settingsModal/state/reducer';
 import { createEmptyIssuesByTab } from '@client/features/settings/presentation/settingsModal/validation/validationHelpers';
 import { validateProviderTab } from '@client/features/settings/presentation/settingsModal/validation/validationProvider';
-import { validateSearchTab } from '@client/features/settings/presentation/settingsModal/validation/validationSearch';
-import { validateAiGatewayTab } from '@client/features/settings/presentation/settingsModal/validation/validationAiGateway';
 import { pushIssue } from '@client/features/settings/presentation/settingsModal/validation/validationHelpers';
 import type {
   SettingsValidationIssue,
@@ -23,8 +21,6 @@ export const validateSettingsState = (state: SettingsModalState): SettingsValida
   const issuesByField: Record<string, SettingsValidationIssue[]> = {};
 
   validateProviderTab(state, issuesByTab, issuesByField);
-  validateSearchTab(state, issuesByTab, issuesByField);
-  validateAiGatewayTab(state, issuesByTab, issuesByField);
   try {
     parseInterfaceLayoutConfigText(state.ui.interfaceLayoutConfigText);
   } catch {

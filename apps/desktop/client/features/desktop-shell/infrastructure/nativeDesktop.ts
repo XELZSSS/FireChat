@@ -1,15 +1,6 @@
 import type { Language } from '@/shared/utils/i18n';
 import type { ProviderFileSnapshot } from '@contracts/provider-config';
-import type {
-  CliPromptPayload,
-  CliPromptResult,
-  CliProviderId,
-  CliProviderStatusMap,
-  CliSessionCleanupPayload,
-  CliSessionCleanupResult,
-  CliSettings,
-  FireChatDesktopBridge,
-} from '@contracts/desktop';
+import type { FireChatDesktopBridge } from '@contracts/desktop';
 import type {
   AppendRequestLogPayload,
   ClearRequestLogsResult,
@@ -158,32 +149,6 @@ export const updateDesktopWindowBehavior = async (payload: {
   rememberWindowBounds?: boolean;
 }) => {
   return getRequiredAppBridge().updateWindowBehavior(payload);
-};
-
-export const getDesktopCliProviderStatus = async (): Promise<CliProviderStatusMap> => {
-  return getRequiredAppBridge().getCliProviderStatus();
-};
-
-export const syncDesktopCliProviderConfig = async (
-  payload: CliSettings
-): Promise<CliProviderStatusMap> => {
-  return getRequiredAppBridge().syncCliProviderConfig(payload);
-};
-
-export const runDesktopCliPrompt = async (payload: CliPromptPayload): Promise<CliPromptResult> => {
-  return getRequiredAppBridge().runCliPrompt(payload);
-};
-
-export const stopDesktopCliProvider = async (
-  provider: CliProviderId
-): Promise<CliProviderStatusMap> => {
-  return getRequiredAppBridge().stopCliProvider(provider);
-};
-
-export const cleanupDesktopCliSessions = async (
-  payload: CliSessionCleanupPayload
-): Promise<CliSessionCleanupResult> => {
-  return getRequiredAppBridge().cleanupCliSessions(payload);
 };
 
 export const syncDesktopLocalProxyConfig = async (payload: { host: string; port: string }) => {

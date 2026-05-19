@@ -1,4 +1,4 @@
-import { ChatMessage, ChatPromptInput, ChatSession, ProviderId } from '@/shared/types/chat';
+import { ChatMessage, ChatPromptInput, ProviderId } from '@/shared/types/chat';
 import { listRuntimeProviderIds as listProviderIds } from '@/infrastructure/providers/runtime/providerRuntimeCatalog';
 import type { RequestPolicy } from '@/infrastructure/providers/requestPolicy';
 import { ProviderResponseMetadata } from '@/infrastructure/providers/types';
@@ -80,12 +80,8 @@ export class ChatOrchestrator {
     return this.runtime.getConversationContext();
   }
 
-  setActiveSessionContext(sessionId: string, cliSessionIds?: ChatSession['cliSessionIds']): void {
-    this.runtime.setActiveSessionContext(sessionId, cliSessionIds);
-  }
-
-  getCliSessionIds(): ChatSession['cliSessionIds'] {
-    return this.runtime.getCliSessionIds();
+  setActiveSessionContext(sessionId: string): void {
+    this.runtime.setActiveSessionContext(sessionId);
   }
 
   setDefaultProvider(id: ProviderId): void {
@@ -102,15 +98,6 @@ export class ChatOrchestrator {
 
   getModelName(): string {
     return this.runtime.getModelName();
-  }
-
-  setSearchEnabled(enabled: boolean): void {
-    const changed = this.runtime.setSearchEnabled(enabled);
-    if (!changed) {
-      return;
-    }
-
-    this.syncRuntimeProviderSettings(this.getProviderId());
   }
 
   setReasoningEnabled(enabled: boolean): void {

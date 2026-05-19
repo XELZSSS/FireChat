@@ -9,7 +9,6 @@ import {
 type MessagePartStateOverrides = {
   text?: string;
   attachments?: ReturnType<typeof readMessagePartState>['attachments'];
-  generatedImages?: ReturnType<typeof readMessagePartState>['generatedImages'];
   reasoning?: string;
   reasoningStatus?: ReturnType<typeof readMessagePartState>['reasoningStatus'];
   toolCalls?: ReturnType<typeof readMessagePartState>['toolCalls'];
@@ -27,7 +26,6 @@ export const buildStreamingChatMessage = (
     timestamp,
     timeLabel,
     attachments,
-    generatedImages,
     reasoning,
     reasoningStatus,
     toolCalls,
@@ -44,7 +42,6 @@ export const buildStreamingChatMessage = (
       messageId,
       text,
       attachments,
-      generatedImages,
       reasoning,
       reasoningStatus,
       toolCalls,
@@ -66,7 +63,6 @@ export const applyStreamingMessageUpdates = (
   const {
     text,
     attachments,
-    generatedImages,
     reasoning,
     reasoningStatus,
     toolCalls,
@@ -82,7 +78,6 @@ export const applyStreamingMessageUpdates = (
       messageId,
       text: text ?? currentPartState.text,
       attachments: attachments ?? currentPartState.attachments,
-      generatedImages: generatedImages ?? currentPartState.generatedImages,
       reasoning: reasoning ?? currentPartState.reasoning,
       reasoningStatus: reasoningStatus ?? currentPartState.reasoningStatus,
       toolCalls: toolCalls ?? currentPartState.toolCalls,

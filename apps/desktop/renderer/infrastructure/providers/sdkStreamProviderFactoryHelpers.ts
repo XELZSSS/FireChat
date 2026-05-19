@@ -9,19 +9,10 @@ import type {
 import type { RequestPolicy } from '@/infrastructure/providers/requestPolicy';
 import type { AISdkStreamProviderOptions } from '@/infrastructure/providers/sdkStreamProvider';
 import type { SdkStreamBuiltInProviderId } from '@/infrastructure/providers/builtInProviderGroups';
-import type { AiGatewayCallRequestConfig } from '@/infrastructure/providers/aiGatewaySettings';
 
 type ProviderFactoryContext = {
   apiKey: string;
   baseUrl?: string;
-  fetch: typeof fetch;
-  customHeaders?: Array<{ key: string; value: string }>;
-};
-
-type GatewayProviderFactoryContext = {
-  apiKey?: string;
-  baseUrl: string;
-  gatewayConfig: AiGatewayCallRequestConfig;
   fetch: typeof fetch;
   customHeaders?: Array<{ key: string; value: string }>;
 };
@@ -47,7 +38,6 @@ export type OpenAIStyleProviderBuilderOptions<TProvider> = {
   normalizeBaseUrl?: (value: string) => string;
   missingApiKeyError: string;
   createSdkProvider: (context: ProviderFactoryContext) => TProvider;
-  createGatewaySdkProvider?: (context: GatewayProviderFactoryContext) => TProvider;
   createModel?: AISdkStreamProviderOptions<TProvider>['createModel'];
   buildProviderOptions?: (context: ProviderOptionsContext) => Record<string, unknown> | undefined;
   listModels?: (context: ProviderModelListContext) => Promise<ProviderModelItem[]>;
@@ -126,7 +116,6 @@ export const createOpenAIStyleSdkProviderFactory = <TProvider>({
   normalizeBaseUrl,
   missingApiKeyError,
   createSdkProvider,
-  createGatewaySdkProvider,
   createModel,
   buildProviderOptions,
   listModels,
@@ -147,11 +136,10 @@ export const createOpenAIStyleSdkProviderFactory = <TProvider>({
     normalizeBaseUrl: resolveNormalizedBaseUrl,
     missingApiKeyError,
     logLabel: config.label,
-    supportsTavily: config.capabilities.supportsTavily,
+
     supportsBaseUrl: config.capabilities.supportsBaseUrl,
     supportsCustomHeaders: config.capabilities.supportsCustomHeaders,
     createSdkProvider,
-    createGatewaySdkProvider,
     createModel:
       createModel ??
       (({ provider, requestModelName }) =>

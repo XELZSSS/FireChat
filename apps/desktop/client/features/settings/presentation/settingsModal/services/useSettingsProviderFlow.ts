@@ -8,7 +8,6 @@ import {
 } from '@client/features/settings/presentation/settingsModal/sections/providerCatalog';
 import type { SettingsModalState } from '@client/features/settings/presentation/settingsModal/state/reducer';
 import { useProviderModelCatalog } from '@client/features/settings/presentation/settingsModal/services/useProviderModelCatalog';
-import { useProviderImageModelCatalog } from '@client/features/settings/presentation/settingsModal/services/useProviderImageModelCatalog';
 
 type UiFieldSetter = <K extends keyof SettingsModalState['ui']>(
   key: K,
@@ -32,7 +31,7 @@ export const useSettingsProviderFlow = ({
   onCreateCustomProvider,
   onDeleteProvider,
 }: UseSettingsProviderFlowOptions) => {
-  const { providerId, modelName, imageModelName, apiKey, baseUrl, customHeaders, requestMode } =
+  const { providerId, modelName, apiKey, baseUrl, customHeaders, requestMode } =
     provider;
   const { builtIn: builtInProviderOptions, custom: customProviderOptions } =
     partitionProviderOptionsBySource(providerOptions);
@@ -50,29 +49,12 @@ export const useSettingsProviderFlow = ({
     customHeaders,
     requestMode,
   });
-  const {
-    availableImageModels,
-    isFetchingImageModels,
-    imageModelFetchError,
-    handleFetchImageModels,
-    clearProviderImageModelFetchError,
-  } = useProviderImageModelCatalog({
-    providerId,
-    modelName,
-    imageModelName,
-    apiKey,
-    baseUrl,
-    customHeaders,
-    requestMode,
-  });
-
   const selectProvider = useCallback(
     (nextProviderId: ProviderId) => {
       handleProviderChange(nextProviderId);
       clearProviderModelFetchError(nextProviderId);
-      clearProviderImageModelFetchError(nextProviderId);
     },
-    [clearProviderImageModelFetchError, clearProviderModelFetchError, handleProviderChange]
+    [clearProviderModelFetchError, handleProviderChange]
   );
 
   const handleCreateProvider = useCallback(
@@ -110,13 +92,9 @@ export const useSettingsProviderFlow = ({
 
   return {
     availableModels,
-    availableImageModels,
     isFetchingModels,
-    isFetchingImageModels,
     modelFetchError,
-    imageModelFetchError,
     handleFetchModels,
-    handleFetchImageModels,
     handleCreateProvider,
     handleDeleteProvider,
     builtInProviderOptions,

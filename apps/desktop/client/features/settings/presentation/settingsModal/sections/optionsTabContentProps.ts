@@ -41,7 +41,6 @@ export const buildOptionsTabProps = ({
     httpProtocol: app.httpProtocol,
     localProxyHost: app.localProxyHost,
     localProxyPort: app.localProxyPort,
-    aiGateway: app.aiGateway,
     updateStatusText,
     updaterStatus: updaterStatus.status,
     mutationsLockedReason: interactionLockReason,

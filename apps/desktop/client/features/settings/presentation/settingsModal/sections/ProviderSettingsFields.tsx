@@ -5,7 +5,6 @@ import {
   BaseUrlField,
   ProviderConnectionSection,
 } from '@client/features/settings/presentation/settingsModal/sections/ProviderConnectionSection';
-import { isImageOnlyProviderPlatform } from '@client/features/settings/presentation/settingsModal/sections/providerCatalog';
 import { textareaClass } from '@client/features/settings/presentation/settingsModal/sections/styles';
 import { DefaultProviderCard } from '@client/features/settings/presentation/settingsModal/providerTabSections/DefaultProviderCard';
 import {
@@ -95,7 +94,6 @@ export const ProviderSettingsFields = ({
   children,
 }: ProviderSettingsFieldsProps) => {
   const baseUrlIssues = validationIssuesByField['provider.baseUrl'];
-  const isImageOnlyProvider = isImageOnlyProviderPlatform(providerId);
 
   return (
     <>
@@ -134,16 +132,14 @@ export const ProviderSettingsFields = ({
         />
       </Field>
 
-      {isImageOnlyProvider ? null : (
-        <DefaultProviderCard
-          providerId={providerId}
-          currentChatProviderId={currentChatProviderId}
-          defaultProviderId={defaultProviderId}
-          providerOptions={providerOptions}
-          mutationsLockedReason={mutationsLockedReason}
-          onSetDefaultProvider={onSetDefaultProvider}
-        />
-      )}
+      <DefaultProviderCard
+        providerId={providerId}
+        currentChatProviderId={currentChatProviderId}
+        defaultProviderId={defaultProviderId}
+        providerOptions={providerOptions}
+        mutationsLockedReason={mutationsLockedReason}
+        onSetDefaultProvider={onSetDefaultProvider}
+      />
 
       <ProviderConnectionSection
         apiKey={apiKey}

@@ -2,7 +2,6 @@ import { Role, type ChatMessage } from '@/shared/types/chat';
 import {
   getMessageAttachments,
   getMessageCitations,
-  getMessageGeneratedImages,
   getMessageToolCalls,
   getMessageToolResults,
   readMessagePartState,
@@ -10,7 +9,6 @@ import {
 import { hasRenderableCodeBlock } from '@client/features/chat/presentation/message-parts/MessageMarkdown';
 
 const EMPTY_ATTACHMENTS: ReturnType<typeof getMessageAttachments> = [];
-const EMPTY_GENERATED_IMAGES: ReturnType<typeof getMessageGeneratedImages> = [];
 const EMPTY_TOOL_CALLS: ReturnType<typeof getMessageToolCalls> = [];
 const EMPTY_TOOL_RESULTS: ReturnType<typeof getMessageToolResults> = [];
 const EMPTY_CITATIONS: ReturnType<typeof getMessageCitations> = [];
@@ -29,7 +27,6 @@ export const getChatBubbleViewModel = ({ message, isStreaming }: ChatBubbleViewM
   const partState = readMessagePartState(message);
   const text = partState.text;
   const attachments = partState.attachments ?? EMPTY_ATTACHMENTS;
-  const generatedImages = isUser ? EMPTY_GENERATED_IMAGES : partState.generatedImages;
   const toolCalls = isUser ? EMPTY_TOOL_CALLS : partState.toolCalls;
   const toolResults = isUser ? EMPTY_TOOL_RESULTS : partState.toolResults;
   const citations = isUser ? EMPTY_CITATIONS : partState.citations;
@@ -46,8 +43,6 @@ export const getChatBubbleViewModel = ({ message, isStreaming }: ChatBubbleViewM
     hasText: text.length > 0,
     attachments,
     hasAttachments: attachments.length > 0,
-    generatedImages,
-    hasGeneratedImages: generatedImages.length > 0,
     toolCalls,
     hasToolCalls: toolCalls.length > 0,
     toolResults,

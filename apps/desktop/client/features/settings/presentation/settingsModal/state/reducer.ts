@@ -1,4 +1,4 @@
-import { ProviderId, TavilyConfig } from '@/shared/types/chat';
+import { ProviderId } from '@/shared/types/chat';
 import type { HttpProtocolPreference, SendShortcut } from '@/shared/utils/appOptions';
 import type { LanguagePreference } from '@/shared/utils/i18n';
 import type { AccentPreference, ThemePreference } from '@/shared/utils/theme';
@@ -6,17 +6,11 @@ import type {
   OpenAdapterToolSettings,
 } from '@/infrastructure/providers/openadapterToolConfig';
 import type { OpenAIRequestMode } from '@/infrastructure/providers/types';
-import type { AiGatewaySettings } from '@/infrastructure/providers/aiGatewaySettings';
-import type { CliSettings } from '@contracts/desktop';
 import type { PetSettings } from '@client/features/pet/domain/petTypes';
 
 export type ActiveSettingsTab =
   | 'provider'
   | 'customProvider'
-  | 'aiGateway'
-  | 'cli'
-  | 'mcp'
-  | 'imageGeneration'
   | 'search'
   | 'requestLogs'
   | 'pet'
@@ -26,13 +20,10 @@ export type SettingsProviderState = {
   providerId: ProviderId;
   modelName: string;
   systemPrompt: string;
-  imageModelName: string;
-  imageGeneration?: import('@/infrastructure/providers/imageGenerationSettings').ImageGenerationSettings;
   apiKey: string;
   requestMode?: OpenAIRequestMode;
   baseUrl?: string;
   customHeaders: Array<{ key: string; value: string }>;
-  tavily: TavilyConfig;
   openAdapterTools: OpenAdapterToolSettings;
 };
 
@@ -60,12 +51,9 @@ export type SettingsModalState = {
     httpProtocol: HttpProtocolPreference;
     localProxyHost: string;
     localProxyPort: string;
-    aiGateway: AiGatewaySettings;
-    cli: CliSettings;
   };
   ui: {
     showApiKey: boolean;
-    showTavilyKey: boolean;
     activeTab: ActiveSettingsTab;
     interfaceLayoutConfigText: string;
     providerConfigJsonText: string;

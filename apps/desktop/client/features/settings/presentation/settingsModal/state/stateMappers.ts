@@ -41,13 +41,10 @@ export const buildProviderState = (input: ProviderStateInput): SettingsModalStat
     providerId: input.providerId,
     modelName: settings?.modelName ?? '',
     systemPrompt: settings?.systemPrompt ?? '',
-    imageModelName: settings?.imageModelName ?? '',
-    imageGeneration: settings?.imageGeneration,
     apiKey: settings?.apiKey ?? '',
     requestMode: settings?.requestMode,
     baseUrl: resolveBaseUrlForProvider(input.providerId, settings?.baseUrl),
     customHeaders: settings?.customHeaders ?? [],
-    tavily: settings?.tavily ?? {},
     openAdapterTools: settings?.openAdapterTools ?? createDefaultOpenAdapterToolSettings(),
   };
 };
@@ -72,12 +69,10 @@ export const buildSettingsModalState = (
   app: {
     defaultProviderId: appSettings.defaultProviderId,
     ...pickAppSettingsFields(appSettings),
-    cli: appSettings.cli,
   },
   ui: {
     showApiKey: false,
-    showTavilyKey: false,
-    activeTab: resolveSettingsTabForProvider(input.providerId),
+    activeTab: 'provider',
     interfaceLayoutConfigText: stringifyInterfaceLayoutConfig(
       readBootstrappedInterfaceLayoutConfig()
     ),
@@ -85,21 +80,5 @@ export const buildSettingsModalState = (
   },
 });
 
-export const buildComparableSettingsStateSnapshot = (
-  state: SettingsModalState
-): Pick<SettingsModalState, 'provider'> & {
-  app: Omit<SettingsModalState['app'], 'cli'>;
-  ui: Pick<SettingsModalState['ui'], 'interfaceLayoutConfigText' | 'providerConfigJsonText'>;
-} => {
-  const { cli: _cli, ...app } = state.app;
 
-  return {
-    provider: state.provider,
-    app,
-    ui: {
-      interfaceLayoutConfigText: state.ui.interfaceLayoutConfigText,
-      providerConfigJsonText: state.ui.providerConfigJsonText,
-    },
-  };
-};
 
